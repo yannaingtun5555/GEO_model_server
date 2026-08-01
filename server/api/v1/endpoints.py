@@ -11,6 +11,8 @@ from typing import List, Optional, Dict, Any
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel, Field
 
+from concurrent.futures import ThreadPoolExecutor
+
 from server.config import REGIONS, CROPS
 from server.core.cache import cache_manager
 from server.core.model_loader import model_manager
@@ -19,6 +21,7 @@ from server.core.request_queue import request_queue
 from server.services.composite_features import CompositeFeaturesEngine
 
 router = APIRouter(prefix="/api/v1", tags=["Model Server API"])
+prediction_executor = ThreadPoolExecutor(max_workers=4)
 
 # Request Schemas
 class PredictionRequest(BaseModel):
@@ -114,8 +117,10 @@ async def predict_indicators(req: PredictionRequest):
             target_list = ["crop_yield_t_ha", "crop_health_score", "drought_risk_score"] + crop_suit_targets
 
         # Predict Targets via LRU/Boost Model Manager
+        # Predict Targets via LRU/Boost Model Manager (Parallelized)
         predictions = {}
         models_used = {}
+        prepared_tasks = []
 
         for target in target_list:
             model_artifact, source_type = model_manager.get_model(target, force_prototype=req.use_fallback_models)
@@ -123,28 +128,45 @@ async def predict_indicators(req: PredictionRequest):
                 model = model_artifact["model"]
                 feats = model_artifact.get("features", [])
                 le = model_artifact.get("label_encoder")
-
                 x_vals = [float(sample_features.get(f, 0.0) or 0.0) for f in feats]
-                X_in = pd.DataFrame([x_vals], columns=feats)
+                prepared_tasks.append({
+                    "target": target,
+                    "model": model,
+                    "feats": feats,
+                    "le": le,
+                    "x_vals": x_vals,
+                    "source_type": source_type
+                })
 
-                try:
-                    pred_raw = model.predict(X_in)[0]
-                    if le is not None:
-                        if isinstance(pred_raw, (int, float, str)) and hasattr(le, "classes_"):
-                            try:
-                                pred_val = str(le.classes_[int(pred_raw)])
-                            except Exception:
-                                pred_val = str(pred_raw)
-                        else:
+        def _predict_task(task):
+            tgt = task["target"]
+            mdl = task["model"]
+            fts = task["feats"]
+            l_enc = task["le"]
+            vals = task["x_vals"]
+            src = task["source_type"]
+            try:
+                X_in = pd.DataFrame([vals], columns=fts)
+                pred_raw = mdl.predict(X_in)[0]
+                if l_enc is not None:
+                    if isinstance(pred_raw, (int, float, str)) and hasattr(l_enc, "classes_"):
+                        try:
+                            pred_val = str(l_enc.classes_[int(pred_raw)])
+                        except Exception:
                             pred_val = str(pred_raw)
                     else:
-                        pred_val = float(pred_raw) if isinstance(pred_raw, (float, int)) else str(pred_raw)
+                        pred_val = str(pred_raw)
+                else:
+                    pred_val = float(pred_raw) if isinstance(pred_raw, (float, int)) else str(pred_raw)
+                return tgt, pred_val, src
+            except Exception as ex:
+                return tgt, f"Error: {ex}", "error"
 
-                    predictions[target] = pred_val
-                    models_used[target] = source_type
-                except Exception as e:
-                    predictions[target] = f"Error: {e}"
-                    models_used[target] = "error"
+        if prepared_tasks:
+            results = list(prediction_executor.map(_predict_task, prepared_tasks))
+            for tgt, pred_val, src in results:
+                predictions[tgt] = pred_val
+                models_used[tgt] = src
 
         # Composite Features
         composite_res = {}

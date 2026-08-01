@@ -11,15 +11,15 @@ services:
     environment:
       - REDIS_HOST=redis_cache
       - REDIS_PORT=6379
-      - MAX_LOADED_MODELS=4
-      - MAX_RAM_MB=2048
-      - BOOST_MODE=false
+      - MAX_LOADED_MODELS=40
+      - MAX_RAM_MB=6144
+      - BOOST_MODE=true
     depends_on:
       - redis_cache
     deploy:
       resources:
         limits:
-          memory: 2048M
+          memory: 6144M
         reservations:
           memory: 512M
     restart: unless-stopped
