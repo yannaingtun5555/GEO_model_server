@@ -1,0 +1,40 @@
+# Environment & Virtualenvs
+.venv/
+venv/
+env/
+ENV/
+.env
+
+# Python Bytecode & Caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Datasets
+# Exclude raw GEE satellite observation files, regional monthly processed CSVs, and heavy combined datasets (>100MB)
+data/raw/
+data/processed/ayeyawaddy/
+data/processed/bago/
+data/processed/magway/
+data/processed/mandalay/
+data/processed/sagaing/
+data/processed/yangon/
+data/processed/features_dataset.csv
+data/combined/combined_dataset.csv
+
+# Regional Storage & Logs
+data/regional_storage/
+*.log
+
+# Archives & Large Model Files
+*.zip
+models/*.pkl
+
+# Operating System & IDE Files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

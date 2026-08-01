@@ -1,0 +1,650 @@
+═════════════════════════════════════════════════════════════════
+  Myanmar Agricultural ML — Training Report
+  Generated: 2026-07-31 03:44:48
+═════════════════════════════════════════════════════════════════
+
+  Dataset: 1,029,348 samples × 75 features
+  Models trained: 40
+
+─────────────────────────────────────────────────────────────────
+  TARGET: crop_suitability_monsoon_rice
+  Type  : CLASSIFICATION
+  Train : 823,478  |  Test: 205,870
+  Accuracy    : 0.9425  (94.2%)
+  F1 (macro)  : 0.9425
+  F1 (weighted): 0.9425
+  Top features: elevation_m, mean_temperature_c_min, crop_area_pct_mangosteen
+
+              precision    recall  f1-score   support
+
+   excellent       0.89      1.00      0.94     31179
+        good       0.94      0.93      0.94     92617
+    moderate       0.97      0.93      0.95     82074
+
+    accuracy                           0.94    205870
+   macro avg       0.93      0.95      0.94    205870
+weighted avg       0.94      0.94      0.94    205870
+
+─────────────────────────────────────────────────────────────────
+  TARGET: crop_suitability_dry_season_rice
+  Type  : CLASSIFICATION
+  Train : 823,478  |  Test: 205,870
+  Accuracy    : 0.9133  (91.3%)
+  F1 (macro)  : 0.9119
+  F1 (weighted): 0.9141
+  Top features: elevation_m, mean_temperature_c_min, crop_area_pct_mangosteen
+
+              precision    recall  f1-score   support
+
+   excellent       0.92      1.00      0.96     35717
+        good       0.96      0.89      0.92    123066
+    moderate       0.80      0.91      0.86     47087
+
+    accuracy                           0.91    205870
+   macro avg       0.89      0.93      0.91    205870
+weighted avg       0.92      0.91      0.91    205870
+
+─────────────────────────────────────────────────────────────────
+  TARGET: crop_suitability_maize
+  Type  : CLASSIFICATION
+  Train : 823,478  |  Test: 205,870
+  Accuracy    : 0.9258  (92.6%)
+  F1 (macro)  : 0.9157
+  F1 (weighted): 0.9270
+  Top features: mean_temperature_c_mean, mean_temperature_c_min, solar_radiation_mj_m2_day_max
+
+              precision    recall  f1-score   support
+
+        good       0.97      0.92      0.94    142643
+    moderate       0.84      0.94      0.89     63227
+
+    accuracy                           0.93    205870
+   macro avg       0.90      0.93      0.92    205870
+weighted avg       0.93      0.93      0.93    205870
+
+─────────────────────────────────────────────────────────────────
+  TARGET: crop_suitability_sugarcane
+  Type  : CLASSIFICATION
+  Train : 823,478  |  Test: 205,870
+  Accuracy    : 0.9478  (94.8%)
+  F1 (macro)  : 0.9331
+  F1 (weighted): 0.9485
+  Top features: solar_radiation_mj_m2_day_max, solar_radiation_mj_m2_day_mean, chirps_precipitation_mm_mean
+
+              precision    recall  f1-score   support
+
+        good       0.98      0.95      0.96    153648
+    moderate       0.86      0.94      0.90     52222
+
+    accuracy                           0.95    205870
+   macro avg       0.92      0.95      0.93    205870
+weighted avg       0.95      0.95      0.95    205870
+
+─────────────────────────────────────────────────────────────────
+  TARGET: crop_suitability_cassava
+  Type  : CLASSIFICATION
+  Train : 823,478  |  Test: 205,870
+  Accuracy    : 0.9539  (95.4%)
+  F1 (macro)  : 0.9672
+  F1 (weighted): 0.9539
+  Top features: surface_water_occurrence_pct, solar_radiation_mj_m2_day_max, era5_soil_moisture_m3_m3_cv
+
+              precision    recall  f1-score   support
+
+        good       0.96      0.95      0.95    105810
+    moderate       0.94      0.96      0.95     98399
+        poor       0.99      1.00      0.99      1661
+
+    accuracy                           0.95    205870
+   macro avg       0.97      0.97      0.97    205870
+weighted avg       0.95      0.95      0.95    205870
+
+─────────────────────────────────────────────────────────────────
+  TARGET: crop_suitability_durian
+  Type  : CLASSIFICATION
+  Train : 823,478  |  Test: 205,870
+  Accuracy    : 0.9284  (92.8%)
+  F1 (macro)  : 0.9442
+  F1 (weighted): 0.9286
+  Top features: surface_water_occurrence_pct, chirps_precipitation_mm_mean, solar_radiation_mj_m2_day_max
+
+              precision    recall  f1-score   support
+
+        good       0.89      0.94      0.91     83411
+    moderate       0.96      0.92      0.94    120342
+        poor       0.96      1.00      0.98      2117
+
+    accuracy                           0.93    205870
+   macro avg       0.94      0.95      0.94    205870
+weighted avg       0.93      0.93      0.93    205870
+
+─────────────────────────────────────────────────────────────────
+  TARGET: crop_suitability_mangosteen
+  Type  : CLASSIFICATION
+  Train : 823,478  |  Test: 205,870
+  Accuracy    : 0.9176  (91.8%)
+  F1 (macro)  : 0.9385
+  F1 (weighted): 0.9180
+  Top features: surface_water_occurrence_pct, solar_radiation_mj_m2_day_max, era5_soil_moisture_m3_m3_cv
+
+              precision    recall  f1-score   support
+
+        good       0.87      0.95      0.90     84601
+    moderate       0.96      0.89      0.93    119371
+        poor       0.97      1.00      0.98      1898
+
+    accuracy                           0.92    205870
+   macro avg       0.93      0.95      0.94    205870
+weighted avg       0.92      0.92      0.92    205870
+
+─────────────────────────────────────────────────────────────────
+  TARGET: crop_suitability_longan
+  Type  : CLASSIFICATION
+  Train : 823,478  |  Test: 205,870
+  Accuracy    : 0.9506  (95.1%)
+  F1 (macro)  : 0.9619
+  F1 (weighted): 0.9506
+  Top features: surface_water_occurrence_pct, solar_radiation_mj_m2_day_max, era5_soil_moisture_m3_m3_cv
+
+              precision    recall  f1-score   support
+
+        good       0.94      0.96      0.95     99532
+    moderate       0.96      0.94      0.95    104401
+        poor       0.97      1.00      0.98      1937
+
+    accuracy                           0.95    205870
+   macro avg       0.96      0.97      0.96    205870
+weighted avg       0.95      0.95      0.95    205870
+
+─────────────────────────────────────────────────────────────────
+  TARGET: crop_suitability_mango
+  Type  : CLASSIFICATION
+  Train : 823,478  |  Test: 205,870
+  Accuracy    : 0.9444  (94.4%)
+  F1 (macro)  : 0.9443
+  F1 (weighted): 0.9444
+  Top features: surface_water_occurrence_pct, solar_radiation_mj_m2_day_max, solar_radiation_mj_m2_day_mean
+
+              precision    recall  f1-score   support
+
+        good       0.95      0.94      0.95    103936
+    moderate       0.94      0.95      0.94    100411
+        poor       0.89      1.00      0.94      1523
+
+    accuracy                           0.94    205870
+   macro avg       0.93      0.96      0.94    205870
+weighted avg       0.94      0.94      0.94    205870
+
+─────────────────────────────────────────────────────────────────
+  TARGET: crop_suitability_chili
+  Type  : CLASSIFICATION
+  Train : 823,478  |  Test: 205,870
+  Accuracy    : 0.9505  (95.0%)
+  F1 (macro)  : 0.9234
+  F1 (weighted): 0.9522
+  Top features: mean_temperature_c_min, mean_temperature_c_mean, solar_radiation_mj_m2_day_max
+
+              precision    recall  f1-score   support
+
+        good       0.99      0.95      0.97    167954
+    moderate       0.81      0.96      0.88     37916
+
+    accuracy                           0.95    205870
+   macro avg       0.90      0.96      0.92    205870
+weighted avg       0.96      0.95      0.95    205870
+
+─────────────────────────────────────────────────────────────────
+  TARGET: crop_suitability_tomato
+  Type  : CLASSIFICATION
+  Train : 823,478  |  Test: 205,870
+  Accuracy    : 0.8429  (84.3%)
+  F1 (macro)  : 0.8187
+  F1 (weighted): 0.8460
+  Top features: surface_water_occurrence_pct, crop_area_pct_monsoon_rice, crop_area_pct_mangosteen
+
+              precision    recall  f1-score   support
+
+        good       0.71      0.99      0.83     67306
+    moderate       0.99      0.76      0.86    131025
+        poor       0.62      1.00      0.77      7539
+
+    accuracy                           0.84    205870
+   macro avg       0.78      0.92      0.82    205870
+weighted avg       0.89      0.84      0.85    205870
+
+─────────────────────────────────────────────────────────────────
+  TARGET: crop_suitability_black_gram
+  Type  : CLASSIFICATION
+  Train : 823,478  |  Test: 205,870
+  Accuracy    : 0.9494  (94.9%)
+  F1 (macro)  : 0.9245
+  F1 (weighted): 0.9513
+  Top features: mean_temperature_c_mean, mean_temperature_c_min, solar_radiation_mj_m2_day_max
+
+              precision    recall  f1-score   support
+
+        good       1.00      0.94      0.97    166497
+    moderate       0.80      0.98      0.88     39373
+
+    accuracy                           0.95    205870
+   macro avg       0.90      0.96      0.92    205870
+weighted avg       0.96      0.95      0.95    205870
+
+─────────────────────────────────────────────────────────────────
+  TARGET: crop_suitability_green_gram
+  Type  : CLASSIFICATION
+  Train : 823,478  |  Test: 205,870
+  Accuracy    : 0.9423  (94.2%)
+  F1 (macro)  : 0.9235
+  F1 (weighted): 0.9437
+  Top features: mean_temperature_c_mean, mean_temperature_c_min, solar_radiation_mj_m2_day_max
+
+              precision    recall  f1-score   support
+
+        good       0.99      0.94      0.96    157701
+    moderate       0.83      0.96      0.89     48169
+
+    accuracy                           0.94    205870
+   macro avg       0.91      0.95      0.92    205870
+weighted avg       0.95      0.94      0.94    205870
+
+─────────────────────────────────────────────────────────────────
+  TARGET: crop_suitability_pigeon_pea
+  Type  : CLASSIFICATION
+  Train : 823,478  |  Test: 205,870
+  Accuracy    : 0.9370  (93.7%)
+  F1 (macro)  : 0.9127
+  F1 (weighted): 0.9370
+  Top features: surface_water_occurrence_pct, solar_radiation_mj_m2_day_max, era5_soil_moisture_m3_m3_cv
+
+              precision    recall  f1-score   support
+
+        good       0.94      0.94      0.94    107860
+    moderate       0.93      0.93      0.93     96745
+        poor       0.76      1.00      0.86      1265
+
+    accuracy                           0.94    205870
+   macro avg       0.88      0.96      0.91    205870
+weighted avg       0.94      0.94      0.94    205870
+
+─────────────────────────────────────────────────────────────────
+  TARGET: crop_suitability_groundnut
+  Type  : CLASSIFICATION
+  Train : 823,478  |  Test: 205,870
+  Accuracy    : 0.9461  (94.6%)
+  F1 (macro)  : 0.9225
+  F1 (weighted): 0.9480
+  Top features: mean_temperature_c_mean, mean_temperature_c_min, solar_radiation_mj_m2_day_max
+
+              precision    recall  f1-score   support
+
+        good       0.99      0.94      0.97    164317
+    moderate       0.80      0.98      0.88     41553
+
+    accuracy                           0.95    205870
+   macro avg       0.90      0.96      0.92    205870
+weighted avg       0.95      0.95      0.95    205870
+
+─────────────────────────────────────────────────────────────────
+  TARGET: crop_suitability_sesame
+  Type  : CLASSIFICATION
+  Train : 823,478  |  Test: 205,870
+  Accuracy    : 0.9278  (92.8%)
+  F1 (macro)  : 0.9116
+  F1 (weighted): 0.9278
+  Top features: surface_water_occurrence_pct, solar_radiation_mj_m2_day_max, solar_radiation_mj_m2_day_mean
+
+              precision    recall  f1-score   support
+
+        good       0.92      0.93      0.93     97907
+    moderate       0.94      0.92      0.93    106617
+        poor       0.78      1.00      0.88      1346
+
+    accuracy                           0.93    205870
+   macro avg       0.88      0.95      0.91    205870
+weighted avg       0.93      0.93      0.93    205870
+
+─────────────────────────────────────────────────────────────────
+  TARGET: crop_suitability_rubber
+  Type  : CLASSIFICATION
+  Train : 823,478  |  Test: 205,870
+  Accuracy    : 0.9566  (95.7%)
+  F1 (macro)  : 0.9566
+  F1 (weighted): 0.9566
+  Top features: chirps_precipitation_mm_mean, mean_temperature_c_min, solar_radiation_mj_m2_day_mean
+
+              precision    recall  f1-score   support
+
+        good       0.94      0.97      0.96     99356
+    moderate       0.97      0.94      0.96    106514
+
+    accuracy                           0.96    205870
+   macro avg       0.96      0.96      0.96    205870
+weighted avg       0.96      0.96      0.96    205870
+
+─────────────────────────────────────────────────────────────────
+  TARGET: crop_health_score
+  Type  : REGRESSION
+  Train : 823,478  |  Test: 205,870
+  MAE    : 0.0079
+  RMSE   : 0.0104
+  R²     : 0.9622
+  Residual: mean=-0.0001  std=0.0104
+  Top features: ndvi_median_growing_season_mean, ndvi_median_mean, mean_temperature_c_min
+─────────────────────────────────────────────────────────────────
+  TARGET: crop_yield_t_ha
+  Type  : REGRESSION
+  Train : 823,478  |  Test: 205,870
+  MAE    : 0.0634
+  RMSE   : 0.0821
+  R²     : 0.9498
+  Residual: mean=-0.0001  std=0.0821
+  Top features: chirps_precipitation_mm_mean, ndvi_median_growing_season_mean, ndvi_median_mean
+─────────────────────────────────────────────────────────────────
+  TARGET: irrigation_need
+  Type  : CLASSIFICATION
+  Train : 823,478  |  Test: 205,870
+  Accuracy    : 0.9897  (99.0%)
+  F1 (macro)  : 0.9387
+  F1 (weighted): 0.9903
+  Top features: surface_water_occurrence_pct, permanent_water_fraction, ndwi_mcf_median_mean
+
+              precision    recall  f1-score   support
+
+           1       0.79      1.00      0.88      7976
+           2       1.00      0.99      0.99    197894
+
+    accuracy                           0.99    205870
+   macro avg       0.90      0.99      0.94    205870
+weighted avg       0.99      0.99      0.99    205870
+
+─────────────────────────────────────────────────────────────────
+  TARGET: current_month_precipitation_mm
+  Type  : REGRESSION
+  Train : 823,478  |  Test: 205,870
+  MAE    : 0.3694
+  RMSE   : 0.5592
+  R²     : 1.0000
+  Residual: mean=0.0012  std=0.5592
+  Top features: chirps_precipitation_mm, chirps_precipitation_mm_max, chirps_precipitation_mm_range
+─────────────────────────────────────────────────────────────────
+  TARGET: current_month_mean_temperature_c
+  Type  : REGRESSION
+  Train : 823,478  |  Test: 205,870
+  MAE    : 0.0211
+  RMSE   : 0.0277
+  R²     : 0.9999
+  Residual: mean=0.0001  std=0.0277
+  Top features: mean_temperature_c, solar_radiation_mj_m2_day_mean, era5_soil_moisture_m3_m3_cv
+─────────────────────────────────────────────────────────────────
+  TARGET: current_month_solar_rad_mj_m2_day
+  Type  : REGRESSION
+  Train : 823,478  |  Test: 205,870
+  MAE    : 0.0257
+  RMSE   : 0.0354
+  R²     : 0.9999
+  Residual: mean=-0.0002  std=0.0354
+  Top features: solar_radiation_mj_m2_day, solar_radiation_mj_m2_day_mean, solar_radiation_mj_m2_day_max
+─────────────────────────────────────────────────────────────────
+  TARGET: flood_risk_level
+  Type  : CLASSIFICATION
+  Train : 823,478  |  Test: 205,870
+  Accuracy    : 0.9959  (99.6%)
+  F1 (macro)  : 0.9943
+  F1 (weighted): 0.9960
+  Top features: surface_water_occurrence_pct, permanent_water_fraction, elevation_m
+
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00    135701
+           1       0.98      1.00      0.99     40003
+           2       1.00      0.99      1.00     30166
+
+    accuracy                           1.00    205870
+   macro avg       0.99      1.00      0.99    205870
+weighted avg       1.00      1.00      1.00    205870
+
+─────────────────────────────────────────────────────────────────
+  TARGET: drought_risk_score
+  Type  : REGRESSION
+  Train : 823,478  |  Test: 205,870
+  MAE    : 0.0073
+  RMSE   : 0.0100
+  R²     : 0.9906
+  Residual: mean=-0.0000  std=0.0100
+  Top features: era5_soil_moisture_m3_m3_min, ndwi_mcf_median_mean, ndvi_median_growing_season_mean
+─────────────────────────────────────────────────────────────────
+  TARGET: heat_stress_risk
+  Type  : CLASSIFICATION
+  Train : 823,478  |  Test: 205,870
+  Accuracy    : 1.0000  (100.0%)
+  F1 (macro)  : 1.0000
+  F1 (weighted): 1.0000
+  Top features: mean_temperature_c_max, chirps_precipitation_mm_mean, mean_temperature_c_range
+
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00    200563
+           1       1.00      1.00      1.00      5307
+
+    accuracy                           1.00    205870
+   macro avg       1.00      1.00      1.00    205870
+weighted avg       1.00      1.00      1.00    205870
+
+─────────────────────────────────────────────────────────────────
+  TARGET: optimal_planting_month
+  Type  : CLASSIFICATION
+  Train : 823,478  |  Test: 205,870
+  Accuracy    : 1.0000  (100.0%)
+  F1 (macro)  : 1.0000
+  F1 (weighted): 1.0000
+  Top features: crop_area_pct_mangosteen, crop_area_pct_monsoon_rice, crop_area_pct_maize
+
+              precision    recall  f1-score   support
+
+           5       1.00      1.00      1.00     64616
+           6       1.00      1.00      1.00    141254
+
+    accuracy                           1.00    205870
+   macro avg       1.00      1.00      1.00    205870
+weighted avg       1.00      1.00      1.00    205870
+
+─────────────────────────────────────────────────────────────────
+  TARGET: nitrogen_requirement_level
+  Type  : CLASSIFICATION
+  Train : 823,478  |  Test: 205,870
+  Accuracy    : 0.9987  (99.9%)
+  F1 (macro)  : 0.9970
+  F1 (weighted): 0.9987
+  Top features: soil_soc_g_kg_0_30cm, chirps_precipitation_mm_mean, distance_to_railway_km
+
+              precision    recall  f1-score   support
+
+           0       0.98      1.00      0.99     16290
+           1       1.00      1.00      1.00    171002
+           2       1.00      1.00      1.00     18578
+
+    accuracy                           1.00    205870
+   macro avg       0.99      1.00      1.00    205870
+weighted avg       1.00      1.00      1.00    205870
+
+─────────────────────────────────────────────────────────────────
+  TARGET: phosphorus_requirement_level
+  Type  : CLASSIFICATION
+  Train : 823,478  |  Test: 205,870
+  Accuracy    : 1.0000  (100.0%)
+  F1 (macro)  : 1.0000
+  F1 (weighted): 1.0000
+  Top features: soil_ph_h2o_0_30cm, soil_cec_cmol_kg_0_30cm, elevation_m
+
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00     26193
+           1       1.00      1.00      1.00    157964
+           2       1.00      1.00      1.00     21713
+
+    accuracy                           1.00    205870
+   macro avg       1.00      1.00      1.00    205870
+weighted avg       1.00      1.00      1.00    205870
+
+─────────────────────────────────────────────────────────────────
+  TARGET: soil_erosion_risk
+  Type  : CLASSIFICATION
+  Train : 823,478  |  Test: 205,870
+  Accuracy    : 1.0000  (100.0%)
+  F1 (macro)  : 1.0000
+  F1 (weighted): 1.0000
+  Top features: slope_degrees, chirps_precipitation_mm_range, chirps_precipitation_mm_max
+
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00      8815
+           1       1.00      1.00      1.00    190942
+           2       1.00      1.00      1.00      6113
+
+    accuracy                           1.00    205870
+   macro avg       1.00      1.00      1.00    205870
+weighted avg       1.00      1.00      1.00    205870
+
+─────────────────────────────────────────────────────────────────
+  TARGET: market_integration_score
+  Type  : REGRESSION
+  Train : 823,478  |  Test: 205,870
+  MAE    : 0.0051
+  RMSE   : 0.0068
+  R²     : 0.9982
+  Residual: mean=-0.0000  std=0.0068
+  Top features: distance_to_railway_km, distance_to_road_km, road_density_km_per_sqkm
+─────────────────────────────────────────────────────────────────
+  TARGET: post_harvest_loss_risk
+  Type  : REGRESSION
+  Train : 823,478  |  Test: 205,870
+  MAE    : 0.0093
+  RMSE   : 0.0118
+  R²     : 0.9892
+  Residual: mean=-0.0000  std=0.0118
+  Top features: distance_to_road_km, road_density_km_per_sqkm, non_cropland_fraction
+─────────────────────────────────────────────────────────────────
+  TARGET: supply_chain_efficiency
+  Type  : REGRESSION
+  Train : 823,478  |  Test: 205,870
+  MAE    : 0.0109
+  RMSE   : 0.0148
+  R²     : 0.9899
+  Residual: mean=0.0000  std=0.0148
+  Top features: population_density, distance_to_road_km, distance_to_railway_km
+─────────────────────────────────────────────────────────────────
+  TARGET: cold_chain_potential
+  Type  : REGRESSION
+  Train : 823,478  |  Test: 205,870
+  MAE    : 0.0037
+  RMSE   : 0.0063
+  R²     : 0.9961
+  Residual: mean=0.0000  std=0.0063
+  Top features: population_density, road_density_km_per_sqkm, builtup_fraction
+─────────────────────────────────────────────────────────────────
+  TARGET: agricultural_land_conversion_risk
+  Type  : REGRESSION
+  Train : 823,478  |  Test: 205,870
+  MAE    : 0.0042
+  RMSE   : 0.0082
+  R²     : 0.9898
+  Residual: mean=0.0000  std=0.0082
+  Top features: population_density, non_cropland_fraction, road_density_km_per_sqkm
+─────────────────────────────────────────────────────────────────
+  TARGET: urban_encroachment_risk
+  Type  : REGRESSION
+  Train : 823,478  |  Test: 205,870
+  MAE    : 0.0045
+  RMSE   : 0.0062
+  R²     : 0.9970
+  Residual: mean=0.0000  std=0.0062
+  Top features: population_density, distance_to_road_km, urban_fraction
+─────────────────────────────────────────────────────────────────
+  TARGET: irrigation_potential
+  Type  : REGRESSION
+  Train : 823,478  |  Test: 205,870
+  MAE    : 0.0097
+  RMSE   : 0.0135
+  R²     : 0.9928
+  Residual: mean=0.0001  std=0.0135
+  Top features: river_density_km_per_sqkm, surface_water_occurrence_pct, distance_to_river_km
+─────────────────────────────────────────────────────────────────
+  TARGET: surface_water_occurrence
+  Type  : REGRESSION
+  Train : 823,478  |  Test: 205,870
+  MAE    : 0.0058
+  RMSE   : 0.0127
+  R²     : 0.9951
+  Residual: mean=0.0000  std=0.0127
+  Top features: surface_water_occurrence_pct, permanent_water_fraction, crop_area_pct_dry_season_rice
+─────────────────────────────────────────────────────────────────
+  TARGET: water_scarcity_risk
+  Type  : REGRESSION
+  Train : 823,478  |  Test: 205,870
+  MAE    : 0.0060
+  RMSE   : 0.0087
+  R²     : 0.9942
+  Residual: mean=0.0000  std=0.0087
+  Top features: chirps_precipitation_mm_mean, river_density_km_per_sqkm, era5_soil_moisture_m3_m3_mean
+─────────────────────────────────────────────────────────────────
+  TARGET: agricultural_gdp_forecast
+  Type  : REGRESSION
+  Train : 823,478  |  Test: 205,870
+  MAE    : 0.0113
+  RMSE   : 0.0147
+  R²     : 0.9765
+  Residual: mean=-0.0000  std=0.0147
+  Top features: cropland_fraction, distance_to_road_km, non_cropland_fraction
+
+═════════════════════════════════════════════════════════════════
+  SUMMARY
+═════════════════════════════════════════════════════════════════
+
+  Classification models:
+  Target                                      Accuracy   F1 Mac    F1 Wt
+  ────────────────────────────────────────── ───────── ──────── ────────
+  crop_suitability_monsoon_rice                 0.9425   0.9425   0.9425
+  crop_suitability_dry_season_rice              0.9133   0.9119   0.9141
+  crop_suitability_maize                        0.9258   0.9157   0.9270
+  crop_suitability_sugarcane                    0.9478   0.9331   0.9485
+  crop_suitability_cassava                      0.9539   0.9672   0.9539
+  crop_suitability_durian                       0.9284   0.9442   0.9286
+  crop_suitability_mangosteen                   0.9176   0.9385   0.9180
+  crop_suitability_longan                       0.9506   0.9619   0.9506
+  crop_suitability_mango                        0.9444   0.9443   0.9444
+  crop_suitability_chili                        0.9505   0.9234   0.9522
+  crop_suitability_tomato                       0.8429   0.8187   0.8460
+  crop_suitability_black_gram                   0.9494   0.9245   0.9513
+  crop_suitability_green_gram                   0.9423   0.9235   0.9437
+  crop_suitability_pigeon_pea                   0.9370   0.9127   0.9370
+  crop_suitability_groundnut                    0.9461   0.9225   0.9480
+  crop_suitability_sesame                       0.9278   0.9116   0.9278
+  crop_suitability_rubber                       0.9566   0.9566   0.9566
+  irrigation_need                               0.9897   0.9387   0.9903
+  flood_risk_level                              0.9959   0.9943   0.9960
+  heat_stress_risk                              1.0000   1.0000   1.0000
+  optimal_planting_month                        1.0000   1.0000   1.0000
+  nitrogen_requirement_level                    0.9987   0.9970   0.9987
+  phosphorus_requirement_level                  1.0000   1.0000   1.0000
+  soil_erosion_risk                             1.0000   1.0000   1.0000
+
+  Regression models:
+  Target                                          MAE     RMSE       R²
+  ────────────────────────────────────────── ──────── ──────── ────────
+  crop_health_score                            0.0079   0.0104   0.9622
+  crop_yield_t_ha                              0.0634   0.0821   0.9498
+  current_month_precipitation_mm               0.3694   0.5592   1.0000
+  current_month_mean_temperature_c             0.0211   0.0277   0.9999
+  current_month_solar_rad_mj_m2_day            0.0257   0.0354   0.9999
+  drought_risk_score                           0.0073   0.0100   0.9906
+  market_integration_score                     0.0051   0.0068   0.9982
+  post_harvest_loss_risk                       0.0093   0.0118   0.9892
+  supply_chain_efficiency                      0.0109   0.0148   0.9899
+  cold_chain_potential                         0.0037   0.0063   0.9961
+  agricultural_land_conversion_risk            0.0042   0.0082   0.9898
+  urban_encroachment_risk                      0.0045   0.0062   0.9970
+  irrigation_potential                         0.0097   0.0135   0.9928
+  surface_water_occurrence                     0.0058   0.0127   0.9951
+  water_scarcity_risk                          0.0060   0.0087   0.9942
+  agricultural_gdp_forecast                    0.0113   0.0147   0.9765

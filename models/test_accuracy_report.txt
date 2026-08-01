@@ -1,0 +1,424 @@
+ACCURACY AND MODEL PERFORMANCE EVALUATION REPORT
+================================================
+Dataset: /home/yan9htun/Desktop/gee/data/combined/combined_dataset.csv
+Mode: split
+
+CLASSIFICATION TARGETS:
+----------------------
+
+Target: crop_suitability_black_gram
+Accuracy: 99.23% | F1 Macro: 0.9878 | F1 Weighted: 0.9924
+Classification Report:
+              precision    recall  f1-score   support
+
+        good       1.00      0.99      1.00    166497
+    moderate       0.96      1.00      0.98     39373
+
+    accuracy                           0.99    205870
+   macro avg       0.98      1.00      0.99    205870
+weighted avg       0.99      0.99      0.99    205870
+
+--------------------------------------------------
+
+Target: crop_suitability_cassava
+Accuracy: 99.26% | F1 Macro: 0.9950 | F1 Weighted: 0.9926
+Classification Report:
+              precision    recall  f1-score   support
+
+        good       0.99      1.00      0.99    105810
+    moderate       1.00      0.99      0.99     98399
+        poor       1.00      1.00      1.00      1661
+
+    accuracy                           0.99    205870
+   macro avg       1.00      0.99      0.99    205870
+weighted avg       0.99      0.99      0.99    205870
+
+--------------------------------------------------
+
+Target: crop_suitability_chili
+Accuracy: 99.51% | F1 Macro: 0.9920 | F1 Weighted: 0.9952
+Classification Report:
+              precision    recall  f1-score   support
+
+        good       1.00      0.99      1.00    167954
+    moderate       0.97      1.00      0.99     37916
+
+    accuracy                           1.00    205870
+   macro avg       0.99      1.00      0.99    205870
+weighted avg       1.00      1.00      1.00    205870
+
+--------------------------------------------------
+
+Target: crop_suitability_dry_season_rice
+Accuracy: 97.94% | F1 Macro: 0.9779 | F1 Weighted: 0.9794
+Classification Report:
+              precision    recall  f1-score   support
+
+   excellent       0.96      1.00      0.98     35717
+        good       1.00      0.97      0.98    123066
+    moderate       0.95      0.99      0.97     47087
+
+    accuracy                           0.98    205870
+   macro avg       0.97      0.99      0.98    205870
+weighted avg       0.98      0.98      0.98    205870
+
+--------------------------------------------------
+
+Target: crop_suitability_durian
+Accuracy: 97.76% | F1 Macro: 0.9845 | F1 Weighted: 0.9777
+Classification Report:
+              precision    recall  f1-score   support
+
+        good       0.95      0.99      0.97     83411
+    moderate       1.00      0.97      0.98    120342
+        poor       1.00      1.00      1.00      2117
+
+    accuracy                           0.98    205870
+   macro avg       0.98      0.99      0.98    205870
+weighted avg       0.98      0.98      0.98    205870
+
+--------------------------------------------------
+
+Target: crop_suitability_green_gram
+Accuracy: 99.09% | F1 Macro: 0.9874 | F1 Weighted: 0.9909
+Classification Report:
+              precision    recall  f1-score   support
+
+        good       1.00      0.99      0.99    157701
+    moderate       0.96      1.00      0.98     48169
+
+    accuracy                           0.99    205870
+   macro avg       0.98      0.99      0.99    205870
+weighted avg       0.99      0.99      0.99    205870
+
+--------------------------------------------------
+
+Target: crop_suitability_groundnut
+Accuracy: 99.14% | F1 Macro: 0.9869 | F1 Weighted: 0.9915
+Classification Report:
+              precision    recall  f1-score   support
+
+        good       1.00      0.99      0.99    164317
+    moderate       0.96      1.00      0.98     41553
+
+    accuracy                           0.99    205870
+   macro avg       0.98      0.99      0.99    205870
+weighted avg       0.99      0.99      0.99    205870
+
+--------------------------------------------------
+
+Target: crop_suitability_longan
+Accuracy: 98.28% | F1 Macro: 0.9884 | F1 Weighted: 0.9828
+Classification Report:
+              precision    recall  f1-score   support
+
+        good       0.97      1.00      0.98     99532
+    moderate       1.00      0.97      0.98    104401
+        poor       1.00      1.00      1.00      1937
+
+    accuracy                           0.98    205870
+   macro avg       0.99      0.99      0.99    205870
+weighted avg       0.98      0.98      0.98    205870
+
+--------------------------------------------------
+
+Target: crop_suitability_maize
+Accuracy: 99.12% | F1 Macro: 0.9897 | F1 Weighted: 0.9912
+Classification Report:
+              precision    recall  f1-score   support
+
+        good       1.00      0.99      0.99    142643
+    moderate       0.97      1.00      0.99     63227
+
+    accuracy                           0.99    205870
+   macro avg       0.99      0.99      0.99    205870
+weighted avg       0.99      0.99      0.99    205870
+
+--------------------------------------------------
+
+Target: crop_suitability_mango
+Accuracy: 99.10% | F1 Macro: 0.9940 | F1 Weighted: 0.9910
+Classification Report:
+              precision    recall  f1-score   support
+
+        good       0.98      1.00      0.99    103936
+    moderate       1.00      0.98      0.99    100411
+        poor       1.00      1.00      1.00      1523
+
+    accuracy                           0.99    205870
+   macro avg       0.99      0.99      0.99    205870
+weighted avg       0.99      0.99      0.99    205870
+
+--------------------------------------------------
+
+Target: crop_suitability_mangosteen
+Accuracy: 97.40% | F1 Macro: 0.9821 | F1 Weighted: 0.9740
+Classification Report:
+              precision    recall  f1-score   support
+
+        good       0.94      1.00      0.97     84601
+    moderate       1.00      0.96      0.98    119371
+        poor       1.00      1.00      1.00      1898
+
+    accuracy                           0.97    205870
+   macro avg       0.98      0.98      0.98    205870
+weighted avg       0.98      0.97      0.97    205870
+
+--------------------------------------------------
+
+Target: crop_suitability_monsoon_rice
+Accuracy: 98.49% | F1 Macro: 0.9841 | F1 Weighted: 0.9849
+Classification Report:
+              precision    recall  f1-score   support
+
+   excellent       0.96      1.00      0.98     31179
+        good       0.98      0.99      0.98     92617
+    moderate       1.00      0.98      0.99     82074
+
+    accuracy                           0.98    205870
+   macro avg       0.98      0.99      0.98    205870
+weighted avg       0.99      0.98      0.98    205870
+
+--------------------------------------------------
+
+Target: crop_suitability_pigeon_pea
+Accuracy: 98.87% | F1 Macro: 0.9893 | F1 Weighted: 0.9887
+Classification Report:
+              precision    recall  f1-score   support
+
+        good       0.98      1.00      0.99    107860
+    moderate       1.00      0.98      0.99     96745
+        poor       0.98      1.00      0.99      1265
+
+    accuracy                           0.99    205870
+   macro avg       0.99      0.99      0.99    205870
+weighted avg       0.99      0.99      0.99    205870
+
+--------------------------------------------------
+
+Target: crop_suitability_rubber
+Accuracy: 99.37% | F1 Macro: 0.9937 | F1 Weighted: 0.9937
+Classification Report:
+              precision    recall  f1-score   support
+
+        good       0.99      1.00      0.99     99356
+    moderate       1.00      0.99      0.99    106514
+
+    accuracy                           0.99    205870
+   macro avg       0.99      0.99      0.99    205870
+weighted avg       0.99      0.99      0.99    205870
+
+--------------------------------------------------
+
+Target: crop_suitability_sesame
+Accuracy: 98.77% | F1 Macro: 0.9894 | F1 Weighted: 0.9877
+Classification Report:
+              precision    recall  f1-score   support
+
+        good       0.98      1.00      0.99     97907
+    moderate       1.00      0.98      0.99    106617
+        poor       0.99      1.00      0.99      1346
+
+    accuracy                           0.99    205870
+   macro avg       0.99      0.99      0.99    205870
+weighted avg       0.99      0.99      0.99    205870
+
+--------------------------------------------------
+
+Target: crop_suitability_sugarcane
+Accuracy: 99.04% | F1 Macro: 0.9875 | F1 Weighted: 0.9905
+Classification Report:
+              precision    recall  f1-score   support
+
+        good       1.00      0.99      0.99    153648
+    moderate       0.97      0.99      0.98     52222
+
+    accuracy                           0.99    205870
+   macro avg       0.98      0.99      0.99    205870
+weighted avg       0.99      0.99      0.99    205870
+
+--------------------------------------------------
+
+Target: crop_suitability_tomato
+Accuracy: 93.97% | F1 Macro: 0.9248 | F1 Weighted: 0.9405
+Classification Report:
+              precision    recall  f1-score   support
+
+        good       0.86      1.00      0.93     67306
+    moderate       1.00      0.91      0.95    131025
+        poor       0.81      1.00      0.90      7539
+
+    accuracy                           0.94    205870
+   macro avg       0.89      0.97      0.92    205870
+weighted avg       0.95      0.94      0.94    205870
+
+--------------------------------------------------
+
+Target: flood_risk_level
+Accuracy: 100.00% | F1 Macro: 1.0000 | F1 Weighted: 1.0000
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00    135701
+           1       1.00      1.00      1.00     40003
+           2       1.00      1.00      1.00     30166
+
+    accuracy                           1.00    205870
+   macro avg       1.00      1.00      1.00    205870
+weighted avg       1.00      1.00      1.00    205870
+
+--------------------------------------------------
+
+Target: heat_stress_risk
+Accuracy: 100.00% | F1 Macro: 1.0000 | F1 Weighted: 1.0000
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00    200563
+           1       1.00      1.00      1.00      5307
+
+    accuracy                           1.00    205870
+   macro avg       1.00      1.00      1.00    205870
+weighted avg       1.00      1.00      1.00    205870
+
+--------------------------------------------------
+
+Target: irrigation_need
+Accuracy: 99.80% | F1 Macro: 0.9869 | F1 Weighted: 0.9980
+Classification Report:
+              precision    recall  f1-score   support
+
+           1       0.95      1.00      0.97      7976
+           2       1.00      1.00      1.00    197894
+
+    accuracy                           1.00    205870
+   macro avg       0.98      1.00      0.99    205870
+weighted avg       1.00      1.00      1.00    205870
+
+--------------------------------------------------
+
+Target: nitrogen_requirement_level
+Accuracy: 100.00% | F1 Macro: 1.0000 | F1 Weighted: 1.0000
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00     16290
+           1       1.00      1.00      1.00    171002
+           2       1.00      1.00      1.00     18578
+
+    accuracy                           1.00    205870
+   macro avg       1.00      1.00      1.00    205870
+weighted avg       1.00      1.00      1.00    205870
+
+--------------------------------------------------
+
+Target: optimal_planting_month
+Accuracy: 100.00% | F1 Macro: 1.0000 | F1 Weighted: 1.0000
+Classification Report:
+              precision    recall  f1-score   support
+
+           5       1.00      1.00      1.00     64616
+           6       1.00      1.00      1.00    141254
+
+    accuracy                           1.00    205870
+   macro avg       1.00      1.00      1.00    205870
+weighted avg       1.00      1.00      1.00    205870
+
+--------------------------------------------------
+
+Target: phosphorus_requirement_level
+Accuracy: 100.00% | F1 Macro: 1.0000 | F1 Weighted: 1.0000
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00     26193
+           1       1.00      1.00      1.00    157964
+           2       1.00      1.00      1.00     21713
+
+    accuracy                           1.00    205870
+   macro avg       1.00      1.00      1.00    205870
+weighted avg       1.00      1.00      1.00    205870
+
+--------------------------------------------------
+
+Target: soil_erosion_risk
+Accuracy: 100.00% | F1 Macro: 1.0000 | F1 Weighted: 1.0000
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00      8815
+           1       1.00      1.00      1.00    190942
+           2       1.00      1.00      1.00      6113
+
+    accuracy                           1.00    205870
+   macro avg       1.00      1.00      1.00    205870
+weighted avg       1.00      1.00      1.00    205870
+
+--------------------------------------------------
+
+REGRESSION TARGETS:
+-------------------
+
+Target: agricultural_gdp_forecast
+R²: 0.9936 | MAE: 0.0060 | RMSE: 0.0077 | Mean Bias: 0.0000
+--------------------------------------------------
+
+Target: agricultural_land_conversion_risk
+R²: 0.9961 | MAE: 0.0026 | RMSE: 0.0050 | Mean Bias: -0.0000
+--------------------------------------------------
+
+Target: cold_chain_potential
+R²: 0.9962 | MAE: 0.0037 | RMSE: 0.0063 | Mean Bias: -0.0000
+--------------------------------------------------
+
+Target: crop_health_score
+R²: 0.9887 | MAE: 0.0044 | RMSE: 0.0057 | Mean Bias: 0.0001
+--------------------------------------------------
+
+Target: crop_yield_t_ha
+R²: 0.9838 | MAE: 0.0362 | RMSE: 0.0466 | Mean Bias: 0.0001
+--------------------------------------------------
+
+Target: current_month_mean_temperature_c
+R²: 0.9800 | MAE: 0.3862 | RMSE: 0.5238 | Mean Bias: 0.0014
+--------------------------------------------------
+
+Target: current_month_precipitation_mm
+R²: 0.9542 | MAE: 23.5646 | RMSE: 41.9254 | Mean Bias: 0.1160
+--------------------------------------------------
+
+Target: current_month_solar_rad_mj_m2_day
+R²: 0.9675 | MAE: 0.5060 | RMSE: 0.7167 | Mean Bias: 0.0022
+--------------------------------------------------
+
+Target: drought_risk_score
+R²: 0.9965 | MAE: 0.0047 | RMSE: 0.0061 | Mean Bias: 0.0000
+--------------------------------------------------
+
+Target: irrigation_potential
+R²: 0.9770 | MAE: 0.0181 | RMSE: 0.0241 | Mean Bias: 0.0000
+--------------------------------------------------
+
+Target: market_integration_score
+R²: 0.9925 | MAE: 0.0105 | RMSE: 0.0138 | Mean Bias: -0.0000
+--------------------------------------------------
+
+Target: post_harvest_loss_risk
+R²: 0.9778 | MAE: 0.0130 | RMSE: 0.0169 | Mean Bias: 0.0000
+--------------------------------------------------
+
+Target: supply_chain_efficiency
+R²: 0.9954 | MAE: 0.0076 | RMSE: 0.0100 | Mean Bias: -0.0000
+--------------------------------------------------
+
+Target: surface_water_occurrence
+R²: 0.9804 | MAE: 0.0182 | RMSE: 0.0254 | Mean Bias: -0.0001
+--------------------------------------------------
+
+Target: urban_encroachment_risk
+R²: 0.9937 | MAE: 0.0067 | RMSE: 0.0090 | Mean Bias: -0.0000
+--------------------------------------------------
+
+Target: water_scarcity_risk
+R²: 0.9934 | MAE: 0.0066 | RMSE: 0.0093 | Mean Bias: -0.0000
+--------------------------------------------------

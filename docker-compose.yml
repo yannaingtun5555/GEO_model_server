@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  model_server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: model_server_api
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_HOST=redis_cache
+      - REDIS_PORT=6379
+      - MAX_LOADED_MODELS=4
+      - MAX_RAM_MB=2048
+    depends_on:
+      - redis_cache
+    deploy:
+      resources:
+        limits:
+          memory: 2048M
+        reservations:
+          memory: 512M
+    restart: unless-stopped
+
+  redis_cache:
+    image: redis:7-alpine
+    container_name: redis_cache
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+    ports:
+      - "6379:6379"
+    restart: unless-stopped

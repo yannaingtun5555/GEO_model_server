@@ -1,0 +1,10 @@
+============================================================
+  Training Complete - 2026-07-31 16:18:37
+============================================================
+
+  Models trained: 1
+
+  Classification Results:
+    crop_suitability_mango                     Acc: 0.9910  F1: 0.9940
+
+  Regression Results:

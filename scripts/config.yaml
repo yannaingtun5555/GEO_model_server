@@ -1,0 +1,27 @@
+raw_data_root: "data/raw"
+processed_data_root: "data/processed"
+
+regions:
+  - ayeyawaddy
+  - bago
+  - magway
+  - mandalay
+  - sagaing
+  - yangon
+
+# File naming patterns in data/raw/
+# Static : <region>_static.csv
+# Dynamic: <region>_dynamic_<YYYY>_<MM>.csv  (e.g. ayeyawaddy_dynamic_2018_01.csv)
+static_pattern: "{region}_static.csv"
+dynamic_pattern: "{region}_dynamic_{year}_{month}.csv"
+
+# Join key shared between static and dynamic datasets
+join_key: "system:index"
+
+# Python interpreter (set to your environment python if needed)
+python: "python3"
+
+# Notes:
+# - Run preprocess.py first to create data/processed/ Parquet files
+# - Then run label.py to append all 17 prediction columns
+# - Both scripts auto-discover files; no manual config needed

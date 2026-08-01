@@ -1,0 +1,822 @@
+{
+  "status": "success",
+  "location_metadata": {
+    "latitude": 16.8661,
+    "longitude": 96.1951,
+    "region": "Ayeyawaddy",
+    "district": "Unknown"
+  },
+  "crop_health_map_layer": {
+    "health_score": 0.6029766216512764,
+    "health_status": "Good",
+    "status_color_hex": "#3B82F6",
+    "ndvi_median": 0.68,
+    "ndwi_water_index": 0.22,
+    "soil_moisture_m3_m3": 0.32,
+    "map_layer_style": {
+      "fill_color": "#3B82F6",
+      "opacity": 0.75,
+      "stroke_color": "#FFFFFF",
+      "stroke_width": 1.5
+    }
+  },
+  "crop_recommendation": {
+    "top_recommended_crops": [
+      {
+        "crop": "monsoon_rice",
+        "crop_display_name": "Monsoon Rice",
+        "rank_score": 0.667,
+        "suitability_class": "good",
+        "expected_yield_t_ha": 3.17,
+        "suitability_color": "#3B82F6",
+        "rationale": "High agronomic fit for monsoon rice with favorable soil & moisture conditions."
+      },
+      {
+        "crop": "dry_season_rice",
+        "crop_display_name": "Dry Season Rice",
+        "rank_score": 0.667,
+        "suitability_class": "good",
+        "expected_yield_t_ha": 3.17,
+        "suitability_color": "#3B82F6",
+        "rationale": "High agronomic fit for dry season rice with favorable soil & moisture conditions."
+      },
+      {
+        "crop": "maize",
+        "crop_display_name": "Maize",
+        "rank_score": 0.667,
+        "suitability_class": "good",
+        "expected_yield_t_ha": 3.46,
+        "suitability_color": "#3B82F6",
+        "rationale": "High agronomic fit for maize with favorable soil & moisture conditions."
+      },
+      {
+        "crop": "sugarcane",
+        "crop_display_name": "Sugarcane",
+        "rank_score": 0.667,
+        "suitability_class": "good",
+        "expected_yield_t_ha": 3.46,
+        "suitability_color": "#3B82F6",
+        "rationale": "High agronomic fit for sugarcane with favorable soil & moisture conditions."
+      },
+      {
+        "crop": "chili",
+        "crop_display_name": "Chili",
+        "rank_score": 0.667,
+        "suitability_class": "good",
+        "expected_yield_t_ha": 1.73,
+        "suitability_color": "#3B82F6",
+        "rationale": "High agronomic fit for chili with favorable soil & moisture conditions."
+      }
+    ],
+    "all_ranked_crops": [
+      {
+        "crop": "monsoon_rice",
+        "crop_display_name": "Monsoon Rice",
+        "rank_score": 0.667,
+        "suitability_class": "good",
+        "expected_yield_t_ha": 3.17,
+        "suitability_color": "#3B82F6",
+        "rationale": "High agronomic fit for monsoon rice with favorable soil & moisture conditions."
+      },
+      {
+        "crop": "dry_season_rice",
+        "crop_display_name": "Dry Season Rice",
+        "rank_score": 0.667,
+        "suitability_class": "good",
+        "expected_yield_t_ha": 3.17,
+        "suitability_color": "#3B82F6",
+        "rationale": "High agronomic fit for dry season rice with favorable soil & moisture conditions."
+      },
+      {
+        "crop": "maize",
+        "crop_display_name": "Maize",
+        "rank_score": 0.667,
+        "suitability_class": "good",
+        "expected_yield_t_ha": 3.46,
+        "suitability_color": "#3B82F6",
+        "rationale": "High agronomic fit for maize with favorable soil & moisture conditions."
+      },
+      {
+        "crop": "sugarcane",
+        "crop_display_name": "Sugarcane",
+        "rank_score": 0.667,
+        "suitability_class": "good",
+        "expected_yield_t_ha": 3.46,
+        "suitability_color": "#3B82F6",
+        "rationale": "High agronomic fit for sugarcane with favorable soil & moisture conditions."
+      },
+      {
+        "crop": "chili",
+        "crop_display_name": "Chili",
+        "rank_score": 0.667,
+        "suitability_class": "good",
+        "expected_yield_t_ha": 1.73,
+        "suitability_color": "#3B82F6",
+        "rationale": "High agronomic fit for chili with favorable soil & moisture conditions."
+      },
+      {
+        "crop": "black_gram",
+        "crop_display_name": "Black Gram",
+        "rank_score": 0.667,
+        "suitability_class": "good",
+        "expected_yield_t_ha": 1.73,
+        "suitability_color": "#3B82F6",
+        "rationale": "High agronomic fit for black gram with favorable soil & moisture conditions."
+      },
+      {
+        "crop": "green_gram",
+        "crop_display_name": "Green Gram",
+        "rank_score": 0.667,
+        "suitability_class": "good",
+        "expected_yield_t_ha": 1.73,
+        "suitability_color": "#3B82F6",
+        "rationale": "High agronomic fit for green gram with favorable soil & moisture conditions."
+      },
+      {
+        "crop": "groundnut",
+        "crop_display_name": "Groundnut",
+        "rank_score": 0.667,
+        "suitability_class": "good",
+        "expected_yield_t_ha": 1.73,
+        "suitability_color": "#3B82F6",
+        "rationale": "High agronomic fit for groundnut with favorable soil & moisture conditions."
+      },
+      {
+        "crop": "cassava",
+        "crop_display_name": "Cassava",
+        "rank_score": 0.422,
+        "suitability_class": "moderate",
+        "expected_yield_t_ha": 1.73,
+        "suitability_color": "#F59E0B",
+        "rationale": "High agronomic fit for cassava with favorable soil & moisture conditions."
+      },
+      {
+        "crop": "durian",
+        "crop_display_name": "Durian",
+        "rank_score": 0.422,
+        "suitability_class": "moderate",
+        "expected_yield_t_ha": 1.73,
+        "suitability_color": "#F59E0B",
+        "rationale": "High agronomic fit for durian with favorable soil & moisture conditions."
+      },
+      {
+        "crop": "mangosteen",
+        "crop_display_name": "Mangosteen",
+        "rank_score": 0.422,
+        "suitability_class": "moderate",
+        "expected_yield_t_ha": 1.73,
+        "suitability_color": "#F59E0B",
+        "rationale": "High agronomic fit for mangosteen with favorable soil & moisture conditions."
+      },
+      {
+        "crop": "longan",
+        "crop_display_name": "Longan",
+        "rank_score": 0.422,
+        "suitability_class": "moderate",
+        "expected_yield_t_ha": 1.73,
+        "suitability_color": "#F59E0B",
+        "rationale": "High agronomic fit for longan with favorable soil & moisture conditions."
+      },
+      {
+        "crop": "mango",
+        "crop_display_name": "Mango",
+        "rank_score": 0.422,
+        "suitability_class": "moderate",
+        "expected_yield_t_ha": 1.73,
+        "suitability_color": "#F59E0B",
+        "rationale": "High agronomic fit for mango with favorable soil & moisture conditions."
+      },
+      {
+        "crop": "tomato",
+        "crop_display_name": "Tomato",
+        "rank_score": 0.422,
+        "suitability_class": "moderate",
+        "expected_yield_t_ha": 1.73,
+        "suitability_color": "#F59E0B",
+        "rationale": "High agronomic fit for tomato with favorable soil & moisture conditions."
+      },
+      {
+        "crop": "pigeon_pea",
+        "crop_display_name": "Pigeon Pea",
+        "rank_score": 0.422,
+        "suitability_class": "moderate",
+        "expected_yield_t_ha": 1.73,
+        "suitability_color": "#F59E0B",
+        "rationale": "High agronomic fit for pigeon pea with favorable soil & moisture conditions."
+      },
+      {
+        "crop": "sesame",
+        "crop_display_name": "Sesame",
+        "rank_score": 0.422,
+        "suitability_class": "moderate",
+        "expected_yield_t_ha": 1.73,
+        "suitability_color": "#F59E0B",
+        "rationale": "High agronomic fit for sesame with favorable soil & moisture conditions."
+      },
+      {
+        "crop": "rubber",
+        "crop_display_name": "Rubber",
+        "rank_score": 0.422,
+        "suitability_class": "moderate",
+        "expected_yield_t_ha": 1.73,
+        "suitability_color": "#F59E0B",
+        "rationale": "High agronomic fit for rubber with favorable soil & moisture conditions."
+      }
+    ]
+  },
+  "location_detail_panel": {
+    "soil_properties": {
+      "organic_carbon_g_kg": 15.2,
+      "ph_level": 6.4,
+      "cec_cmol_kg": 18.0,
+      "texture": {
+        "clay_pct": 35.0,
+        "sand_pct": 30.0,
+        "silt_pct": 35.0
+      }
+    },
+    "climate_forecast": {
+      "precipitation_mm": 145.0,
+      "mean_temperature_c": 28.2,
+      "solar_radiation_mj_m2_day": 19.1
+    },
+    "terrain_and_water": {
+      "elevation_m": 12.5,
+      "slope_degrees": 1.8,
+      "distance_to_surface_water_m": 350.0,
+      "surface_water_occurrence_pct": 20.0
+    }
+  },
+  "risk_alerts": {
+    "alert_count": 0,
+    "alerts": []
+  },
+  "user_pattern_analysis": {
+    "agronomic_pattern_summary": {
+      "soil_fertility_status": "Moderate",
+      "soil_acidity_status": "Optimal",
+      "irrigation_need_status": "2",
+      "optimal_planting_season": "5"
+    },
+    "fertilizer_recommendation": {
+      "nitrogen_requirement": "1",
+      "phosphorus_requirement": "1",
+      "potassium_requirement": "Medium",
+      "suggested_mix_kg_ha": "N: 90 kg/ha | P2O5: 45 kg/ha | K2O: 30 kg/ha"
+    },
+    "actionable_agronomic_advice": [
+      "Optimal planting window begins in 5.",
+      "Maintain irrigation frequency according to 2 deficit level.",
+      "Incorporate organic compost to enhance Cation Exchange Capacity (CEC) and soil structure."
+    ]
+  },
+  "market_and_infrastructure": {
+    "market_integration_score": 0.47476542908368363,
+    "post_harvest_loss_risk": "0.44",
+    "supply_chain_efficiency_pct": 37.7,
+    "cold_chain_potential_pct": 13.0,
+    "transport_accessibility": "Moderate"
+  },
+  "agricultural_gdp_forecast": {
+    "estimated_agricultural_gdp_usd_ha": 0.4646215606816731,
+    "projected_yield_value_usd_ha": 0.39,
+    "economic_rating": "Standard Production Zone"
+  },
+  "crop_suitabilities": {
+    "monsoon_rice": {
+      "crop": "monsoon_rice",
+      "suitability_class": "good",
+      "suitability_label": "Good",
+      "suitability_score": 0.75,
+      "color_hex": "#3B82F6",
+      "probabilities": {
+        "excellent": 0.14754978404087918,
+        "good": 0.584896808577369,
+        "moderate": 0.26755340738175193
+      },
+      "is_fallback": false
+    },
+    "dry_season_rice": {
+      "crop": "dry_season_rice",
+      "suitability_class": "good",
+      "suitability_label": "Good",
+      "suitability_score": 0.75,
+      "color_hex": "#3B82F6",
+      "probabilities": {
+        "excellent": 0.14964827630270652,
+        "good": 0.6567167950220543,
+        "moderate": 0.1936349286752391
+      },
+      "is_fallback": false
+    },
+    "maize": {
+      "crop": "maize",
+      "suitability_class": "good",
+      "suitability_label": "Good",
+      "suitability_score": 0.75,
+      "color_hex": "#3B82F6",
+      "probabilities": {
+        "good": 0.5892039895244823,
+        "moderate": 0.41079601047551767
+      },
+      "is_fallback": false
+    },
+    "sugarcane": {
+      "crop": "sugarcane",
+      "suitability_class": "good",
+      "suitability_label": "Good",
+      "suitability_score": 0.75,
+      "color_hex": "#3B82F6",
+      "probabilities": {
+        "good": 0.6727023923102384,
+        "moderate": 0.3272976076897614
+      },
+      "is_fallback": false
+    },
+    "cassava": {
+      "crop": "cassava",
+      "suitability_class": "moderate",
+      "suitability_label": "Moderate",
+      "suitability_score": 0.4,
+      "color_hex": "#F59E0B",
+      "probabilities": {
+        "good": 0.30011616966977084,
+        "moderate": 0.6658838303302292,
+        "poor": 0.034
+      },
+      "is_fallback": false
+    },
+    "durian": {
+      "crop": "durian",
+      "suitability_class": "moderate",
+      "suitability_label": "Moderate",
+      "suitability_score": 0.4,
+      "color_hex": "#F59E0B",
+      "probabilities": {
+        "good": 0.28822843337471243,
+        "moderate": 0.6597715666252877,
+        "poor": 0.052
+      },
+      "is_fallback": false
+    },
+    "mangosteen": {
+      "crop": "mangosteen",
+      "suitability_class": "moderate",
+      "suitability_label": "Moderate",
+      "suitability_score": 0.4,
+      "color_hex": "#F59E0B",
+      "probabilities": {
+        "good": 0.2393396731755537,
+        "moderate": 0.7026603268244463,
+        "poor": 0.058
+      },
+      "is_fallback": false
+    },
+    "longan": {
+      "crop": "longan",
+      "suitability_class": "moderate",
+      "suitability_label": "Moderate",
+      "suitability_score": 0.4,
+      "color_hex": "#F59E0B",
+      "probabilities": {
+        "good": 0.2680281789183771,
+        "moderate": 0.684017484185725,
+        "poor": 0.047954336895898016
+      },
+      "is_fallback": false
+    },
+    "mango": {
+      "crop": "mango",
+      "suitability_class": "moderate",
+      "suitability_label": "Moderate",
+      "suitability_score": 0.4,
+      "color_hex": "#F59E0B",
+      "probabilities": {
+        "good": 0.3026675403826392,
+        "moderate": 0.6453324596173606,
+        "poor": 0.052
+      },
+      "is_fallback": false
+    },
+    "chili": {
+      "crop": "chili",
+      "suitability_class": "good",
+      "suitability_label": "Good",
+      "suitability_score": 0.75,
+      "color_hex": "#3B82F6",
+      "probabilities": {
+        "good": 0.6282784552943596,
+        "moderate": 0.3717215447056404
+      },
+      "is_fallback": false
+    },
+    "tomato": {
+      "crop": "tomato",
+      "suitability_class": "moderate",
+      "suitability_label": "Moderate",
+      "suitability_score": 0.4,
+      "color_hex": "#F59E0B",
+      "probabilities": {
+        "good": 0.1570230488246648,
+        "moderate": 0.7889769511753352,
+        "poor": 0.054
+      },
+      "is_fallback": false
+    },
+    "black_gram": {
+      "crop": "black_gram",
+      "suitability_class": "good",
+      "suitability_label": "Good",
+      "suitability_score": 0.75,
+      "color_hex": "#3B82F6",
+      "probabilities": {
+        "good": 0.6242964348078833,
+        "moderate": 0.37570356519211673
+      },
+      "is_fallback": false
+    },
+    "green_gram": {
+      "crop": "green_gram",
+      "suitability_class": "good",
+      "suitability_label": "Good",
+      "suitability_score": 0.75,
+      "color_hex": "#3B82F6",
+      "probabilities": {
+        "good": 0.5972998811802841,
+        "moderate": 0.40270011881971596
+      },
+      "is_fallback": false
+    },
+    "pigeon_pea": {
+      "crop": "pigeon_pea",
+      "suitability_class": "moderate",
+      "suitability_label": "Moderate",
+      "suitability_score": 0.4,
+      "color_hex": "#F59E0B",
+      "probabilities": {
+        "good": 0.3082217036406409,
+        "moderate": 0.6497782963593589,
+        "poor": 0.042
+      },
+      "is_fallback": false
+    },
+    "groundnut": {
+      "crop": "groundnut",
+      "suitability_class": "good",
+      "suitability_label": "Good",
+      "suitability_score": 0.75,
+      "color_hex": "#3B82F6",
+      "probabilities": {
+        "good": 0.6302160569290904,
+        "moderate": 0.3697839430709096
+      },
+      "is_fallback": false
+    },
+    "sesame": {
+      "crop": "sesame",
+      "suitability_class": "moderate",
+      "suitability_label": "Moderate",
+      "suitability_score": 0.4,
+      "color_hex": "#F59E0B",
+      "probabilities": {
+        "good": 0.2509869596505667,
+        "moderate": 0.7090130403494332,
+        "poor": 0.04
+      },
+      "is_fallback": false
+    },
+    "rubber": {
+      "crop": "rubber",
+      "suitability_class": "moderate",
+      "suitability_label": "Moderate",
+      "suitability_score": 0.4,
+      "color_hex": "#F59E0B",
+      "probabilities": {
+        "good": 0.33469692309745597,
+        "moderate": 0.6653030769025439
+      },
+      "is_fallback": false
+    }
+  },
+  "raw_predictions": {
+    "crop_suitability_monsoon_rice": {
+      "value": "good",
+      "label": "Good",
+      "probabilities": {
+        "excellent": 0.14754978404087918,
+        "good": 0.584896808577369,
+        "moderate": 0.26755340738175193
+      },
+      "is_fallback": false
+    },
+    "crop_suitability_dry_season_rice": {
+      "value": "good",
+      "label": "Good",
+      "probabilities": {
+        "excellent": 0.14964827630270652,
+        "good": 0.6567167950220543,
+        "moderate": 0.1936349286752391
+      },
+      "is_fallback": false
+    },
+    "crop_suitability_maize": {
+      "value": "good",
+      "label": "Good",
+      "probabilities": {
+        "good": 0.5892039895244823,
+        "moderate": 0.41079601047551767
+      },
+      "is_fallback": false
+    },
+    "crop_suitability_sugarcane": {
+      "value": "good",
+      "label": "Good",
+      "probabilities": {
+        "good": 0.6727023923102384,
+        "moderate": 0.3272976076897614
+      },
+      "is_fallback": false
+    },
+    "crop_suitability_cassava": {
+      "value": "moderate",
+      "label": "Moderate",
+      "probabilities": {
+        "good": 0.30011616966977084,
+        "moderate": 0.6658838303302292,
+        "poor": 0.034
+      },
+      "is_fallback": false
+    },
+    "crop_suitability_durian": {
+      "value": "moderate",
+      "label": "Moderate",
+      "probabilities": {
+        "good": 0.28822843337471243,
+        "moderate": 0.6597715666252877,
+        "poor": 0.052
+      },
+      "is_fallback": false
+    },
+    "crop_suitability_mangosteen": {
+      "value": "moderate",
+      "label": "Moderate",
+      "probabilities": {
+        "good": 0.2393396731755537,
+        "moderate": 0.7026603268244463,
+        "poor": 0.058
+      },
+      "is_fallback": false
+    },
+    "crop_suitability_longan": {
+      "value": "moderate",
+      "label": "Moderate",
+      "probabilities": {
+        "good": 0.2680281789183771,
+        "moderate": 0.684017484185725,
+        "poor": 0.047954336895898016
+      },
+      "is_fallback": false
+    },
+    "crop_suitability_mango": {
+      "value": "moderate",
+      "label": "Moderate",
+      "probabilities": {
+        "good": 0.3026675403826392,
+        "moderate": 0.6453324596173606,
+        "poor": 0.052
+      },
+      "is_fallback": false
+    },
+    "crop_suitability_chili": {
+      "value": "good",
+      "label": "Good",
+      "probabilities": {
+        "good": 0.6282784552943596,
+        "moderate": 0.3717215447056404
+      },
+      "is_fallback": false
+    },
+    "crop_suitability_tomato": {
+      "value": "moderate",
+      "label": "Moderate",
+      "probabilities": {
+        "good": 0.1570230488246648,
+        "moderate": 0.7889769511753352,
+        "poor": 0.054
+      },
+      "is_fallback": false
+    },
+    "crop_suitability_black_gram": {
+      "value": "good",
+      "label": "Good",
+      "probabilities": {
+        "good": 0.6242964348078833,
+        "moderate": 0.37570356519211673
+      },
+      "is_fallback": false
+    },
+    "crop_suitability_green_gram": {
+      "value": "good",
+      "label": "Good",
+      "probabilities": {
+        "good": 0.5972998811802841,
+        "moderate": 0.40270011881971596
+      },
+      "is_fallback": false
+    },
+    "crop_suitability_pigeon_pea": {
+      "value": "moderate",
+      "label": "Moderate",
+      "probabilities": {
+        "good": 0.3082217036406409,
+        "moderate": 0.6497782963593589,
+        "poor": 0.042
+      },
+      "is_fallback": false
+    },
+    "crop_suitability_groundnut": {
+      "value": "good",
+      "label": "Good",
+      "probabilities": {
+        "good": 0.6302160569290904,
+        "moderate": 0.3697839430709096
+      },
+      "is_fallback": false
+    },
+    "crop_suitability_sesame": {
+      "value": "moderate",
+      "label": "Moderate",
+      "probabilities": {
+        "good": 0.2509869596505667,
+        "moderate": 0.7090130403494332,
+        "poor": 0.04
+      },
+      "is_fallback": false
+    },
+    "crop_suitability_rubber": {
+      "value": "moderate",
+      "label": "Moderate",
+      "probabilities": {
+        "good": 0.33469692309745597,
+        "moderate": 0.6653030769025439
+      },
+      "is_fallback": false
+    },
+    "crop_health_score": {
+      "value": 0.6029766216512764,
+      "label": "0.60",
+      "is_fallback": false
+    },
+    "crop_yield_t_ha": {
+      "value": 2.882364003652721,
+      "label": "2.88",
+      "is_fallback": false
+    },
+    "irrigation_need": {
+      "value": "2",
+      "label": "2",
+      "probabilities": {
+        "1": 0.16592206864605924,
+        "2": 0.8340779313539408
+      },
+      "is_fallback": false
+    },
+    "current_month_precipitation": {
+      "value": 145.0,
+      "label": "145.0 mm",
+      "is_fallback": true
+    },
+    "current_month_mean_temperature": {
+      "value": 28.2,
+      "label": "28.2 \u00b0C",
+      "is_fallback": true
+    },
+    "current_month_mean_solar_rad": {
+      "value": 19.1,
+      "label": "19.1 MJ/m\u00b2/day",
+      "is_fallback": true
+    },
+    "flood_risk_level": {
+      "value": "0",
+      "label": "0",
+      "probabilities": {
+        "0": 0.38263642789641594,
+        "1": 0.37679345582922635,
+        "2": 0.24057011627435765
+      },
+      "is_fallback": false
+    },
+    "drought_risk_score": {
+      "value": 0.4461326204134157,
+      "label": "0.45",
+      "is_fallback": false
+    },
+    "heat_stress_risk": {
+      "value": "0",
+      "label": "0",
+      "probabilities": {
+        "0": 0.936,
+        "1": 0.064
+      },
+      "is_fallback": false
+    },
+    "optimal_planting_month": {
+      "value": "5",
+      "label": "5",
+      "probabilities": {
+        "5": 0.57,
+        "6": 0.43
+      },
+      "is_fallback": false
+    },
+    "nitrogen_requirement_level": {
+      "value": "1",
+      "label": "1",
+      "probabilities": {
+        "0": 0.06779678436528781,
+        "1": 0.8925560110816488,
+        "2": 0.039647204553063274
+      },
+      "is_fallback": false
+    },
+    "phosphorus_requirement_level": {
+      "value": "1",
+      "label": "1",
+      "probabilities": {
+        "0": 0.078,
+        "1": 0.8931048593350384,
+        "2": 0.028895140664961638
+      },
+      "is_fallback": false
+    },
+    "soil_erosion_risk": {
+      "value": "1",
+      "label": "1",
+      "probabilities": {
+        "0": 0.484,
+        "1": 0.5026624319419238,
+        "2": 0.013337568058076225
+      },
+      "is_fallback": false
+    },
+    "market_integration_score": {
+      "value": 0.47476542908368363,
+      "label": "0.47",
+      "is_fallback": false
+    },
+    "post_harvest_loss_risk": {
+      "value": 0.4375091288431543,
+      "label": "0.44",
+      "is_fallback": false
+    },
+    "supply_chain_efficiency": {
+      "value": 0.37724873978969004,
+      "label": "0.38",
+      "is_fallback": false
+    },
+    "cold_chain_potential": {
+      "value": 0.1298676830020594,
+      "label": "0.13",
+      "is_fallback": false
+    },
+    "agricultural_land_conversion_risk": {
+      "value": 0.06447798283047969,
+      "label": "0.06",
+      "is_fallback": false
+    },
+    "urban_encroachment_risk": {
+      "value": 0.2084554182297984,
+      "label": "0.21",
+      "is_fallback": false
+    },
+    "irrigation_potential": {
+      "value": 0.43489123932146995,
+      "label": "0.43",
+      "is_fallback": false
+    },
+    "surface_water_occurrence": {
+      "value": 0.19910530932616144,
+      "label": "0.20",
+      "is_fallback": false
+    },
+    "water_scarcity_risk": {
+      "value": 0.3746526373667012,
+      "label": "0.37",
+      "is_fallback": false
+    },
+    "agricultural_gdp_forecast": {
+      "value": 0.4646215606816731,
+      "label": "0.46",
+      "is_fallback": false
+    }
+  },
+  "pipeline_metadata": {
+    "total_targets_evaluated": 40,
+    "models_loaded_count": 40,
+    "fallbacks_used_count": 3,
+    "execution_latency_ms": 8648.91,
+    "models_dir": [
+      "/home/yan9htun/Desktop/gee/models"
+    ]
+  }
+}

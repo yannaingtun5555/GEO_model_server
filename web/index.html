@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Model Server Testing Dashboard — Myanmar Agricultural AI</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <div class="brand-title">
+        <h1>🌾 Agricultural Model Server Test Console</h1>
+        <span class="badge-microservice">FastAPI Standalone API</span>
+      </div>
+      <div class="status-bar">
+        <div class="server-indicator" id="serverHealthBadge">
+          <span class="dot-green"></span>
+          <span id="serverStatusText">Model Server Live</span>
+        </div>
+        <div class="metrics-mini" id="serverRamText">RAM: -- / 2048 MB</div>
+      </div>
+    </header>
+
+    <!-- Main Grid -->
+    <div class="dashboard-grid">
+      <!-- Left Column: Request Control Panel -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">⚙️ Request Controls</h2>
+          <span style="font-size: 0.75rem; color: var(--text-muted);">v1 API</span>
+        </div>
+
+        <form id="predictForm">
+          <!-- Region Presets -->
+          <div class="form-group">
+            <label class="form-label">Location Presets</label>
+            <div class="preset-buttons">
+              <button type="button" class="btn-preset active" data-index="992676" data-lat="16.8661" data-lon="96.1951" data-region="Yangon">Yangon</button>
+              <button type="button" class="btn-preset" data-index="0" data-lat="16.9211" data-lon="95.2341" data-region="Ayeyawaddy">Ayeyawaddy</button>
+              <button type="button" class="btn-preset" data-index="133056" data-lat="17.3321" data-lon="96.4811" data-region="Bago">Bago</button>
+              <button type="button" class="btn-preset" data-index="286407" data-lat="20.1541" data-lon="94.9211" data-region="Magway">Magway</button>
+              <button type="button" class="btn-preset" data-index="464507" data-lat="21.9741" data-lon="96.0831" data-region="Mandalay">Mandalay</button>
+              <button type="button" class="btn-preset" data-index="616076" data-lat="22.1151" data-lon="95.1321" data-region="Sagaing">Sagaing</button>
+            </div>
+          </div>
+
+          <!-- Coordinate & Index Inputs -->
+          <div class="form-group">
+            <label class="form-label">System Index / Lat-Lon</label>
+            <div class="input-row" style="margin-bottom: 6px;">
+              <input type="text" id="sysIndexInput" class="form-input" placeholder="System Index (e.g. 0)" value="0">
+            </div>
+            <div class="input-row">
+              <input type="text" id="latInput" class="form-input" placeholder="Latitude" value="16.8661">
+              <input type="text" id="lonInput" class="form-input" placeholder="Longitude" value="96.1951">
+            </div>
+          </div>
+
+          <!-- Targets to Predict -->
+          <div class="form-group">
+            <label class="form-label">Requested Targets</label>
+            <div class="checkbox-group">
+              <label class="checkbox-label">
+                <input type="checkbox" id="allTargetsCheck" checked> Predict All 40 Models
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" class="target-check" value="crop_yield_t_ha" checked> Crop Yield (t/ha)
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" class="target-check" value="crop_health_score" checked> Crop Health Score
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" class="target-check" value="drought_risk_score" checked> Drought Risk Score
+              </label>
+            </div>
+          </div>
+
+          <!-- Composite Features -->
+          <div class="form-group">
+            <label class="form-label">Composite Features</label>
+            <div class="checkbox-group">
+              <label class="checkbox-label">
+                <input type="checkbox" class="comp-check" value="crop_recommender" checked> Micro-Regional Crop Recommender
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" class="comp-check" value="crop_health" checked> Geospatial Crop Health Layer
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" class="comp-check" value="economic_roi" checked> Economic Yield & ROI Calculator
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" class="comp-check" value="risk_alerts" checked> Multi-Hazard Risk Alert Engine
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" class="comp-check" value="land_use" checked> Land Use Pattern & Conversion
+              </label>
+            </div>
+          </div>
+
+          <!-- Fallback Prototype Toggle -->
+          <div class="form-group">
+            <label class="checkbox-label" style="color: var(--amber-accent);">
+              <input type="checkbox" id="fallbackToggle"> Force Prototype Models (Heavy Load Fallback)
+            </label>
+          </div>
+
+          <button type="submit" class="btn-submit" id="submitBtn">
+            <span>🚀 Run Model Prediction</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Right Column: Live Results Dashboard -->
+      <div class="results-area">
+        <!-- Performance Banner -->
+        <div class="performance-banner">
+          <div class="metric-box">
+            <div class="metric-val" id="respTimeVal">-- ms</div>
+            <div class="metric-lbl">Latency</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-val" id="cacheStatusVal">--</div>
+            <div class="metric-lbl">Cache Status</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-val" id="modelSourceVal">--</div>
+            <div class="metric-lbl">Model Source</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-val" id="ramUsedVal">-- MB</div>
+            <div class="metric-lbl">Server RAM</div>
+          </div>
+        </div>
+
+        <!-- Composite Features Results Grid -->
+        <div class="composite-grid">
+          <!-- Crop Recommender Card -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">🌱 Crop Recommendation Rankings</h3>
+            </div>
+            <div class="crop-rank-list" id="cropRankList">
+              <div style="color: var(--text-muted); font-size: 0.85rem;">Click 'Run Model Prediction' to see top recommended crops.</div>
+            </div>
+          </div>
+
+          <!-- Multi-Hazard Risk Alert Card -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">⚠️ Multi-Hazard Risk Alert Engine</h3>
+            </div>
+            <div id="riskAlertContent">
+              <div class="risk-banner" style="background: rgba(16, 185, 129, 0.2); color: var(--primary-accent);">
+                <span>STABLE (NO ACTIVE HAZARD)</span>
+                <span>Score: 0.12</span>
+              </div>
+              <div class="risk-bars">
+                <div class="risk-row"><span>Flood Risk</span><span>Low</span></div>
+                <div class="risk-row"><span>Drought Risk</span><span>0.12</span></div>
+                <div class="risk-row"><span>Heat Stress Risk</span><span>Low</span></div>
+                <div class="risk-row"><span>Water Scarcity Risk</span><span>0.15</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Crop Health Layer Card -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">🛰️ Crop Health & NDVI Layer</h3>
+            </div>
+            <div id="healthLayerContent">
+              <div style="font-size: 1.8rem; font-weight: 800; color: var(--primary-accent);" id="healthScoreText">88.0%</div>
+              <div style="font-size: 0.85rem; color: var(--text-muted);">Status: <strong id="healthStatusText" style="color: #fff;">Optimal Health</strong> | NDVI: <strong id="ndviText" style="color: #fff;">0.7200</strong></div>
+            </div>
+          </div>
+
+          <!-- Economic ROI Calculator Card -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">💰 Economic Yield & ROI Calculator</h3>
+            </div>
+            <div id="roiContent">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-size: 1.4rem; font-weight: 800; color: var(--blue-accent);" id="yieldText">3.65 t/ha</span>
+                <span class="crop-pill" style="background: var(--primary-accent);" id="roiRatingPill">HIGH ROI</span>
+              </div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);" id="roiDetailsText">Market Integration: 0.92 | Agricultural GDP Index: 0.85</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Raw JSON Inspector Card -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">📄 Raw Model Server JSON Response</h3>
+          </div>
+          <pre class="json-container" id="jsonViewer">// API response JSON will appear here...</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
