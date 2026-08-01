@@ -22,7 +22,7 @@ async function initHealthCheck() {
     if (res.ok) {
       const data = await res.json();
       statusText.textContent = "Model Server Live";
-      ramText.textContent = `RAM: ${data.ram_usage_mb} / ${data.ram_limit_mb} MB (LRU: ${data.lru_models_currently_in_ram.length}/${data.lru_max_models_cap})`;
+      ramText.textContent = `RAM: ${data.ram_usage_mb} / ${data.ram_limit_mb} MB (LRU: ${(data.models_currently_in_ram || []).length}/${data.lru_max_models_cap})`;
     } else {
       statusText.textContent = "Server Error";
       badge.querySelector(".dot-green").style.background = "#f43f5e";
