@@ -8,15 +8,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements and install python packages
+# Copy requirements and install python packages offline
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY wheels/ ./wheels/
+RUN pip install --no-index --find-links=wheels -r requirements.txt && rm -rf wheels
 
 # Copy application files
 COPY server/ ./server/
 COPY models/ ./models/
 COPY models_prototypes/ ./models_prototypes/
-COPY data/combined/combined_dataset.csv ./data/combined/combined_dataset.csv
+COPY data/processed/features_dataset.parquet ./data/processed/features_dataset.parquet
 
 # Environment variables
 ENV PYTHONUNBUFFERED=1

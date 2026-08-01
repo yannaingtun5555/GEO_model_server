@@ -13,6 +13,7 @@ services:
       - REDIS_PORT=6379
       - MAX_LOADED_MODELS=4
       - MAX_RAM_MB=2048
+      - BOOST_MODE=false
     depends_on:
       - redis_cache
     deploy:
