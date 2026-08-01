@@ -11,19 +11,20 @@ from pathlib import Path
 from typing import Dict, Any, Optional, Tuple
 import joblib
 
-from server.config import MODELS_DIR, PROTOTYPES_DIR, MAX_LOADED_MODELS
+from server.config import MODELS_DIR, PROTOTYPES_DIR, MAX_LOADED_MODELS, BOOST_MODE
 
 class LRUModelManager:
     """
-    LRU (Least Recently Used) Model Manager that keeps model memory footprint within 2 GB RAM limit.
-    Dynamically loads primary models on demand, evicts least recently used models,
-    and falls back to lightweight prototype models when under heavy load or memory pressure.
+    LRU (Least Recently Used) Model Manager with optional Boost Mode.
+    - Normal Mode: Keeps model memory footprint within RAM limits (LRU eviction cap).
+    - Boost Mode: Preloads & pins all models permanently in RAM for zero-latency (<1ms) inference.
     """
 
-    def __init__(self, models_dir: Path = MODELS_DIR, prototypes_dir: Path = PROTOTYPES_DIR, max_models: int = MAX_LOADED_MODELS):
+    def __init__(self, models_dir: Path = MODELS_DIR, prototypes_dir: Path = PROTOTYPES_DIR, max_models: int = MAX_LOADED_MODELS, boost_mode: bool = BOOST_MODE):
         self.models_dir = Path(models_dir)
         self.prototypes_dir = Path(prototypes_dir)
         self.max_models = max_models
+        self.boost_mode = boost_mode
         
         # OrderedDict for LRU tracking: key = target_name, value = model_artifact_dict
         self._lru_cache: OrderedDict[str, Dict[str, Any]] = OrderedDict()
@@ -32,6 +33,44 @@ class LRUModelManager:
         # Performance & Health stats
         self.model_status_log: Dict[str, str] = {}
         self.load_times: Dict[str, float] = {}
+
+        if self.boost_mode:
+            print("[MODEL LOADER] BOOST_MODE environment setting detected! Preloading models...")
+            self.preload_all_models()
+
+    def set_boost_mode(self, enabled: bool) -> Dict[str, Any]:
+        """Dynamically enable or disable Boost Mode."""
+        self.boost_mode = enabled
+        if enabled:
+            preloaded = self.preload_all_models()
+            print(f"[MODEL LOADER 🚀] BOOST MODE ENABLED: {preloaded} models preloaded and pinned in RAM.")
+            return {"status": "boost_mode_enabled", "models_preloaded": preloaded}
+        else:
+            print("[MODEL LOADER 🐢] BOOST MODE DISABLED: Reverting to standard LRU memory limits.")
+            return {"status": "boost_mode_disabled", "lru_max_models_cap": self.max_models}
+
+    def preload_all_models(self) -> int:
+        """Preloads all available primary model artifacts into RAM."""
+        preloaded_count = 0
+        if not self.models_dir.exists():
+            return 0
+
+        for pkl in self.models_dir.glob("*.pkl"):
+            target_name = pkl.stem
+            for suffix in ["_rf_classifier", "_gb_classifier", "_rf_regressor", "_gb_regressor"]:
+                if target_name.endswith(suffix):
+                    target_name = target_name[:-len(suffix)]
+                    break
+
+            if target_name not in self._lru_cache:
+                try:
+                    artifact = joblib.load(pkl)
+                    if isinstance(artifact, dict) and "model" in artifact:
+                        self._lru_cache[target_name] = artifact
+                        preloaded_count += 1
+                except Exception as e:
+                    print(f"[MODEL LOADER WARN] Preload error for '{pkl.name}': {e}")
+        return preloaded_count
 
     def _resolve_model_filename(self, target: str, directory: Path) -> Optional[Path]:
         """Finds matching .pkl file for a given target in directory."""
@@ -61,7 +100,7 @@ class LRUModelManager:
             if proto_model:
                 return proto_model, "prototype"
 
-        # Check if already loaded in LRU cache
+        # Check if already loaded in cache
         if target in self._lru_cache:
             self._lru_cache.move_to_end(target)   # Mark as recently used
             return self._lru_cache[target], "primary"
@@ -69,12 +108,12 @@ class LRUModelManager:
         # Try loading primary model from models/
         primary_path = self._resolve_model_filename(target, self.models_dir)
         if primary_path and primary_path.exists():
-            # Check if cache is full
-            if len(self._lru_cache) >= self.max_models:
+            # Check if cache is full (Skip eviction if Boost Mode is active)
+            if not self.boost_mode and len(self._lru_cache) >= self.max_models:
                 evicted_target, evicted_model = self._lru_cache.popitem(last=False)
                 del evicted_model
                 gc.collect()
-                print(f"[MODEL LOADER] Memory Eviction: Unloaded '{evicted_target}' to keep RAM under 2GB cap.")
+                print(f"[MODEL LOADER] Memory Eviction: Unloaded '{evicted_target}' to keep RAM under limits.")
 
             start_t = time.time()
             try:

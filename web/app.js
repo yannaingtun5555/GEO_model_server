@@ -72,6 +72,7 @@ async function runPrediction() {
   const lat = parseFloat(document.getElementById("latInput").value);
   const lon = parseFloat(document.getElementById("lonInput").value);
   const allTargets = document.getElementById("allTargetsCheck").checked;
+  const boostToggle = document.getElementById("boostModeToggle")?.checked || false;
   const fallbackToggle = document.getElementById("fallbackToggle").checked;
 
   const targetChecks = Array.from(document.querySelectorAll(".target-check:checked")).map(c => c.value);
@@ -85,7 +86,8 @@ async function runPrediction() {
     include_all_targets: allTargets,
     targets: allTargets ? undefined : targetChecks,
     composite_features: compChecks,
-    use_fallback_models: fallbackToggle
+    use_fallback_models: fallbackToggle,
+    boost_mode: boostToggle
   };
 
   try {
@@ -120,11 +122,11 @@ function renderResults(data, clientElapsed) {
 
   // Performance Banner
   document.getElementById("respTimeVal").textContent = `${meta.response_time_ms || clientElapsed} ms`;
+  document.getElementById("queueWaitVal").textContent = `${meta.queue_wait_ms || 0.0} ms`;
   document.getElementById("cacheStatusVal").textContent = meta.cached ? "⚡ CACHED" : "🔥 LIVE ML";
   
-  const modelsUsed = meta.models_used || {};
-  const isProto = Object.values(modelsUsed).includes("prototype");
-  document.getElementById("modelSourceVal").textContent = isProto ? "Fallback Prototype" : "Primary 40 Models";
+  const isBoost = meta.boost_mode_active;
+  document.getElementById("modelSourceVal").textContent = isBoost ? "🚀 BOOST (Preloaded)" : "🐢 LRU Capped";
   document.getElementById("ramUsedVal").textContent = `${meta.ram_used_mb || "--"} MB`;
 
   // 1. Render Crop Recommender

@@ -99,9 +99,12 @@
             </div>
           </div>
 
-          <!-- Fallback Prototype Toggle -->
+          <!-- Boost Mode & Fallback Controls -->
           <div class="form-group">
-            <label class="checkbox-label" style="color: var(--amber-accent);">
+            <label class="checkbox-label" style="color: #10B981; font-weight: 700;">
+              <input type="checkbox" id="boostModeToggle"> 🚀 Enable Boost Mode (Preload All 40 Models in RAM)
+            </label>
+            <label class="checkbox-label" style="color: var(--amber-accent); margin-top: 4px;">
               <input type="checkbox" id="fallbackToggle"> Force Prototype Models (Heavy Load Fallback)
             </label>
           </div>
@@ -121,12 +124,16 @@
             <div class="metric-lbl">Latency</div>
           </div>
           <div class="metric-box">
+            <div class="metric-val" id="queueWaitVal">0.0 ms</div>
+            <div class="metric-lbl">Queue Wait</div>
+          </div>
+          <div class="metric-box">
             <div class="metric-val" id="cacheStatusVal">--</div>
             <div class="metric-lbl">Cache Status</div>
           </div>
           <div class="metric-box">
             <div class="metric-val" id="modelSourceVal">--</div>
-            <div class="metric-lbl">Model Source</div>
+            <div class="metric-lbl">Boost Mode</div>
           </div>
           <div class="metric-box">
             <div class="metric-val" id="ramUsedVal">-- MB</div>

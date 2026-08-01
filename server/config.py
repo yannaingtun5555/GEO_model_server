@@ -14,8 +14,13 @@ DATA_FILE         = PROJECT_ROOT / "data" / "combined" / "combined_dataset.csv"
 STORAGE_DIR       = PROJECT_ROOT / "data" / "regional_storage"
 
 # Memory & LRU Model Loading Limits
-MAX_LOADED_MODELS = int(os.getenv("MAX_LOADED_MODELS", "4"))    # Keep max 4 heavy models in RAM
+MAX_LOADED_MODELS = int(os.getenv("MAX_LOADED_MODELS", "4"))    # Keep max 4 heavy models in RAM (in normal mode)
 MAX_RAM_MB        = int(os.getenv("MAX_RAM_MB", "2048"))        # 2 GB RAM limit cap
+
+# Boost Mode & High-Performance Concurrency Settings
+BOOST_MODE              = os.getenv("BOOST_MODE", "false").lower() in ("true", "1", "t") # Preloads & keeps all 40 models in RAM
+MAX_CONCURRENT_REQUESTS = int(os.getenv("MAX_CONCURRENT_REQUESTS", "10"))                # Max active prediction workers
+QUEUE_TIMEOUT_SECONDS   = float(os.getenv("QUEUE_TIMEOUT_SECONDS", "30.0"))             # Max request queue wait time
 
 # Redis Cache Settings
 REDIS_HOST        = os.getenv("REDIS_HOST", "localhost")

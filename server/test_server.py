@@ -119,6 +119,38 @@ def test_4_fastapi_endpoints():
     assert data_reg["region"] == "Ayeyawaddy"
     print(f"  ✓ GET /api/v1/regions/ayeyawaddy: Found {data_reg['total_samples']} samples.")
 
+def test_5_boost_mode_and_request_queue():
+    print("\n[TEST 5] Testing 🚀 Boost Mode & 🚦 Asynchronous Request Queue...")
+    
+    # 1. Test Boost API Endpoint
+    resp_boost = client.post("/api/v1/boost?enabled=true")
+    assert resp_boost.status_code == 200
+    data_boost = resp_boost.json()
+    assert data_boost["boost_mode_active"] is True
+    print(f"  ✓ POST /api/v1/boost?enabled=true: Boost Mode active. Preloaded {data_boost['models_in_ram_count']} models in RAM.")
+
+    # 2. Test Prediction under Boost Mode
+    predict_payload = {
+        "lat": 16.8661,
+        "lon": 96.1951,
+        "boost_mode": True,
+        "include_all_targets": True
+    }
+    resp_pred = client.post("/api/v1/predict", json=predict_payload)
+    assert resp_pred.status_code == 200
+    data_pred = resp_pred.json()
+    assert data_pred["execution_metadata"]["boost_mode_active"] is True
+    assert "queue_wait_ms" in data_pred["execution_metadata"]
+    print(f"  ✓ Boost Mode Prediction Latency = {data_pred['execution_metadata']['response_time_ms']} ms (Queue Wait: {data_pred['execution_metadata']['queue_wait_ms']} ms).")
+
+    # 3. Test Health Diagnostics under Boost Mode
+    resp_health = client.get("/api/v1/health")
+    assert resp_health.status_code == 200
+    data_health = resp_health.json()
+    assert data_health["boost_mode_active"] is True
+    assert "request_queue_diagnostics" in data_health
+    print(f"  ✓ GET /api/v1/health: Request Queue Capacity = {data_health['request_queue_diagnostics']['max_concurrent_capacity']} workers.")
+
 if __name__ == "__main__":
     print("=====================================================================")
     print("     MODEL SERVER MICROSERVICE INTEGRATION & UNIT TEST SUITE         ")
@@ -127,6 +159,7 @@ if __name__ == "__main__":
     test_2_lru_model_loader_and_fallback()
     test_3_composite_features()
     test_4_fastapi_endpoints()
+    test_5_boost_mode_and_request_queue()
     print("\n=====================================================================")
     print("  ALL MODEL SERVER MICROSERVICE TESTS PASSED SUCCESSFULLY (100%)    ")
     print("=====================================================================\n")
