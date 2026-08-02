@@ -1,0 +1,1875 @@
+{
+  "schema_version": "model-catalog-v1",
+  "catalog_version": "3ea1ea395518c6eda8872129a41cd9f19bd43fbb82e83937871ca28a15fe8795",
+  "generated_at": "2026-08-02T12:23:02.361545+00:00",
+  "runtime": {
+    "python": "3.12",
+    "scikit_learn": "1.9.0"
+  },
+  "feature_dataset": {
+    "filename": "features_serving.parquet",
+    "sha256": "375f4280ccbb2534268877734805bf113f85517e39994f053ffa5f57c19f6643",
+    "rows": 1029348,
+    "input_feature_count": 75,
+    "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8"
+  },
+  "spatial_index": {
+    "filename": "spatial_index.parquet",
+    "sha256": "045ddb5d1e7d7c4b168ba9d35380bf03121d9230ba62a6d34f9bd37d41518ddc",
+    "rows": 1029348,
+    "schema_version": "spatial-index-v1"
+  },
+  "governance": {
+    "label_source": "rule_engineered_surrogate",
+    "field_validated": false,
+    "validation_method": "random_train_test_split",
+    "production_approval": false
+  },
+  "models": [
+    {
+      "model_id": "crop_suitability_monsoon_rice",
+      "display_name": "Monsoon Rice suitability",
+      "group": "crop_suitability",
+      "task_type": "classification",
+      "unit": "suitability_class",
+      "classes": [
+        "excellent",
+        "good",
+        "moderate"
+      ],
+      "expected_classes": [
+        "poor",
+        "moderate",
+        "good",
+        "excellent"
+      ],
+      "value_range": null,
+      "artifact_filename": "crop_suitability_monsoon_rice_rf_classifier.pkl",
+      "artifact_sha256": "43634acd4be7825ea8d252e69eae861ec46dcf7062ccfc6a315ec139e52ab31d",
+      "artifact_size_bytes": 47140817,
+      "model_version": "sha256-43634acd4be7",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "flagged",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": false,
+      "metrics": {
+        "type": "classification",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": 0.9848545198426192,
+        "f1_macro": 0.9841436544831924,
+        "f1_weighted": 0.9848815164291608,
+        "precision_macro": 0.9806449208184992,
+        "recall_macro": 0.9879524470267248,
+        "mae": null,
+        "rmse": null,
+        "r2": null,
+        "mean_bias": null
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated.",
+        "Training artifact contains no examples for expected classes: ['poor']."
+      ]
+    },
+    {
+      "model_id": "crop_suitability_dry_season_rice",
+      "display_name": "Dry Season Rice suitability",
+      "group": "crop_suitability",
+      "task_type": "classification",
+      "unit": "suitability_class",
+      "classes": [
+        "excellent",
+        "good",
+        "moderate"
+      ],
+      "expected_classes": [
+        "poor",
+        "moderate",
+        "good",
+        "excellent"
+      ],
+      "value_range": null,
+      "artifact_filename": "crop_suitability_dry_season_rice_rf_classifier.pkl",
+      "artifact_sha256": "c6945e4af63316ac4a86f3890f113b8fdc088efbcbfb389ee87e366d649c3820",
+      "artifact_size_bytes": 48217409,
+      "model_version": "sha256-c6945e4af633",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "flagged",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": false,
+      "metrics": {
+        "type": "classification",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": 0.9793850488172148,
+        "f1_macro": 0.9779072151335536,
+        "f1_weighted": 0.9794462858558728,
+        "precision_macro": 0.9700468351392956,
+        "recall_macro": 0.9863719988845148,
+        "mae": null,
+        "rmse": null,
+        "r2": null,
+        "mean_bias": null
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated.",
+        "Training artifact contains no examples for expected classes: ['poor']."
+      ]
+    },
+    {
+      "model_id": "crop_suitability_maize",
+      "display_name": "Maize suitability",
+      "group": "crop_suitability",
+      "task_type": "classification",
+      "unit": "suitability_class",
+      "classes": [
+        "good",
+        "moderate"
+      ],
+      "expected_classes": [
+        "poor",
+        "moderate",
+        "good",
+        "excellent"
+      ],
+      "value_range": null,
+      "artifact_filename": "crop_suitability_maize_rf_classifier.pkl",
+      "artifact_sha256": "8e16af4ad619a340b11f8279fd1cf557adf05bb3ab5cd22fef6b19b042c2fa70",
+      "artifact_size_bytes": 48472725,
+      "model_version": "sha256-8e16af4ad619",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "flagged",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": false,
+      "metrics": {
+        "type": "classification",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": 0.9911886141739932,
+        "f1_macro": 0.9897229343491508,
+        "f1_weighted": 0.9912200972767572,
+        "precision_macro": 0.986323364403763,
+        "recall_macro": 0.9933244698698092,
+        "mae": null,
+        "rmse": null,
+        "r2": null,
+        "mean_bias": null
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated.",
+        "Training artifact contains no examples for expected classes: ['poor', 'excellent']."
+      ]
+    },
+    {
+      "model_id": "crop_suitability_sugarcane",
+      "display_name": "Sugarcane suitability",
+      "group": "crop_suitability",
+      "task_type": "classification",
+      "unit": "suitability_class",
+      "classes": [
+        "good",
+        "moderate"
+      ],
+      "expected_classes": [
+        "poor",
+        "moderate",
+        "good",
+        "excellent"
+      ],
+      "value_range": null,
+      "artifact_filename": "crop_suitability_sugarcane_rf_classifier.pkl",
+      "artifact_sha256": "c693e138bb4486911805dfd5ae789bb7bb270d973b8402ad55032326e2982616",
+      "artifact_size_bytes": 40883125,
+      "model_version": "sha256-c693e138bb44",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "flagged",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": false,
+      "metrics": {
+        "type": "classification",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": 0.9904162821197844,
+        "f1_macro": 0.9874526337336692,
+        "f1_weighted": 0.9904569514573768,
+        "precision_macro": 0.983407140840518,
+        "recall_macro": 0.9916833851419647,
+        "mae": null,
+        "rmse": null,
+        "r2": null,
+        "mean_bias": null
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated.",
+        "Training artifact contains no examples for expected classes: ['poor', 'excellent']."
+      ]
+    },
+    {
+      "model_id": "crop_suitability_cassava",
+      "display_name": "Cassava suitability",
+      "group": "crop_suitability",
+      "task_type": "classification",
+      "unit": "suitability_class",
+      "classes": [
+        "good",
+        "moderate",
+        "poor"
+      ],
+      "expected_classes": [
+        "poor",
+        "moderate",
+        "good",
+        "excellent"
+      ],
+      "value_range": null,
+      "artifact_filename": "crop_suitability_cassava_rf_classifier.pkl",
+      "artifact_sha256": "aef51231bc36c06c508e69df6734f1dc8d3e7afbc2cc6721c3010374e94cbd73",
+      "artifact_size_bytes": 37192053,
+      "model_version": "sha256-aef51231bc36",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "flagged",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": false,
+      "metrics": {
+        "type": "classification",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": 0.9925681255161024,
+        "f1_macro": 0.9949969258203444,
+        "f1_weighted": 0.992566868798768,
+        "precision_macro": 0.9951195462177608,
+        "recall_macro": 0.9948974541630866,
+        "mae": null,
+        "rmse": null,
+        "r2": null,
+        "mean_bias": null
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated.",
+        "Training artifact contains no examples for expected classes: ['excellent']."
+      ]
+    },
+    {
+      "model_id": "crop_suitability_durian",
+      "display_name": "Durian suitability",
+      "group": "crop_suitability",
+      "task_type": "classification",
+      "unit": "suitability_class",
+      "classes": [
+        "good",
+        "moderate",
+        "poor"
+      ],
+      "expected_classes": [
+        "poor",
+        "moderate",
+        "good",
+        "excellent"
+      ],
+      "value_range": null,
+      "artifact_filename": "crop_suitability_durian_rf_classifier.pkl",
+      "artifact_sha256": "218fcdc27453829a1e910e0beb665f9e9dc04601266a9dfdfa07fd647667e0a5",
+      "artifact_size_bytes": 41153637,
+      "model_version": "sha256-218fcdc27453",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "flagged",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": false,
+      "metrics": {
+        "type": "classification",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": 0.9775975129936368,
+        "f1_macro": 0.9844967037392816,
+        "f1_weighted": 0.9776651866427796,
+        "precision_macro": 0.982803204806886,
+        "recall_macro": 0.9866476662261352,
+        "mae": null,
+        "rmse": null,
+        "r2": null,
+        "mean_bias": null
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated.",
+        "Training artifact contains no examples for expected classes: ['excellent']."
+      ]
+    },
+    {
+      "model_id": "crop_suitability_mangosteen",
+      "display_name": "Mangosteen suitability",
+      "group": "crop_suitability",
+      "task_type": "classification",
+      "unit": "suitability_class",
+      "classes": [
+        "good",
+        "moderate",
+        "poor"
+      ],
+      "expected_classes": [
+        "poor",
+        "moderate",
+        "good",
+        "excellent"
+      ],
+      "value_range": null,
+      "artifact_filename": "crop_suitability_mangosteen_rf_classifier.pkl",
+      "artifact_sha256": "9324096835454aa263ce5acc80bac93d12bace81351afe3c925ae3249c43d676",
+      "artifact_size_bytes": 41214005,
+      "model_version": "sha256-932409683545",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "flagged",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": false,
+      "metrics": {
+        "type": "classification",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": 0.9739592947005392,
+        "f1_macro": 0.9820889010365584,
+        "f1_weighted": 0.9740498317608092,
+        "precision_macro": 0.9802604862096008,
+        "recall_macro": 0.9846545836306412,
+        "mae": null,
+        "rmse": null,
+        "r2": null,
+        "mean_bias": null
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated.",
+        "Training artifact contains no examples for expected classes: ['excellent']."
+      ]
+    },
+    {
+      "model_id": "crop_suitability_longan",
+      "display_name": "Longan suitability",
+      "group": "crop_suitability",
+      "task_type": "classification",
+      "unit": "suitability_class",
+      "classes": [
+        "good",
+        "moderate",
+        "poor"
+      ],
+      "expected_classes": [
+        "poor",
+        "moderate",
+        "good",
+        "excellent"
+      ],
+      "value_range": null,
+      "artifact_filename": "crop_suitability_longan_rf_classifier.pkl",
+      "artifact_sha256": "0871cc313da59c6438c0fae4be30d18cf1fdf11d54f5f4b2e53b5c383e3edd82",
+      "artifact_size_bytes": 33734357,
+      "model_version": "sha256-0871cc313da5",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "flagged",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": false,
+      "metrics": {
+        "type": "classification",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": 0.9827852528294556,
+        "f1_macro": 0.9884134781924292,
+        "f1_weighted": 0.9827875928659284,
+        "precision_macro": 0.9884638368860964,
+        "recall_macro": 0.9886388915508212,
+        "mae": null,
+        "rmse": null,
+        "r2": null,
+        "mean_bias": null
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated.",
+        "Training artifact contains no examples for expected classes: ['excellent']."
+      ]
+    },
+    {
+      "model_id": "crop_suitability_mango",
+      "display_name": "Mango suitability",
+      "group": "crop_suitability",
+      "task_type": "classification",
+      "unit": "suitability_class",
+      "classes": [
+        "good",
+        "moderate",
+        "poor"
+      ],
+      "expected_classes": [
+        "poor",
+        "moderate",
+        "good",
+        "excellent"
+      ],
+      "value_range": null,
+      "artifact_filename": "crop_suitability_mango_rf_classifier.pkl",
+      "artifact_sha256": "7cd4fc44f88ab7be4de6df7af365e68e122e025c5809f41a0954daf44281e170",
+      "artifact_size_bytes": 37979477,
+      "model_version": "sha256-7cd4fc44f88a",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "flagged",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": false,
+      "metrics": {
+        "type": "classification",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": 0.9910428911448972,
+        "f1_macro": 0.99398038218096,
+        "f1_weighted": 0.9910412084632906,
+        "precision_macro": 0.9941412673312976,
+        "recall_macro": 0.9938952682811596,
+        "mae": null,
+        "rmse": null,
+        "r2": null,
+        "mean_bias": null
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated.",
+        "Training artifact contains no examples for expected classes: ['excellent']."
+      ]
+    },
+    {
+      "model_id": "crop_suitability_chili",
+      "display_name": "Chili suitability",
+      "group": "crop_suitability",
+      "task_type": "classification",
+      "unit": "suitability_class",
+      "classes": [
+        "good",
+        "moderate"
+      ],
+      "expected_classes": [
+        "poor",
+        "moderate",
+        "good",
+        "excellent"
+      ],
+      "value_range": null,
+      "artifact_filename": "crop_suitability_chili_rf_classifier.pkl",
+      "artifact_sha256": "fffac11a3bbec22ecd4f5a03de951f8df02600b46733e98344146b91a4c8deab",
+      "artifact_size_bytes": 38468565,
+      "model_version": "sha256-fffac11a3bbe",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "flagged",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": false,
+      "metrics": {
+        "type": "classification",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": 0.9951279933938894,
+        "f1_macro": 0.9919755870430588,
+        "f1_weighted": 0.9951524973158477,
+        "precision_macro": 0.9871142629563966,
+        "recall_macro": 0.9970140633744954,
+        "mae": null,
+        "rmse": null,
+        "r2": null,
+        "mean_bias": null
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated.",
+        "Training artifact contains no examples for expected classes: ['poor', 'excellent']."
+      ]
+    },
+    {
+      "model_id": "crop_suitability_tomato",
+      "display_name": "Tomato suitability",
+      "group": "crop_suitability",
+      "task_type": "classification",
+      "unit": "suitability_class",
+      "classes": [
+        "good",
+        "moderate",
+        "poor"
+      ],
+      "expected_classes": [
+        "poor",
+        "moderate",
+        "good",
+        "excellent"
+      ],
+      "value_range": null,
+      "artifact_filename": "crop_suitability_tomato_rf_classifier.pkl",
+      "artifact_sha256": "2caf4eaa5bba0fe2d471ff840c652917d473ff744799886016bf0c22bb867b60",
+      "artifact_size_bytes": 39049557,
+      "model_version": "sha256-2caf4eaa5bba",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "flagged",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": false,
+      "metrics": {
+        "type": "classification",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": 0.9396900956914558,
+        "f1_macro": 0.9248320875278244,
+        "f1_weighted": 0.9405295728835664,
+        "precision_macro": 0.8924982461942186,
+        "recall_macro": 0.9684131527062266,
+        "mae": null,
+        "rmse": null,
+        "r2": null,
+        "mean_bias": null
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated.",
+        "Training artifact contains no examples for expected classes: ['excellent']."
+      ]
+    },
+    {
+      "model_id": "crop_suitability_black_gram",
+      "display_name": "Black Gram suitability",
+      "group": "crop_suitability",
+      "task_type": "classification",
+      "unit": "suitability_class",
+      "classes": [
+        "good",
+        "moderate"
+      ],
+      "expected_classes": [
+        "poor",
+        "moderate",
+        "good",
+        "excellent"
+      ],
+      "value_range": null,
+      "artifact_filename": "crop_suitability_black_gram_rf_classifier.pkl",
+      "artifact_sha256": "c299ea57f47be7e1824755e443c3a1088160f15a47e5f2b89b79ca6aafc4d62d",
+      "artifact_size_bytes": 35890485,
+      "model_version": "sha256-c299ea57f47b",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "flagged",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": false,
+      "metrics": {
+        "type": "classification",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": 0.9923349686695488,
+        "f1_macro": 0.9877965882574156,
+        "f1_weighted": 0.9923920120185232,
+        "precision_macro": 0.9807330712314716,
+        "recall_macro": 0.9952611758770428,
+        "mae": null,
+        "rmse": null,
+        "r2": null,
+        "mean_bias": null
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated.",
+        "Training artifact contains no examples for expected classes: ['poor', 'excellent']."
+      ]
+    },
+    {
+      "model_id": "crop_suitability_green_gram",
+      "display_name": "Green Gram suitability",
+      "group": "crop_suitability",
+      "task_type": "classification",
+      "unit": "suitability_class",
+      "classes": [
+        "good",
+        "moderate"
+      ],
+      "expected_classes": [
+        "poor",
+        "moderate",
+        "good",
+        "excellent"
+      ],
+      "value_range": null,
+      "artifact_filename": "crop_suitability_green_gram_rf_classifier.pkl",
+      "artifact_sha256": "eb9a8c6cc783f491d4126d33bfc277a8bbf4d2a72cd9655cdd0d81808053e69e",
+      "artifact_size_bytes": 40929685,
+      "model_version": "sha256-eb9a8c6cc783",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "flagged",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": false,
+      "metrics": {
+        "type": "classification",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": 0.990892310681498,
+        "f1_macro": 0.9874480842060476,
+        "f1_weighted": 0.99094631784918,
+        "precision_macro": 0.9818250829262516,
+        "recall_macro": 0.9933919259364576,
+        "mae": null,
+        "rmse": null,
+        "r2": null,
+        "mean_bias": null
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated.",
+        "Training artifact contains no examples for expected classes: ['poor', 'excellent']."
+      ]
+    },
+    {
+      "model_id": "crop_suitability_pigeon_pea",
+      "display_name": "Pigeon Pea suitability",
+      "group": "crop_suitability",
+      "task_type": "classification",
+      "unit": "suitability_class",
+      "classes": [
+        "good",
+        "moderate",
+        "poor"
+      ],
+      "expected_classes": [
+        "poor",
+        "moderate",
+        "good",
+        "excellent"
+      ],
+      "value_range": null,
+      "artifact_filename": "crop_suitability_pigeon_pea_rf_classifier.pkl",
+      "artifact_sha256": "dab2759945b7994d9fbec131be33b0be19496fbcad4bc392866dbb6ba90ed612",
+      "artifact_size_bytes": 41099429,
+      "model_version": "sha256-dab2759945b7",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "flagged",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": false,
+      "metrics": {
+        "type": "classification",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": 0.9886870355078448,
+        "f1_macro": 0.9892862418329575,
+        "f1_weighted": 0.9886811826737216,
+        "precision_macro": 0.9865955758123648,
+        "recall_macro": 0.992111810416127,
+        "mae": null,
+        "rmse": null,
+        "r2": null,
+        "mean_bias": null
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated.",
+        "Training artifact contains no examples for expected classes: ['excellent']."
+      ]
+    },
+    {
+      "model_id": "crop_suitability_groundnut",
+      "display_name": "Groundnut suitability",
+      "group": "crop_suitability",
+      "task_type": "classification",
+      "unit": "suitability_class",
+      "classes": [
+        "good",
+        "moderate"
+      ],
+      "expected_classes": [
+        "poor",
+        "moderate",
+        "good",
+        "excellent"
+      ],
+      "value_range": null,
+      "artifact_filename": "crop_suitability_groundnut_rf_classifier.pkl",
+      "artifact_sha256": "fbe3498eb44c060c1bd7ca089bda8c68c9351365eda3613b55b4cea967b67bb3",
+      "artifact_size_bytes": 36596725,
+      "model_version": "sha256-fbe3498eb44c",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "flagged",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": false,
+      "metrics": {
+        "type": "classification",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": 0.9914314858891532,
+        "f1_macro": 0.9869093147735872,
+        "f1_weighted": 0.9914974124168217,
+        "precision_macro": 0.9796384791190526,
+        "recall_macro": 0.9946323265395548,
+        "mae": null,
+        "rmse": null,
+        "r2": null,
+        "mean_bias": null
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated.",
+        "Training artifact contains no examples for expected classes: ['poor', 'excellent']."
+      ]
+    },
+    {
+      "model_id": "crop_suitability_sesame",
+      "display_name": "Sesame suitability",
+      "group": "crop_suitability",
+      "task_type": "classification",
+      "unit": "suitability_class",
+      "classes": [
+        "good",
+        "moderate",
+        "poor"
+      ],
+      "expected_classes": [
+        "poor",
+        "moderate",
+        "good",
+        "excellent"
+      ],
+      "value_range": null,
+      "artifact_filename": "crop_suitability_sesame_rf_classifier.pkl",
+      "artifact_sha256": "6ca045e4909ef4e88842773c7ea123696d863004f0892df312c76b4eca16221f",
+      "artifact_size_bytes": 42532773,
+      "model_version": "sha256-6ca045e4909e",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "flagged",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": false,
+      "metrics": {
+        "type": "classification",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": 0.9876669743041724,
+        "f1_macro": 0.9894107758365522,
+        "f1_weighted": 0.9876703791868948,
+        "precision_macro": 0.9869908634673048,
+        "recall_macro": 0.9920079705144615,
+        "mae": null,
+        "rmse": null,
+        "r2": null,
+        "mean_bias": null
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated.",
+        "Training artifact contains no examples for expected classes: ['excellent']."
+      ]
+    },
+    {
+      "model_id": "crop_suitability_rubber",
+      "display_name": "Rubber suitability",
+      "group": "crop_suitability",
+      "task_type": "classification",
+      "unit": "suitability_class",
+      "classes": [
+        "good",
+        "moderate"
+      ],
+      "expected_classes": [
+        "poor",
+        "moderate",
+        "good",
+        "excellent"
+      ],
+      "value_range": null,
+      "artifact_filename": "crop_suitability_rubber_rf_classifier.pkl",
+      "artifact_sha256": "50c6822fc8c0ffa454589970fd837f38e84bb1ba321d0df339c00e9759b0f6f7",
+      "artifact_size_bytes": 40743605,
+      "model_version": "sha256-50c6822fc8c0",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "flagged",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": false,
+      "metrics": {
+        "type": "classification",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": 0.9936901928401418,
+        "f1_macro": 0.9936849479124572,
+        "f1_weighted": 0.9936912757722864,
+        "precision_macro": 0.9935507424654312,
+        "recall_macro": 0.9938896970039828,
+        "mae": null,
+        "rmse": null,
+        "r2": null,
+        "mean_bias": null
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated.",
+        "Training artifact contains no examples for expected classes: ['poor', 'excellent']."
+      ]
+    },
+    {
+      "model_id": "crop_health_score",
+      "display_name": "Crop health surrogate score",
+      "group": "crop_health",
+      "task_type": "regression",
+      "unit": "score_0_to_1",
+      "classes": null,
+      "expected_classes": null,
+      "value_range": [
+        0.0,
+        1.0
+      ],
+      "artifact_filename": "crop_health_score_rf_regressor.pkl",
+      "artifact_sha256": "3a102e074fa731a1098b9d975afafc6d738947354a38a62351114e1f9356f7b0",
+      "artifact_size_bytes": 140752390,
+      "model_version": "sha256-3a102e074fa7",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "healthy",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": null,
+      "metrics": {
+        "type": "regression",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": null,
+        "f1_macro": null,
+        "f1_weighted": null,
+        "precision_macro": null,
+        "recall_macro": null,
+        "mae": 0.0043877188749995,
+        "rmse": 0.0056925539895776,
+        "r2": 0.9886514954181,
+        "mean_bias": 5.2395353550369715e-05
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated."
+      ]
+    },
+    {
+      "model_id": "crop_yield_t_ha",
+      "display_name": "Crop yield surrogate estimate",
+      "group": "yield",
+      "task_type": "regression",
+      "unit": "tonnes_per_hectare",
+      "classes": null,
+      "expected_classes": null,
+      "value_range": [
+        0.0,
+        null
+      ],
+      "artifact_filename": "crop_yield_t_ha_rf_regressor.pkl",
+      "artifact_sha256": "2e15414c5b1bd7476168055ef2a41215881404abaa7c759ad3be53ad2daa2535",
+      "artifact_size_bytes": 158103526,
+      "model_version": "sha256-2e15414c5b1b",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "healthy",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": null,
+      "metrics": {
+        "type": "regression",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": null,
+        "f1_macro": null,
+        "f1_weighted": null,
+        "precision_macro": null,
+        "recall_macro": null,
+        "mae": 0.0362443440266411,
+        "rmse": 0.0465972990549911,
+        "r2": 0.9838181460387856,
+        "mean_bias": 5.644467916524897e-05
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated."
+      ]
+    },
+    {
+      "model_id": "irrigation_need",
+      "display_name": "Irrigation need class",
+      "group": "farm_management",
+      "task_type": "classification",
+      "unit": "class_0_to_2",
+      "classes": [
+        1,
+        2
+      ],
+      "expected_classes": [
+        0,
+        1,
+        2
+      ],
+      "value_range": null,
+      "artifact_filename": "irrigation_need_rf_classifier.pkl",
+      "artifact_sha256": "c49708aeef7154020057b0ef5498c26c5c7e22de76959c47435bdf1b44f3ea71",
+      "artifact_size_bytes": 15290565,
+      "model_version": "sha256-c49708aeef71",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "flagged",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": false,
+      "metrics": {
+        "type": "classification",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": 0.9979987370670812,
+        "f1_macro": 0.9868903678317982,
+        "f1_weighted": 0.9980228874798646,
+        "precision_macro": 0.975441106342394,
+        "recall_macro": 0.9989590386772716,
+        "mae": null,
+        "rmse": null,
+        "r2": null,
+        "mean_bias": null
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated.",
+        "Training artifact contains no examples for expected classes: [0]."
+      ]
+    },
+    {
+      "model_id": "current_month_precipitation_mm",
+      "display_name": "Current-month precipitation reconstruction",
+      "group": "climate",
+      "task_type": "regression",
+      "unit": "millimetres",
+      "classes": null,
+      "expected_classes": null,
+      "value_range": [
+        0.0,
+        null
+      ],
+      "artifact_filename": "current_month_precipitation_mm_rf_regressor.pkl",
+      "artifact_sha256": "2d82ce3fc909084d654ad2ec5352298216f0ab2db6822dd6bce90c3156e5ab5a",
+      "artifact_size_bytes": 241678390,
+      "model_version": "sha256-2d82ce3fc909",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "flagged",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": null,
+      "metrics": {
+        "type": "regression",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": null,
+        "f1_macro": null,
+        "f1_weighted": null,
+        "precision_macro": null,
+        "recall_macro": null,
+        "mae": 23.564553121207773,
+        "rmse": 41.92535633373938,
+        "r2": 0.9541711870007064,
+        "mean_bias": 0.1160214269449963
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated.",
+        "TARGET LEAKAGE SUSPECTED: Features near-identically correlated with target: chirps_precipitation_mm (r=0.9995) | HIGH OUTLIER ERRORS: 130 test predictions (2.17%) have errors > 3x RMSE; HETEROSCEDASTICITY DETECTED: Residual magnitude correlates with predicted scale (r=0.5604)"
+      ]
+    },
+    {
+      "model_id": "current_month_mean_temperature_c",
+      "display_name": "Current-month mean temperature reconstruction",
+      "group": "climate",
+      "task_type": "regression",
+      "unit": "degrees_celsius",
+      "classes": null,
+      "expected_classes": null,
+      "value_range": [
+        -80.0,
+        80.0
+      ],
+      "artifact_filename": "current_month_mean_temperature_c_rf_regressor.pkl",
+      "artifact_sha256": "1275b950ef9c20287bd58a73810eec0c37f3433511176cea43df6d5c64ba656d",
+      "artifact_size_bytes": 233589766,
+      "model_version": "sha256-1275b950ef9c",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "flagged",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": null,
+      "metrics": {
+        "type": "regression",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": null,
+        "f1_macro": null,
+        "f1_weighted": null,
+        "precision_macro": null,
+        "recall_macro": null,
+        "mae": 0.3862303573242934,
+        "rmse": 0.5238372648898624,
+        "r2": 0.9800204811556712,
+        "mean_bias": 0.0014105075481888
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated.",
+        "HIGH OUTLIER ERRORS: 87 test predictions (1.45%) have errors > 3x RMSE"
+      ]
+    },
+    {
+      "model_id": "current_month_solar_rad_mj_m2_day",
+      "display_name": "Current-month solar radiation reconstruction",
+      "group": "climate",
+      "task_type": "regression",
+      "unit": "megajoules_per_square_metre_per_day",
+      "classes": null,
+      "expected_classes": null,
+      "value_range": [
+        0.0,
+        null
+      ],
+      "artifact_filename": "current_month_solar_rad_mj_m2_day_rf_regressor.pkl",
+      "artifact_sha256": "0f637097ccfe28bd8720399f317b11322a46b7d6c19ba5edff6435aec15d8278",
+      "artifact_size_bytes": 217740694,
+      "model_version": "sha256-0f637097ccfe",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "flagged",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": null,
+      "metrics": {
+        "type": "regression",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": null,
+        "f1_macro": null,
+        "f1_weighted": null,
+        "precision_macro": null,
+        "recall_macro": null,
+        "mae": 0.5060002343242853,
+        "rmse": 0.7167068460705468,
+        "r2": 0.967478615359464,
+        "mean_bias": 0.0021798984010616
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated.",
+        "HIGH OUTLIER ERRORS: 82 test predictions (1.37%) have errors > 3x RMSE"
+      ]
+    },
+    {
+      "model_id": "flood_risk_level",
+      "display_name": "Flood risk surrogate class",
+      "group": "risk",
+      "task_type": "classification",
+      "unit": "class_0_to_2",
+      "classes": [
+        0,
+        1,
+        2
+      ],
+      "expected_classes": [
+        0,
+        1,
+        2
+      ],
+      "value_range": null,
+      "artifact_filename": "flood_risk_level_rf_classifier.pkl",
+      "artifact_sha256": "f7cdce1da903a8ec3d51557447925076864b0e4878ffdee8e8ed2167668bb2c6",
+      "artifact_size_bytes": 44277005,
+      "model_version": "sha256-f7cdce1da903",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "healthy",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": false,
+      "metrics": {
+        "type": "classification",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": 1.0,
+        "f1_macro": 1.0,
+        "f1_weighted": 1.0,
+        "precision_macro": 1.0,
+        "recall_macro": 1.0,
+        "mae": null,
+        "rmse": null,
+        "r2": null,
+        "mean_bias": null
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated."
+      ]
+    },
+    {
+      "model_id": "drought_risk_score",
+      "display_name": "Drought risk surrogate score",
+      "group": "risk",
+      "task_type": "regression",
+      "unit": "score_0_to_1",
+      "classes": null,
+      "expected_classes": null,
+      "value_range": [
+        0.0,
+        1.0
+      ],
+      "artifact_filename": "drought_risk_score_rf_regressor.pkl",
+      "artifact_sha256": "8e31a31d354b8b7f853db3a95c36624253b5169790c7401cf26d96284add12fe",
+      "artifact_size_bytes": 139564390,
+      "model_version": "sha256-8e31a31d354b",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "healthy",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": null,
+      "metrics": {
+        "type": "regression",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": null,
+        "f1_macro": null,
+        "f1_weighted": null,
+        "precision_macro": null,
+        "recall_macro": null,
+        "mae": 0.0047084711269742,
+        "rmse": 0.0061213951620314,
+        "r2": 0.9964623670465372,
+        "mean_bias": 1.6791412899487986e-05
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated."
+      ]
+    },
+    {
+      "model_id": "heat_stress_risk",
+      "display_name": "Heat-stress risk surrogate class",
+      "group": "risk",
+      "task_type": "classification",
+      "unit": "class_0_to_2",
+      "classes": [
+        0,
+        1
+      ],
+      "expected_classes": [
+        0,
+        1,
+        2
+      ],
+      "value_range": null,
+      "artifact_filename": "heat_stress_risk_rf_classifier.pkl",
+      "artifact_sha256": "f3b37417bddd518e2e04f86f7505d4a90008170c44af4d9d5ee24c99df6cc11b",
+      "artifact_size_bytes": 8025925,
+      "model_version": "sha256-f3b37417bddd",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "flagged",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": false,
+      "metrics": {
+        "type": "classification",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": 1.0,
+        "f1_macro": 1.0,
+        "f1_weighted": 1.0,
+        "precision_macro": 1.0,
+        "recall_macro": 1.0,
+        "mae": null,
+        "rmse": null,
+        "r2": null,
+        "mean_bias": null
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated.",
+        "Training artifact contains no examples for expected classes: [2]."
+      ]
+    },
+    {
+      "model_id": "optimal_planting_month",
+      "display_name": "Optimal planting month surrogate class",
+      "group": "farm_management",
+      "task_type": "classification",
+      "unit": "month_1_to_12",
+      "classes": [
+        5,
+        6
+      ],
+      "expected_classes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "value_range": null,
+      "artifact_filename": "optimal_planting_month_rf_classifier.pkl",
+      "artifact_sha256": "ff295de0c4108bf31593c085d369aac589c348c9513b22b0a3942b0e61fcf035",
+      "artifact_size_bytes": 6966565,
+      "model_version": "sha256-ff295de0c410",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "flagged",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": false,
+      "metrics": {
+        "type": "classification",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": 1.0,
+        "f1_macro": 1.0,
+        "f1_weighted": 1.0,
+        "precision_macro": 1.0,
+        "recall_macro": 1.0,
+        "mae": null,
+        "rmse": null,
+        "r2": null,
+        "mean_bias": null
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated.",
+        "Training artifact contains no examples for expected classes: [1, 2, 3, 4, 7, 8, 9, 10, 11, 12]."
+      ]
+    },
+    {
+      "model_id": "nitrogen_requirement_level",
+      "display_name": "Nitrogen requirement surrogate class",
+      "group": "farm_management",
+      "task_type": "classification",
+      "unit": "class_0_to_2",
+      "classes": [
+        0,
+        1,
+        2
+      ],
+      "expected_classes": [
+        0,
+        1,
+        2
+      ],
+      "value_range": null,
+      "artifact_filename": "nitrogen_requirement_level_rf_classifier.pkl",
+      "artifact_sha256": "e9723d0a334bebdf59bd07df07953466d58b6b90829d61d9c4746f9dcd033d1d",
+      "artifact_size_bytes": 22952141,
+      "model_version": "sha256-e9723d0a334b",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "healthy",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": false,
+      "metrics": {
+        "type": "classification",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": 1.0,
+        "f1_macro": 1.0,
+        "f1_weighted": 1.0,
+        "precision_macro": 1.0,
+        "recall_macro": 1.0,
+        "mae": null,
+        "rmse": null,
+        "r2": null,
+        "mean_bias": null
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated."
+      ]
+    },
+    {
+      "model_id": "phosphorus_requirement_level",
+      "display_name": "Phosphorus requirement surrogate class",
+      "group": "farm_management",
+      "task_type": "classification",
+      "unit": "class_0_to_2",
+      "classes": [
+        0,
+        1,
+        2
+      ],
+      "expected_classes": [
+        0,
+        1,
+        2
+      ],
+      "value_range": null,
+      "artifact_filename": "phosphorus_requirement_level_rf_classifier.pkl",
+      "artifact_sha256": "afaaf0fba0298e3c71149a12cee43aa927a650155dd77dc42d5e6f456cca6f30",
+      "artifact_size_bytes": 17598045,
+      "model_version": "sha256-afaaf0fba029",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "healthy",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": false,
+      "metrics": {
+        "type": "classification",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": 1.0,
+        "f1_macro": 1.0,
+        "f1_weighted": 1.0,
+        "precision_macro": 1.0,
+        "recall_macro": 1.0,
+        "mae": null,
+        "rmse": null,
+        "r2": null,
+        "mean_bias": null
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated."
+      ]
+    },
+    {
+      "model_id": "soil_erosion_risk",
+      "display_name": "Soil erosion risk surrogate class",
+      "group": "risk",
+      "task_type": "classification",
+      "unit": "class_0_to_2",
+      "classes": [
+        0,
+        1,
+        2
+      ],
+      "expected_classes": [
+        0,
+        1,
+        2
+      ],
+      "value_range": null,
+      "artifact_filename": "soil_erosion_risk_rf_classifier.pkl",
+      "artifact_sha256": "b5a2a1c3fdaff06aa97465e89f001b696407263393b3eaf1a45dd75e3fa95d3a",
+      "artifact_size_bytes": 11938589,
+      "model_version": "sha256-b5a2a1c3fdaf",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "healthy",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": false,
+      "metrics": {
+        "type": "classification",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": 1.0,
+        "f1_macro": 1.0,
+        "f1_weighted": 1.0,
+        "precision_macro": 1.0,
+        "recall_macro": 1.0,
+        "mae": null,
+        "rmse": null,
+        "r2": null,
+        "mean_bias": null
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated."
+      ]
+    },
+    {
+      "model_id": "market_integration_score",
+      "display_name": "Market Integration Score surrogate score",
+      "group": "market",
+      "task_type": "regression",
+      "unit": "score_0_to_1",
+      "classes": null,
+      "expected_classes": null,
+      "value_range": [
+        0.0,
+        1.0
+      ],
+      "artifact_filename": "market_integration_score_rf_regressor.pkl",
+      "artifact_sha256": "34436df87168c765d62bf82e6e6b67ae10ac8ae175f2fbcca50f7458d6e17887",
+      "artifact_size_bytes": 153492214,
+      "model_version": "sha256-34436df87168",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "healthy",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": null,
+      "metrics": {
+        "type": "regression",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": null,
+        "f1_macro": null,
+        "f1_weighted": null,
+        "precision_macro": null,
+        "recall_macro": null,
+        "mae": 0.0105111004909423,
+        "rmse": 0.013805077356616,
+        "r2": 0.992535465662358,
+        "mean_bias": -2.9506195874486537e-05
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated."
+      ]
+    },
+    {
+      "model_id": "post_harvest_loss_risk",
+      "display_name": "Post Harvest Loss Risk surrogate score",
+      "group": "market",
+      "task_type": "regression",
+      "unit": "score_0_to_1",
+      "classes": null,
+      "expected_classes": null,
+      "value_range": [
+        0.0,
+        1.0
+      ],
+      "artifact_filename": "post_harvest_loss_risk_rf_regressor.pkl",
+      "artifact_sha256": "25ba95182670328a759912cf898416e45c0f4d3864edc9cbb3a0d032f250ac69",
+      "artifact_size_bytes": 140893222,
+      "model_version": "sha256-25ba95182670",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "healthy",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": null,
+      "metrics": {
+        "type": "regression",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": null,
+        "f1_macro": null,
+        "f1_weighted": null,
+        "precision_macro": null,
+        "recall_macro": null,
+        "mae": 0.0129698958972883,
+        "rmse": 0.0169195515180963,
+        "r2": 0.9778497358458372,
+        "mean_bias": 9.830585980905123e-06
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated."
+      ]
+    },
+    {
+      "model_id": "supply_chain_efficiency",
+      "display_name": "Supply Chain Efficiency surrogate score",
+      "group": "market",
+      "task_type": "regression",
+      "unit": "score_0_to_1",
+      "classes": null,
+      "expected_classes": null,
+      "value_range": [
+        0.0,
+        1.0
+      ],
+      "artifact_filename": "supply_chain_efficiency_rf_regressor.pkl",
+      "artifact_sha256": "707d82088e70330e4b6407ff0a0472f5b62da09d8b539e81326654cad1fecd52",
+      "artifact_size_bytes": 156947638,
+      "model_version": "sha256-707d82088e70",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "flagged",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": null,
+      "metrics": {
+        "type": "regression",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": null,
+        "f1_macro": null,
+        "f1_weighted": null,
+        "precision_macro": null,
+        "recall_macro": null,
+        "mae": 0.0076299510823567,
+        "rmse": 0.0100341766216496,
+        "r2": 0.995364137443679,
+        "mean_bias": -1.480185105483868e-05
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated.",
+        "HIGH OUTLIER ERRORS: 62 test predictions (1.03%) have errors > 3x RMSE"
+      ]
+    },
+    {
+      "model_id": "cold_chain_potential",
+      "display_name": "Cold Chain Potential surrogate score",
+      "group": "market",
+      "task_type": "regression",
+      "unit": "score_0_to_1",
+      "classes": null,
+      "expected_classes": null,
+      "value_range": [
+        0.0,
+        1.0
+      ],
+      "artifact_filename": "cold_chain_potential_rf_regressor.pkl",
+      "artifact_sha256": "f1b9c6134e919e4705459f989dd40e87ee78b9b2958e767709108db0221e50c1",
+      "artifact_size_bytes": 104159110,
+      "model_version": "sha256-f1b9c6134e91",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "flagged",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": null,
+      "metrics": {
+        "type": "regression",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": null,
+        "f1_macro": null,
+        "f1_weighted": null,
+        "precision_macro": null,
+        "recall_macro": null,
+        "mae": 0.0037272547523104,
+        "rmse": 0.0062789734537703,
+        "r2": 0.9961619513355948,
+        "mean_bias": -1.9382082222442662e-05
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated.",
+        "HIGH OUTLIER ERRORS: 111 test predictions (1.85%) have errors > 3x RMSE"
+      ]
+    },
+    {
+      "model_id": "agricultural_land_conversion_risk",
+      "display_name": "Agricultural Land Conversion Risk surrogate score",
+      "group": "land_use",
+      "task_type": "regression",
+      "unit": "score_0_to_1",
+      "classes": null,
+      "expected_classes": null,
+      "value_range": [
+        0.0,
+        1.0
+      ],
+      "artifact_filename": "agricultural_land_conversion_risk_rf_regressor.pkl",
+      "artifact_sha256": "b3327ecb8f494dc351e3a11216dcf148d7bded5421576b8619b05918bf548c3c",
+      "artifact_size_bytes": 114510838,
+      "model_version": "sha256-b3327ecb8f49",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "flagged",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": null,
+      "metrics": {
+        "type": "regression",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": null,
+        "f1_macro": null,
+        "f1_weighted": null,
+        "precision_macro": null,
+        "recall_macro": null,
+        "mae": 0.002586641625361,
+        "rmse": 0.0050435344089419,
+        "r2": 0.996098281792714,
+        "mean_bias": -1.243519092242176e-05
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated.",
+        "HIGH OUTLIER ERRORS: 137 test predictions (2.28%) have errors > 3x RMSE; HETEROSCEDASTICITY DETECTED: Residual magnitude correlates with predicted scale (r=0.5430)"
+      ]
+    },
+    {
+      "model_id": "urban_encroachment_risk",
+      "display_name": "Urban Encroachment Risk surrogate score",
+      "group": "land_use",
+      "task_type": "regression",
+      "unit": "score_0_to_1",
+      "classes": null,
+      "expected_classes": null,
+      "value_range": [
+        0.0,
+        1.0
+      ],
+      "artifact_filename": "urban_encroachment_risk_rf_regressor.pkl",
+      "artifact_sha256": "09dcee3a405e40f34753b04382293f084f74c7650fff9ff819f567e43c505129",
+      "artifact_size_bytes": 124985254,
+      "model_version": "sha256-09dcee3a405e",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "flagged",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": null,
+      "metrics": {
+        "type": "regression",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": null,
+        "f1_macro": null,
+        "f1_weighted": null,
+        "precision_macro": null,
+        "recall_macro": null,
+        "mae": 0.0067341068725222,
+        "rmse": 0.0089787946585717,
+        "r2": 0.9937223938004256,
+        "mean_bias": -3.0053809108718852e-05
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated.",
+        "HIGH OUTLIER ERRORS: 62 test predictions (1.03%) have errors > 3x RMSE"
+      ]
+    },
+    {
+      "model_id": "irrigation_potential",
+      "display_name": "Irrigation Potential surrogate score",
+      "group": "water",
+      "task_type": "regression",
+      "unit": "score_0_to_1",
+      "classes": null,
+      "expected_classes": null,
+      "value_range": [
+        0.0,
+        1.0
+      ],
+      "artifact_filename": "irrigation_potential_rf_regressor.pkl",
+      "artifact_sha256": "6f7c4f300ad5991505363b3d43f7d1843c65aec30e78017dbde54515fb82791f",
+      "artifact_size_bytes": 128366806,
+      "model_version": "sha256-6f7c4f300ad5",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "healthy",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": null,
+      "metrics": {
+        "type": "regression",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": null,
+        "f1_macro": null,
+        "f1_weighted": null,
+        "precision_macro": null,
+        "recall_macro": null,
+        "mae": 0.0180955536741134,
+        "rmse": 0.0240969830315344,
+        "r2": 0.9770246976439868,
+        "mean_bias": 4.14835853885791e-05
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated."
+      ]
+    },
+    {
+      "model_id": "surface_water_occurrence",
+      "display_name": "Surface Water Occurrence surrogate score",
+      "group": "water",
+      "task_type": "regression",
+      "unit": "score_0_to_1",
+      "classes": null,
+      "expected_classes": null,
+      "value_range": [
+        0.0,
+        1.0
+      ],
+      "artifact_filename": "surface_water_occurrence_rf_regressor.pkl",
+      "artifact_sha256": "79fa9e7854e4501f23e35922bb2b88799eb34303dfc0cac9d1c357968ebaa00a",
+      "artifact_size_bytes": 102688438,
+      "model_version": "sha256-79fa9e7854e4",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "flagged",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": null,
+      "metrics": {
+        "type": "regression",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": null,
+        "f1_macro": null,
+        "f1_weighted": null,
+        "precision_macro": null,
+        "recall_macro": null,
+        "mae": 0.018195228561427,
+        "rmse": 0.0253565289135257,
+        "r2": 0.9804198899298396,
+        "mean_bias": -5.332727133943754e-05
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated.",
+        "HIGH OUTLIER ERRORS: 77 test predictions (1.28%) have errors > 3x RMSE"
+      ]
+    },
+    {
+      "model_id": "water_scarcity_risk",
+      "display_name": "Water Scarcity Risk surrogate score",
+      "group": "water",
+      "task_type": "regression",
+      "unit": "score_0_to_1",
+      "classes": null,
+      "expected_classes": null,
+      "value_range": [
+        0.0,
+        1.0
+      ],
+      "artifact_filename": "water_scarcity_risk_rf_regressor.pkl",
+      "artifact_sha256": "08ad3e64b2c079064e65c580955e88a2e8d5d057de8a5740ad4974c3d10f1965",
+      "artifact_size_bytes": 148680598,
+      "model_version": "sha256-08ad3e64b2c0",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "flagged",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": null,
+      "metrics": {
+        "type": "regression",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": null,
+        "f1_macro": null,
+        "f1_weighted": null,
+        "precision_macro": null,
+        "recall_macro": null,
+        "mae": 0.0066056817731271,
+        "rmse": 0.009299294056717,
+        "r2": 0.9934328505311276,
+        "mean_bias": -3.156380538383912e-05
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated.",
+        "HIGH OUTLIER ERRORS: 99 test predictions (1.65%) have errors > 3x RMSE"
+      ]
+    },
+    {
+      "model_id": "agricultural_gdp_forecast",
+      "display_name": "Agricultural Gdp Forecast surrogate score",
+      "group": "economic",
+      "task_type": "regression",
+      "unit": "score_0_to_1",
+      "classes": null,
+      "expected_classes": null,
+      "value_range": [
+        0.0,
+        1.0
+      ],
+      "artifact_filename": "agricultural_gdp_forecast_rf_regressor.pkl",
+      "artifact_sha256": "e9b40183104e5a6010dd3a5714508531500cfd1d77fef47cfcd7e6fbe4a2dd30",
+      "artifact_size_bytes": 157898038,
+      "model_version": "sha256-e9b40183104e",
+      "input_schema_sha256": "35bca85b7200cac8d9c2caf59d3fb9c4c6fe2dc1c4dc1cc512bb221d9df6b7a8",
+      "input_feature_count": 75,
+      "model_source": "primary",
+      "deployment_status": "experimental",
+      "validation_status": "healthy",
+      "field_validated": false,
+      "label_source": "rule_engineered_surrogate",
+      "probability_calibrated": null,
+      "metrics": {
+        "type": "regression",
+        "mode": "split",
+        "n_samples": 205870,
+        "accuracy": null,
+        "f1_macro": null,
+        "f1_weighted": null,
+        "precision_macro": null,
+        "recall_macro": null,
+        "mae": 0.0059695756481816,
+        "rmse": 0.0077047864869176,
+        "r2": 0.9935539519785692,
+        "mean_bias": 7.571180985469661e-06
+      },
+      "warnings": [
+        "Experimental surrogate model trained on rule-engineered labels; not field-validated."
+      ]
+    }
+  ]
+}

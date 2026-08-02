@@ -1,32 +1,37 @@
-FROM python:3.11-slim
+FROM python:3.12-slim AS runtime
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PIP_NO_CACHE_DIR=1
 
 WORKDIR /app
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
+RUN groupadd --gid 10001 app && \
+    useradd --uid 10001 --gid app --no-create-home --shell /usr/sbin/nologin app
 
-# Copy requirements and install python packages offline
-COPY requirements.txt .
-COPY wheels/ ./wheels/
-RUN pip install --no-index --find-links=wheels -r requirements.txt && rm -rf wheels
+COPY requirements.txt ./
+RUN pip install --requirement requirements.txt
 
-# Copy application files
 COPY server/ ./server/
-COPY models/ ./models/
-COPY models_prototypes/ ./models_prototypes/
-COPY data/processed/features_dataset.parquet ./data/processed/features_dataset.parquet
+COPY models/manifest.json ./catalog/manifest.json
 
-# Environment variables
-ENV PYTHONUNBUFFERED=1
-ENV MAX_LOADED_MODELS=4
-ENV MAX_RAM_MB=2048
-ENV REDIS_HOST=redis_cache
-ENV REDIS_PORT=6379
+RUN mkdir -p /models /data && chown -R app:app /app /models /data
 
+ENV ENVIRONMENT=production \
+    HOST=0.0.0.0 \
+    PORT=8000 \
+    MODELS_DIR=/models \
+    MODEL_MANIFEST_FILE=/app/catalog/manifest.json \
+    FEATURE_DATA_FILE=/data/features_serving.parquet \
+    SPATIAL_INDEX_FILE=/data/spatial_index.parquet \
+    ALLOW_PROTOTYPE_MODELS=false \
+    BOOST_MODE=false
+
+USER app
 EXPOSE 8000
 
-# Run uvicorn server
-CMD ["uvicorn", "server.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "2"]
+HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
+  CMD ["python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/v1/live', timeout=3)"]
+
+CMD ["uvicorn", "server.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1", "--no-access-log"]

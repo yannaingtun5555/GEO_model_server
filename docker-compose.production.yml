@@ -1,0 +1,14 @@
+services:
+  model-server:
+    environment:
+      ENVIRONMENT: production
+      AUTH_REQUIRED: "true"
+      MODEL_SERVER_API_KEY: ${MODEL_SERVER_API_KEY:?MODEL_SERVER_API_KEY is required}
+      CORS_ORIGINS: ${CORS_ORIGINS:?CORS_ORIGINS is required}
+      VERIFY_MODEL_CHECKSUMS_ON_STARTUP: "true"
+      ALLOW_PROTOTYPE_MODELS: "false"
+      ALLOW_EXPERIMENTAL_RELEASE: ${ALLOW_EXPERIMENTAL_RELEASE:-false}
+      MAX_CONCURRENT_REQUESTS: 1
+      # Exactly enough for the bounded 17-crop suitability tier request.
+      # All-40 synchronous requests remain rejected.
+      MAX_EXPANDED_SYNC_TARGETS: 17

@@ -1,93 +1,112 @@
-#!/usr/bin/env python3
-"""
-server/core/cache.py — Redis & In-Memory Cache Manager
-"""
+"""Version-aware Redis cache with a bounded in-process fallback."""
 
-import json
+from __future__ import annotations
+
+import copy
 import hashlib
+import json
+import threading
 import time
-from typing import Optional, Dict, Any
-from server.config import REDIS_HOST, REDIS_PORT, REDIS_DB, REDIS_PASSWORD, CACHE_TTL_SECONDS
+from collections import OrderedDict
+from typing import Any
+
+from server.config import (
+    CACHE_TTL_SECONDS,
+    MAX_CACHE_ENTRIES,
+    REDIS_DB,
+    REDIS_HOST,
+    REDIS_PASSWORD,
+    REDIS_PORT,
+)
+
 
 class CacheManager:
-    """
-    Manages Redis caching for model predictions and pre-computed regional layers.
-    Falls back gracefully to an in-memory dictionary if Redis is offline or not installed.
-    """
-
-    def __init__(self):
+    def __init__(self) -> None:
         self.redis_client = None
-        self._memory_cache: Dict[str, Dict[str, Any]] = {}
+        self.redis_error: str | None = None
+        self._memory_cache: OrderedDict[str, dict[str, Any]] = OrderedDict()
+        self._lock = threading.RLock()
         self._init_redis()
 
-    def _init_redis(self):
+    def _init_redis(self) -> None:
         try:
             import redis
+
             client = redis.Redis(
                 host=REDIS_HOST,
                 port=REDIS_PORT,
                 db=REDIS_DB,
                 password=REDIS_PASSWORD,
-                socket_timeout=2.0,
-                decode_responses=True
+                socket_connect_timeout=0.5,
+                socket_timeout=0.5,
+                decode_responses=True,
             )
             client.ping()
             self.redis_client = client
-            print(f"[CACHE] Connected to Redis at {REDIS_HOST}:{REDIS_PORT}")
-        except Exception as e:
-            print(f"[CACHE WARN] Redis connection failed ({e}). Operating in-memory fallback cache.")
+            self.redis_error = None
+        except Exception as exc:
             self.redis_client = None
+            self.redis_error = str(exc)
 
-    def generate_cache_key(self, key_prefix: str, payload: Dict[str, Any]) -> str:
-        """Generates a deterministic SHA256 cache key from request parameters."""
-        serialized = json.dumps(payload, sort_keys=True)
-        digest = hashlib.sha256(serialized.encode("utf-8")).hexdigest()[:16]
-        return f"{key_prefix}:{digest}"
+    @staticmethod
+    def generate_cache_key(namespace: str, payload: dict[str, Any]) -> str:
+        serialized = json.dumps(payload, sort_keys=True, separators=(",", ":"))
+        digest = hashlib.sha256(serialized.encode("utf-8")).hexdigest()
+        return f"{namespace}:{digest}"
 
-    def get(self, key: str) -> Optional[Dict[str, Any]]:
-        """Retrieve cached JSON object by key."""
-        if self.redis_client:
+    def get(self, key: str) -> dict[str, Any] | None:
+        if self.redis_client is not None:
             try:
-                val = self.redis_client.get(key)
-                if val:
-                    return json.loads(val)
-            except Exception as e:
-                print(f"[CACHE WARN] Redis GET error: {e}")
+                value = self.redis_client.get(key)
+                if value:
+                    return json.loads(value)
+            except Exception as exc:
+                self.redis_error = str(exc)
 
-        # In-memory fallback lookup
-        if key in self._memory_cache:
-            item = self._memory_cache[key]
-            if item["expires_at"] > time.time():
-                return item["data"]
-            else:
-                del self._memory_cache[key]
-        return None
+        with self._lock:
+            item = self._memory_cache.get(key)
+            if item is None:
+                return None
+            if item["expires_at"] <= time.time():
+                self._memory_cache.pop(key, None)
+                return None
+            self._memory_cache.move_to_end(key)
+            return copy.deepcopy(item["data"])
 
-    def set(self, key: str, data: Dict[str, Any], ttl_seconds: int = CACHE_TTL_SECONDS):
-        """Save JSON object to cache with TTL."""
-        if self.redis_client:
+    def set(
+        self,
+        key: str,
+        data: dict[str, Any],
+        ttl_seconds: int = CACHE_TTL_SECONDS,
+    ) -> None:
+        if self.redis_client is not None:
             try:
-                val = json.dumps(data)
-                self.redis_client.setex(key, ttl_seconds, val)
+                self.redis_client.setex(
+                    key,
+                    ttl_seconds,
+                    json.dumps(data, separators=(",", ":")),
+                )
                 return
-            except Exception as e:
-                print(f"[CACHE WARN] Redis SET error: {e}")
+            except Exception as exc:
+                self.redis_error = str(exc)
 
-        # In-memory fallback store
-        self._memory_cache[key] = {
-            "data": data,
-            "expires_at": time.time() + ttl_seconds
-        }
+        with self._lock:
+            self._memory_cache[key] = {
+                "data": copy.deepcopy(data),
+                "expires_at": time.time() + ttl_seconds,
+            }
+            self._memory_cache.move_to_end(key)
+            while len(self._memory_cache) > MAX_CACHE_ENTRIES:
+                self._memory_cache.popitem(last=False)
 
-    def delete(self, key: str):
-        """Remove a key from cache."""
-        if self.redis_client:
-            try:
-                self.redis_client.delete(key)
-            except Exception:
-                pass
-        self._memory_cache.pop(key, None)
+    def diagnostics(self) -> dict[str, Any]:
+        with self._lock:
+            return {
+                "redis_connected": self.redis_client is not None,
+                "memory_cache_entries": len(self._memory_cache),
+                "memory_cache_limit": MAX_CACHE_ENTRIES,
+                "redis_error": self.redis_error,
+            }
 
 
-# Global singleton instance
 cache_manager = CacheManager()

@@ -1,217 +1,172 @@
-# Myanmar Agricultural Model Serving Microservice & ML Pipeline
+# Myanmar Agricultural Experimental Model Server
 
-A high-performance, memory-efficient Standalone Model Serving Microservice and Machine Learning Pipeline built for agricultural intelligence, crop suitability ranking, multi-hazard risk assessment, and yield forecasting across Myanmar.
+Private FastAPI inference service for the Myanmar Agriculture Intelligence project.
+It remains a separate repository and process from the Node.js application backend.
 
----
-
-## 📊 Datasets Used for Predictions
-
-The pipeline uses a structured dataset hierarchy optimized for high-speed spatial lookup and model inference:
-
-| Dataset | Location | File Size | Description & Usage |
-| :--- | :--- | :--- | :--- |
-| **Inference Feature Dataset** *(Primary for Serving)* | `data/processed/features_dataset.parquet` | ~52 MB | **Used directly by the Model Server for predictions.** Contains lightweight input feature vectors (satellite observation indicators, climate metrics, topography, soil properties) stripped of target labels. Indexed with a spatial KD-Tree for $O(\log N)$ nearest-neighbor coordinate lookup. |
-| **Full Combined Dataset** | `data/combined/combined_dataset.csv` | ~1.21 GB | Full merged dataset containing input features and engineered target labels across all 6 target regions from 2018–2026. Used for training ML models (`train.py`) and full accuracy evaluation. *(Git Ignored)* |
-| **Regional Processed CSVs** | `data/processed/{region}/{year}/*.csv` | Multi-GB | Intermediate monthly feature/label CSV files processed per region (`ayeyawaddy`, `bago`, `magway`, `mandalay`, `sagaing`, `yangon`). *(Git Ignored)* |
-| **Raw Earth Engine CSVs** | `data/raw/{region}/{year}/*.csv` | Multi-GB | Raw Google Earth Engine observation CSVs (Landsat, Sentinel, CHIRPS, ERA5, MODIS, Copernicus DEM). *(Git Ignored)* |
-
-> 💡 **Git Ignore Note:** Large `.csv` files and `data/raw/` directories are ignored in `.gitignore` to keep the repository lightweight for pushing to remote Git servers (e.g., GitHub 100MB limit).
-
----
-
-## 🛠️ Model Server Technologies & Architecture
-
-The model serving backend is engineered for ultra-low latency inference, constrained memory footprint, and high throughput.
-
-```
-                  ┌─────────────────────────────────────────┐
-                  │          FastAPI Microservice           │
-                  │             (server/main.py)            │
-                  └────────────────────┬────────────────────┘
-                                       │
-        ┌──────────────────────────────┼──────────────────────────────┐
-        ▼                              ▼                              ▼
-┌───────────────┐              ┌───────────────┐              ┌───────────────┐
-│ Spatial KD-   │              │   LRU Model   │              │  Redis Cache  │
-│ Tree Engine   │              │    Manager    │              │    Service    │
-│  (cKDTree)    │              │ (2GB RAM Cap) │              │  (24h TTL)    │
-└───────┬───────┘              └───────┬───────┘              └───────┬───────┘
-        │                              │                              │
-        ▼                              ▼                              ▼
-Feature Lookup                40 Trained Models /             Cached Response
-(Lat/Lon → Vector)            Fallback Estimators              (Sub-ms Return)
-```
-
-### Key Technologies:
-- **[FastAPI](https://fastapi.tiangolo.com/) & Uvicorn**: Asynchronous Python web framework providing high-concurrency REST API endpoints.
-- **Spatial KD-Tree Indexing (`scipy.spatial.cKDTree`)**: $O(\log N)$ spatial coordinate (`latitude`, `longitude`) nearest-neighbor lookup engine to retrieve environmental & satellite feature vectors instantly.
-- **LRU Memory-Capped Model Loader**: Dynamic Least Recently Used (LRU) model manager capping active model memory usage to **max 4 heavy models / 2048 MB RAM** to prevent Out-Of-Memory (OOM) failures in production containers.
-- **Redis Caching (`redis-py`)**: Ultra-fast key-value cache layer with configurable TTL (24 hours default) for repeated coordinate or regional query payloads.
-- **Scikit-Learn & Joblib**: Machine learning execution engine supporting Random Forest & Gradient Boosting models across 40 agricultural targets.
-- **Composite Intelligence Engine**: Rule-based & composite scoring engine that transforms model outputs into actionable insights:
-  - **Crop Recommender**: Ranks 17 crops based on suitability scores & economic yields.
-  - **Multi-Hazard Alert**: Aggregates flood, drought, heat stress, and soil erosion risks.
-  - **Economic ROI Calculator**: Estimates expected return on investment.
-  - **Land Use Change Monitor**: Analyzes agricultural conversion & urban encroachment risks.
-- **Docker & Docker Compose**: Multi-stage containerization setup with automated health checks and Redis service orchestration.
-
-
----
-
-## ⚡ Performance Optimizations & Benchmarks
-
-The serving backend incorporates three critical design optimizations for sub-second execution speeds:
-
-1. **Parallel Model Inference**: Instead of sequential prediction loops, FastAPI routes target queries in parallel using a global `ThreadPoolExecutor` sized to available CPU cores.
-2. **Single-Sample GIL Optimization**: Loaded estimators are dynamically configured with `n_jobs = 1` for single-sample inference, avoiding scikit-learn inner threading dispatcher locks and context-switching overhead under concurrent requests.
-3. **Ensemble Forest Pruning**: On model loading, random forests are dynamically pruned from **500 down to 100 trees** (`n_estimators = 100`). This speeds up traversal by **~5x**, reduces the RAM footprint by **~700 MB**, and has a negligible **1.2%** impact on output accuracy.
-
-### Running the Latency Benchmark Tool:
-
-To test the latency speedup and memory efficiency directly on your host machine, run:
-```bash
-python scripts/test_latency.py
-```
-
-Example output:
 ```text
-=====================================================================
-                      BENCHMARK SUMMARY RESULTS                      
-=====================================================================
-Single-Model Speedup   : 11.83x faster
-Single-Model Latency   : 151.92 ms → 12.84 ms
-Memory Reduction Est.  : ~80% RAM footprint savings (500 → 100 trees)
-Multi-Model Latency    : ~0.24s sequential → ~0.35s parallel
-=====================================================================
+Website :3000 -> Node gateway :8000 -> Model server :8001 -> primary model artifacts
 ```
 
----
+## Release status and data truth
 
-## 🚀 Getting Started & Setup
+This release contains 40 primary Random Forest artifacts trained from real environmental,
+satellite, soil, terrain, land-cover and infrastructure features. The training targets are
+rule-engineered surrogate labels, not field-observed ground truth. Outputs are therefore
+marked `experimental`, `rule_engineered_surrogate`, and `field_validated: false` in every
+API response.
 
-### Prerequisites
-- Python 3.10+
-- Redis (optional, fallback to in-memory dictionary cache if unavailable)
-- Docker & Docker Compose (optional for containerized deployment)
+- 40/40 primary artifacts are present in the local `models/` directory.
+- 31 models passed the repository's current diagnostic suite; 9 are flagged for review.
+- Existing scores use random train/test splits, not spatial and temporal holdouts.
+- The precipitation reconstruction is flagged for suspected target leakage.
+- Models must not be presented as approved agronomic advice or production forecasts.
+- Primary `.pkl` files are intentionally Git-ignored. A server deployment must mount or
+  download the exact immutable artifacts declared in `models/manifest.json`.
 
-### 1. Local Setup
+The API publishes the artifacts that actually exist, without renaming them into planned
+models. Suitability outputs use `poor/moderate/good/excellent`; the released health output
+is only `crop_health_score` (0–1), and yield is `crop_yield_t_ha`. There are currently no
+artifacts for `crop_health_status`, `crop_stress_type`, or `crop_damage_percent`.
+`agricultural_gdp_forecast` is disclosed as a 0–1 surrogate index, not as a time-series
+forecast or currency value. `GET /api/v1/models` is the authoritative contract.
 
-Clone the repository and install dependencies:
+## Correctness guarantees added to serving
+
+- A verified 1,029,348-row spatial index is row-aligned with a compact 75-feature
+  serving matrix; persistent DataFrame memory is reduced without changing feature order.
+- Coordinate requests require an observation month and have an 8 km maximum match radius.
+- Nearest cells are selected on the unit sphere, then verified with Haversine distance.
+- Missing locations, data, models, checksums or model execution fail closed.
+- No invented default feature row, modulo coordinate lookup, random prediction or silent
+  prototype fallback is allowed.
+- Released 500-tree estimators are never pruned or changed at runtime.
+- Readiness and catalog responses verify all model/data SHA-256 digests before success.
+- All-target inference is sequential and memory-bounded instead of retaining 40 models.
+- Timed-out worker threads retain their capacity slot until they actually finish; one
+  inference runs per process to keep large estimator references within the RAM budget.
+- Cache keys include the API contract, model catalog and feature-data release versions.
+
+## Local setup
+
+Python 3.12 is required because the released artifacts were produced with
+scikit-learn 1.9.0.
 
 ```bash
-# Create virtual environment
-python3 -m venv .venv
-source .venv/bin/python3
-
-# Install requirements
-pip install -r requirements.txt
+cd /Users/phyomyatmin/Desktop/GEO_MODEL_SERVER
+python3.12 -m venv .venv
+.venv/bin/pip install -r requirements-dev.txt
+cp .env.example .env
+./run.sh serve
 ```
 
-### 2. Export Feature Dataset for Inference (Optional)
-
-If `data/processed/features_dataset.parquet` is missing or you modified `data/combined/combined_dataset.csv`, export the lightweight feature dataset:
+The model API is then available at `http://127.0.0.1:8001`.
 
 ```bash
-python scripts/export_inference_features.py
+curl http://127.0.0.1:8001/api/v1/ready
+curl http://127.0.0.1:8001/api/v1/models
 ```
 
-### 3. Run the Model Server
-
-#### Option A: Direct Python / Uvicorn
+Run its integration tests independently:
 
 ```bash
-python -m server.main
-# Or: uvicorn server.main:app --host 0.0.0.0 --port 8000 --reload
+.venv/bin/python -m pytest server/test_server.py
 ```
 
-#### Option B: Using Convenience Script (`run.sh`)
+## Prediction API
 
-```bash
-./run.sh pipeline
-```
-
-#### Option C: Docker Container Deployment
-
-```bash
-# Build and run Model Server + Redis containers
-docker compose up --build -d
-```
-
-The server will start at: `http://localhost:8000`
-API Documentation (Swagger UI): `http://localhost:8000/docs`
-
----
-
-## 📡 API Endpoints Overview
-
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `POST` | `/api/v1/predict` | Main inference endpoint. Accepts `lat`/`lon`, `system_index`, or `region_name`. Returns predictions & composite features. |
-| `GET` | `/api/v1/regions/{region_name}` | Returns pre-computed regional crop suitability ranking and climate summary. |
-| `GET` | `/api/v1/health` | Health diagnostic check showing current RAM usage, loaded LRU models, and Redis status. |
-
-### Example Request (`POST /api/v1/predict`)
+`POST /api/v1/predict` requires exactly one verified locator and an explicit target list.
 
 ```json
 {
-  "lat": 16.8661,
-  "lon": 96.1951,
-  "include_all_targets": true,
-  "composite_features": ["crop_recommender", "risk_alerts", "economic_roi"]
+  "request_id": "demo-001",
+  "lat": 15.731919,
+  "lon": 95.324433,
+  "observation_month": "2018-01",
+  "targets": ["heat_stress_risk", "crop_yield_t_ha"],
+  "composite_features": []
 }
 ```
 
-### Example Response Payload
+An exact `sample_id` can replace `lat`, `lon` and `observation_month`. In local
+development, `include_all_targets: true` can exercise all 40 outputs sequentially.
+Production limits a synchronous request to 17 expanded targets so the bounded
+crop-suitability tier request can run. All-40 inference remains a local audit
+operation and requires a future durable asynchronous batch endpoint.
 
-```json
-{
-  "status": "success",
-  "location": {
-    "system_index": "00000000000000000001",
-    "lat": 16.8661,
-    "lon": 96.1951,
-    "nearest_distance_deg": 0.00234
-  },
-  "predictions": {
-    "crop_yield_t_ha": 4.12,
-    "crop_health_score": 82.5,
-    "drought_risk_score": 0.15,
-    "crop_suitability_monsoon_rice": "excellent",
-    "crop_suitability_maize": "good"
-  },
-  "composite_features": {
-    "crop_recommender": {
-      "top_recommendations": [
-        {"crop": "monsoon_rice", "suitability": "excellent", "suitability_score": 1.0},
-        {"crop": "maize", "suitability": "good", "suitability_score": 0.75}
-      ]
-    }
-  },
-  "execution_metadata": {
-    "response_time_ms": 14.5,
-    "cached": false,
-    "ram_used_mb": 245.2,
-    "lru_models_in_memory": ["crop_yield_t_ha", "crop_health_score"]
-  }
-}
+The current manifest is not field-validated or production-approved. Production
+startup therefore refuses it by default. A hackathon/demo deployment must set
+`ALLOW_EXPERIMENTAL_RELEASE=true` and retain the experimental labels; a real
+production deployment requires a manifest with governance approval.
+
+Each target response includes the value, uncalibrated tree-vote share when available, unit, model
+version, artifact checksum, feature-schema checksum, diagnostic status and warnings.
+The response also includes the matched cell, distance, observation period and row-level
+data provenance.
+
+Available endpoints:
+
+- `POST /api/v1/predict`
+- `GET /api/v1/models`
+- `GET /api/v1/live`
+- `GET /api/v1/ready`
+- `GET /api/v1/health`
+- `/docs` in local development only
+
+The unsafe legacy `/boost` route has been removed.
+
+## Rebuild verified serving metadata
+
+When the QA-approved regional Parquet releases change, rebuild the locator table and then
+the model catalog. The command refuses any row-order or shared-feature mismatch.
+
+```bash
+.venv/bin/python scripts/build_spatial_index.py \
+  --source-root ../myanmar-agri-geo-csv-pipeline/data/output
+.venv/bin/python scripts/generate_model_manifest.py
 ```
 
----
+## Docker (local)
 
-## 🎯 40 ML Models Overview
+The Compose project exposes only the model API on host port 8001. Its Redis cache remains
+private, so it does not conflict with the Node repository's Redis port.
 
-The pipeline supports predictions across 40 target variables:
-1. **17 Crop Suitabilities**: Monsoon Rice, Dry Season Rice, Maize, Sugarcane, Cassava, Durian, Mangosteen, Longan, Mango, Chili, Tomato, Black Gram, Green Gram, Pigeon Pea, Groundnut, Sesame, Rubber.
-2. **Core Agronomic Indicators**: Crop Health Score, Crop Yield (t/ha), Irrigation Need.
-3. **Climate Forecasts**: Monthly Precipitation, Mean Temperature, Solar Radiation.
-4. **Environmental Hazards**: Flood Risk Level, Drought Risk Score, Heat Stress Risk, Soil Erosion Risk.
-5. **Management & Soil**: Optimal Planting Month, Nitrogen Requirement, Phosphorus Requirement.
-6. **Market & Infrastructure**: Market Integration Score, Post-Harvest Loss Risk, Supply Chain Efficiency, Cold Chain Potential.
-7. **Land Use & Water**: Agricultural Land Conversion Risk, Urban Encroachment Risk, Irrigation Potential, Surface Water Occurrence, Water Scarcity Risk.
-8. **Economic Output**: Agricultural GDP Forecast.
+```bash
+docker compose up --build
+```
 
----
+Models and serving Parquet files are mounted read-only. The image runs as a non-root user,
+uses one Uvicorn worker to avoid duplicating multi-gigabyte model memory, and disables
+prototype/boost behavior.
 
-## 📄 License
+Production configuration refuses disabled authentication, disabled startup checksum
+verification, prototype models, or more than one inference per process:
 
-Internal / Production Proprietary — Myanmar Agricultural Intelligence Project.
+```bash
+docker compose -f docker-compose.yml -f docker-compose.production.yml up --build
+```
+
+## Node gateway configuration
+
+For a native Node backend:
+
+```env
+MODEL_SERVER_URL=http://127.0.0.1:8001
+```
+
+For Node running in Docker Desktop while this Compose project is exposed locally:
+
+```env
+MODEL_SERVER_URL=http://host.docker.internal:8001
+```
+
+Set the same long `MODEL_SERVER_API_KEY` in both services and enable
+`AUTH_REQUIRED=true` before a server deployment. In production, place this model service
+on a private network; only the Node gateway should be publicly reachable.
+
+## Remaining production gates
+
+Production approval still requires field-verified labels, spatial and temporal holdout
+evaluation, remediation/retraining of flagged models, an immutable artifact registry or
+model OCI image, a durable asynchronous batch queue, load testing, monitoring, security
+review and agronomist-approved action templates. The current serving path is hardened for
+honest local integration; the model science is not yet production-approved.

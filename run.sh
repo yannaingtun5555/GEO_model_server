@@ -10,6 +10,7 @@
 #   ./run.sh view -r ayeyawaddy -y 2018 -m 01 --summary
 #   ./run.sh view -r ayeyawaddy -y 2018 -m 01 --columns
 #   ./run.sh all        # run full pipeline: preprocess + label
+#   ./run.sh serve      # run the private model API on localhost:8001
 
 if [ -f "$(cd "$(dirname "$0")" && pwd)/.venv/bin/python3" ]; then
     PYTHON="$(cd "$(dirname "$0")" && pwd)/.venv/bin/python3"
@@ -34,6 +35,7 @@ if [ -z "$1" ]; then
     echo "  test --target X     Test accuracy for specific target model"
     echo "  recommend           Rank best crops to plant for each region"
     echo "  pipeline            Test the 40-model end-to-end inference pipeline & BE JSON output"
+    echo "  serve               Run the FastAPI model server (default: 127.0.0.1:8001)"
     echo "  all                 Run preprocess + label in sequence"
     echo ""
     echo "View options:"
@@ -80,6 +82,11 @@ case "$CMD" in
         ;;
     pipeline)
         $PYTHON "pipeline/test_pipeline.py" "$@"
+        ;;
+    serve)
+        HOST="${HOST:-127.0.0.1}"
+        PORT="${PORT:-8001}"
+        exec "$PYTHON" -m uvicorn server.main:app --host "$HOST" --port "$PORT" "$@"
         ;;
     all)
         echo ">>> Running preprocess..."
