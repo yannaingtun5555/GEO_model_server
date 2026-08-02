@@ -1,0 +1,50 @@
+{
+  "schema_version": "spatial-index-v1",
+  "created_at": "2026-08-02T11:27:39.685840+00:00",
+  "rows": 1029348,
+  "feature_rows": 1029348,
+  "source_feature_dataset_sha256": "4ebc05f50b807f6a027b1ea505bdcc1b7a3357d839d8334367fb4b6c8c41e9d4",
+  "feature_dataset_sha256": "375f4280ccbb2534268877734805bf113f85517e39994f053ffa5f57c19f6643",
+  "feature_dataset_filename": "features_serving.parquet",
+  "feature_numeric_storage": "float32_and_lossless_downcast_integers",
+  "spatial_index_sha256": "045ddb5d1e7d7c4b168ba9d35380bf03121d9230ba62a6d34f9bd37d41518ddc",
+  "alignment_validation": "all shared non-null values exact within rtol=1e-5",
+  "source_artifacts": [
+    {
+      "region": "ayeyawaddy",
+      "filename": "ayeyawaddy_agri_suitability_with_infra.parquet",
+      "rows": 133056,
+      "sha256": "aedce9142c08cde5517da5f67247b9ab582dc1e390bad12d487467c871aff9f1"
+    },
+    {
+      "region": "bago",
+      "filename": "bago_agri_suitability_with_infra.parquet",
+      "rows": 153351,
+      "sha256": "33e2ec188ab120413dda01dc545dbcfbbc7a7248d51d335f823be713abae2578"
+    },
+    {
+      "region": "magway",
+      "filename": "magway_agri_suitability_with_infra.parquet",
+      "rows": 178100,
+      "sha256": "8bf9fc6db7c98e3d7d55cbede5fba33c943383b9762c2966c785cd04c990fe4f"
+    },
+    {
+      "region": "mandalay",
+      "filename": "mandalay_agri_suitability_with_infra.parquet",
+      "rows": 151569,
+      "sha256": "f8875c4eef5c7edbb419f59949df0cfbbbe902e3eb431ce8d3e725880e16a12d"
+    },
+    {
+      "region": "sagaing",
+      "filename": "sagaing_agri_suitability_with_infra.parquet",
+      "rows": 376600,
+      "sha256": "1b06b9f0a8e01fdc4bda912fe8c8ccca2bbac2982be4519aef05a022a8d555fc"
+    },
+    {
+      "region": "yangon",
+      "filename": "yangon_agri_suitability_with_infra.parquet",
+      "rows": 36672,
+      "sha256": "8feb3fbae647468a6e767615c2d122265ccbb117f6e1c817892f2ce43221f540"
+    }
+  ]
+}

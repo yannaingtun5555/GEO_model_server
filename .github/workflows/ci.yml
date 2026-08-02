@@ -1,0 +1,20 @@
+name: model-server-ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install --requirement requirements-dev.txt
+      - run: python -m compileall -q server scripts
+      - run: python -m pytest server/test_server.py
+      - run: docker build --tag geo-model-server:ci .
