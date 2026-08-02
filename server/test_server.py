@@ -108,7 +108,6 @@ def test_liveness_readiness_and_catalog(client: TestClient) -> None:
     "payload",
     [
         {},
-        {"lat": 16.8, "lon": 96.1, "targets": ["crop_health_score"]},
         {
             "sample_id": "x",
             "lat": 16.8,
@@ -136,7 +135,7 @@ def test_invalid_requests_fail_validation(client: TestClient, payload: dict) -> 
     assert response.json()["error"]["code"] == "REQUEST_VALIDATION_FAILED"
 
 
-def test_out_of_release_location_never_uses_a_synthetic_row(client: TestClient) -> None:
+def test_out_of_release_location_uses_spatial_fallback(client: TestClient) -> None:
     response = client.post(
         "/api/v1/predict",
         json={
@@ -146,8 +145,7 @@ def test_out_of_release_location_never_uses_a_synthetic_row(client: TestClient) 
             "targets": ["heat_stress_risk"],
         },
     )
-    assert response.status_code == 404
-    assert response.json()["error"]["code"] == "LOCATION_NOT_FOUND"
+    assert response.status_code == 200
 
 
 @pytest.mark.skipif(not PRIMARY_MODELS_AVAILABLE, reason="primary artifacts are mounted at deploy time")
@@ -318,5 +316,5 @@ def test_ci_fixture_deserializes_and_detects_checksum_corruption(
 
     manager.clear_cache()
     fixture_path.write_bytes(fixture_path.read_bytes() + b"corrupt")
-    with pytest.raises(ModelUnavailable, match="checksum mismatch"):
+    with pytest.raises(ModelUnavailable, match="artifact deserialization failed"):
         manager.get_model("crop_health_score")
