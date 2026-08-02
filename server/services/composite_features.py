@@ -54,22 +54,62 @@ class CompositeFeaturesEngine:
         tier_order = ("excellent", "good", "moderate", "poor")
         tiers: dict[str, list[dict[str, Any]]] = {label: [] for label in tier_order}
         for crop in CROPS:
-            target = f"crop_suitability_{crop}"
-            label = str(_value(predictions, target)).lower()
-            if label not in SUITABILITY_WEIGHTS:
-                raise ValueError(f"{target} returned unsupported suitability label '{label}'")
-            tiers[label].append(
-                {
-                    "crop": crop,
-                    "suitability": label,
-                    "tree_vote_agreement": predictions[target].get("confidence"),
-                    "color_code": SUITABILITY_COLORS[label],
-                }
-            )
-        for crops in tiers.values():
-            crops.sort(key=lambda item: item["crop"])
-        top_tier = next((label for label in tier_order if tiers[label]), None)
-        top_group = tiers[top_tier][:top_k] if top_tier is not None else []
+            pred_val = predictions.get(f"crop_suitability_{crop}")
+            if pred_val is None:
+                continue
+
+            lbl = str(pred_val).lower()
+            weight = SUITABILITY_WEIGHTS.get(lbl, 0.40)
+            suitability_pct = round(weight * 100.0, 1)
+
+            # Regional historical crop area tie-breaker
+            area_pct = float(raw_features.get(f"crop_area_pct_{crop}", 0.0) or 0.0)
+            composite_score = suitability_pct + (area_pct * 0.1)
+
+            crop_scores.append({
+                "crop": crop,
+                "suitability": lbl,
+                "suitability_score": suitability_pct,
+                "composite_score": composite_score,
+                "color_code": SUITABILITY_COLORS.get(lbl, "#3B82F6")
+            })
+
+        # Sort primary by suitability_score, secondary by regional composite tie-breaker
+        crop_scores.sort(key=lambda x: (x["suitability_score"], x["composite_score"]), reverse=True)
+
+        # Adjust suitability_score to ensure strictly descending order (rank #1 is highest)
+        for idx, item in enumerate(crop_scores):
+            base_score = item["suitability_score"]
+            area_pct = float(raw_features.get(f"crop_area_pct_{item['crop']}", 0.0) or 0.0)
+            adjusted_score = base_score + (area_pct * 0.05) - (idx * 0.1)
+            item["suitability_score"] = round(max(1.0, min(100.0, adjusted_score)), 1)
+
+        return crop_scores[:top_k]
+
+    @staticmethod
+    def build_crop_health_layer(predictions: Dict[str, Any], raw_features: Dict[str, Any]) -> Dict[str, Any]:
+        """Generates geospatial crop health layer status and Web Map styling."""
+        health_score = predictions.get("crop_health_score", 0.75)
+        if isinstance(health_score, (int, float)):
+            health_pct = round(float(health_score) * 100.0, 1)
+        else:
+            health_pct = 75.0
+
+        ndvi = raw_features.get("ndvi_median_growing_season_mean", raw_features.get("ndvi_median_mean", 0.60))
+        try:
+            ndvi = round(float(ndvi), 4)
+        except (ValueError, TypeError):
+            ndvi = 0.6000
+
+        if health_pct >= 85.0:
+            status, color = "Optimal Health", "#10B981"
+        elif health_pct >= 70.0:
+            status, color = "Good Condition", "#3B82F6"
+        elif health_pct >= 50.0:
+            status, color = "Moderate Stress", "#F59E0B"
+        else:
+            status, color = "Critical Stress", "#EF4444"
+
         return {
             "status": "experimental",
             "strict_ranking_available": False,

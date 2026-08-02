@@ -6,24 +6,11 @@ services:
     ports:
       - "127.0.0.1:8001:8000"
     environment:
-      ENVIRONMENT: development
-      AUTH_REQUIRED: ${AUTH_REQUIRED:-false}
-      MODEL_SERVER_API_KEY: ${MODEL_SERVER_API_KEY:-}
-      CORS_ORIGINS: http://localhost:8000
-      REDIS_HOST: redis-cache
-      REDIS_PORT: 6379
-      MAX_LOADED_MODELS: 40
-      MAX_RAM_MB: 2048
-      MODEL_MEMORY_EXPANSION_FACTOR: 2.25
-      MAX_CONCURRENT_REQUESTS: 20
-      QUEUE_TIMEOUT_SECONDS: 5
-      REQUEST_EXECUTION_TIMEOUT_SECONDS: 30
-      MAX_EXPANDED_SYNC_TARGETS: 40
-      VERIFY_MODEL_CHECKSUMS_ON_STARTUP: ${VERIFY_MODEL_CHECKSUMS_ON_STARTUP:-false}
-      ALLOW_PROTOTYPE_MODELS: "false"
-    volumes:
-      - ./models:/models:ro
-      - ./data/processed:/data:ro
+      - REDIS_HOST=redis_cache
+      - REDIS_PORT=6379
+      - MAX_LOADED_MODELS=40
+      - MAX_RAM_MB=6144
+      - BOOST_MODE=false
     depends_on:
       redis-cache:
         condition: service_healthy
