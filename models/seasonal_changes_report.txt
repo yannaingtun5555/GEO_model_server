@@ -1,0 +1,75 @@
+=====================================================================
+                  SEASONAL SENSITIVITY REPORT                        
+=====================================================================
+
+📍 Region: AYEYAWADDY (Lat: 15.9761, Lon: 94.2362)
+----------------------------------------------------------------------
+Target Variable                     | Monsoon (August)   | Dry Season (January)
+----------------------------------------------------------------------
+   suitability_monsoon_rice         | GOOD               | GOOD                
+   suitability_dry_season_rice      | GOOD               | GOOD                
+   suitability_maize                | MODERATE           | MODERATE            
+   suitability_chili                | MODERATE           | MODERATE            
+⚡ drought_risk_score               | 0.3957             | 0.3925              
+   flood_risk_level                 | 2                  | 2                   
+   irrigation_need                  | 2                  | 2                   
+
+📍 Region: BAGO (Lat: 18.6416, Lon: 94.7026)
+----------------------------------------------------------------------
+Target Variable                     | Monsoon (August)   | Dry Season (January)
+----------------------------------------------------------------------
+   suitability_monsoon_rice         | GOOD               | GOOD                
+   suitability_dry_season_rice      | GOOD               | GOOD                
+   suitability_maize                | MODERATE           | MODERATE            
+   suitability_chili                | GOOD               | GOOD                
+⚡ drought_risk_score               | 0.4359             | 0.4204              
+⚡ flood_risk_level                 | 1                  | 0                   
+   irrigation_need                  | 2                  | 2                   
+
+📍 Region: MAGWAY (Lat: 20.5943, Lon: 93.8734)
+----------------------------------------------------------------------
+Target Variable                     | Monsoon (August)   | Dry Season (January)
+----------------------------------------------------------------------
+   suitability_monsoon_rice         | MODERATE           | MODERATE            
+   suitability_dry_season_rice      | MODERATE           | MODERATE            
+   suitability_maize                | MODERATE           | MODERATE            
+   suitability_chili                | MODERATE           | MODERATE            
+⚡ drought_risk_score               | 0.6161             | 0.5981              
+   flood_risk_level                 | 0                  | 0                   
+   irrigation_need                  | 2                  | 2                   
+
+📍 Region: MANDALAY (Lat: 21.0968, Lon: 94.8062)
+----------------------------------------------------------------------
+Target Variable                     | Monsoon (August)   | Dry Season (January)
+----------------------------------------------------------------------
+   suitability_monsoon_rice         | MODERATE           | MODERATE            
+   suitability_dry_season_rice      | GOOD               | GOOD                
+   suitability_maize                | GOOD               | GOOD                
+   suitability_chili                | GOOD               | GOOD                
+⚡ drought_risk_score               | 0.3351             | 0.3216              
+   flood_risk_level                 | 2                  | 2                   
+   irrigation_need                  | 2                  | 2                   
+
+📍 Region: SAGAING (Lat: 23.1661, Lon: 93.9771)
+----------------------------------------------------------------------
+Target Variable                     | Monsoon (August)   | Dry Season (January)
+----------------------------------------------------------------------
+   suitability_monsoon_rice         | MODERATE           | MODERATE            
+⚡ suitability_dry_season_rice      | GOOD               | MODERATE            
+   suitability_maize                | MODERATE           | MODERATE            
+⚡ suitability_chili                | GOOD               | MODERATE            
+⚡ drought_risk_score               | 0.5494             | 0.5623              
+   flood_risk_level                 | 0                  | 0                   
+   irrigation_need                  | 2                  | 2                   
+
+📍 Region: YANGON (Lat: 17.2017, Lon: 95.7390)
+----------------------------------------------------------------------
+Target Variable                     | Monsoon (August)   | Dry Season (January)
+----------------------------------------------------------------------
+   suitability_monsoon_rice         | EXCELLENT          | EXCELLENT           
+   suitability_dry_season_rice      | EXCELLENT          | EXCELLENT           
+   suitability_maize                | GOOD               | GOOD                
+   suitability_chili                | GOOD               | GOOD                
+⚡ drought_risk_score               | 0.5288             | 0.5698              
+   flood_risk_level                 | 1                  | 1                   
+   irrigation_need                  | 2                  | 2                   

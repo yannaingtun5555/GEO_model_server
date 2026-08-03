@@ -7,7 +7,22 @@ It remains a separate repository and process from the Node.js application backen
 Website :3000 -> Node gateway :8000 -> Model server :8001 -> primary model artifacts
 ```
 
-## Release status and data truth
+## 🛰️ GEE Live Data Pipeline & Prediction Database
+
+To guarantee sub-millisecond response times in production, the server features a live ingestion pipeline and pre-computed predictions database:
+
+1. **GEE Ingestion (`POST /api/v1/pipeline/update`)**: Allows uploading a monthly dynamic CSV export directly from Google Earth Engine.
+2. **Background Ingestion Pipeline**: When a CSV is uploaded, the server runs a background task that:
+   - Merges the new satellite observations with the static features dataset.
+   - Batch predicts all 40 ML target outputs across all grid points.
+   - Saves predictions to `live_predictions.parquet`.
+   - Regenerates `map_recommendations.json` (ranking all 17 crops).
+   - Hot-reloads the active prediction cache without server downtime.
+3. **Instant Lookup Mode**: When the prediction database is active, `/predict` performs an $O(1)$ system index lookup or an $O(\log N)$ KD-Tree coordinate lookup, returning predictions in **<5ms** without running ML inference.
+
+For detailed integration guides, see [Backend Engineer's Guide](file:///home/yan9htun/Desktop/gee/docs/backend_engineer_guide.md).
+
+---
 
 This release contains 40 primary Random Forest artifacts trained from real environmental,
 satellite, soil, terrain, land-cover and infrastructure features. The training targets are

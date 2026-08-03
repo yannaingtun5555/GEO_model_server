@@ -83,10 +83,9 @@ case "$CMD" in
     pipeline)
         $PYTHON "pipeline/test_pipeline.py" "$@"
         ;;
-    serve)
-        HOST="${HOST:-127.0.0.1}"
-        PORT="${PORT:-8001}"
-        exec "$PYTHON" -m uvicorn server.main:app --host "$HOST" --port "$PORT" "$@"
+    map-data)
+        echo ">>> Generating pre-computed map recommendations..."
+        $PYTHON "$SCRIPTS_DIR/generate_map_data.py" "$@"
         ;;
     all)
         echo ">>> Running preprocess..."
