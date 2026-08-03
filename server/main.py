@@ -13,6 +13,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from server.api.v1.endpoints import router as v1_router
+from server.api.v1.batch_infer import router as batch_infer_router  # daily pipeline
 from server.config import (
     ALLOW_EXPERIMENTAL_RELEASE,
     AUTH_REQUIRED,
@@ -183,6 +184,8 @@ async def handle_unexpected_error(request: Request, exc: Exception):
 
 
 app.include_router(v1_router)
+# Daily-pipeline batch inference (internal use only, requires API key)
+app.include_router(batch_infer_router)
 
 
 if __name__ == "__main__":
