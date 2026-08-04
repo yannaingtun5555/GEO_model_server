@@ -6,11 +6,16 @@ services:
     ports:
       - "127.0.0.1:8001:8000"
     environment:
-      - REDIS_HOST=redis_cache
+      - ENVIRONMENT=development
+      - MODEL_SERVER_API_KEY=dev-internal-model-key-replace-before-production
+      - REDIS_HOST=redis-cache
       - REDIS_PORT=6379
       - MAX_LOADED_MODELS=40
       - MAX_RAM_MB=6144
       - BOOST_MODE=false
+    volumes:
+      - ./models:/models:ro
+      - ./data/processed:/data:ro
     depends_on:
       redis-cache:
         condition: service_healthy
