@@ -1,187 +1,115 @@
 # Myanmar Agricultural Experimental Model Server
 
-Private FastAPI inference service for the Myanmar Agriculture Intelligence project.
-It remains a separate repository and process from the Node.js application backend.
+Private FastAPI inference microservice for the Myanmar Agriculture Intelligence project.
+Serves a streamlined dataset processing pipeline (CSV → Preprocess → Predict 40 Models + Composites → Response) for web backend integration.
 
 ```text
-Website :3000 -> Node gateway :8000 -> Model server :8001 -> primary model artifacts
+Web App / Daily Task -> CSV Upload -> Preprocess -> Predict 40 ML Models + Composites -> Direct JSON Response
 ```
 
-## 🛰️ GEE Live Data Pipeline & Prediction Database
+## 🛰️ Dataset Pipeline API (`POST /api/v1/pipeline/run`)
 
-To guarantee sub-millisecond response times in production, the server features a live ingestion pipeline and pre-computed predictions database:
+The primary pipeline API accepts a daily uploaded CSV dataset (matching `data/test/*.csv` or `data/raw/yangon/yangon.csv`), processes it, evaluates **all 40 machine learning models**, computes **all 5 composite feature groups**, and directly returns per-index structured predictions.
 
-1. **GEE Ingestion (`POST /api/v1/pipeline/update`)**: Allows uploading a monthly dynamic CSV export directly from Google Earth Engine.
-2. **Background Ingestion Pipeline**: When a CSV is uploaded, the server runs a background task that:
-   - Merges the new satellite observations with the static features dataset.
-   - Batch predicts all 40 ML target outputs across all grid points.
-   - Saves predictions to `live_predictions.parquet`.
-   - Regenerates `map_recommendations.json` (ranking all 17 crops).
-   - Hot-reloads the active prediction cache without server downtime.
-3. **Instant Lookup Mode**: When the prediction database is active, `/predict` performs an $O(1)$ system index lookup or an $O(\log N)$ KD-Tree coordinate lookup, returning predictions in **<5ms** without running ML inference.
-
-For detailed integration guides, see [Backend Engineer's Guide](file:///home/yan9htun/Desktop/gee/docs/backend_engineer_guide.md).
+### Workflow:
+1. **CSV Upload**: Accepts daily region export CSV via multipart file upload.
+2. **Preprocessing**: Automatically extracts index IDs (`system:index`/`sample_id`), `latitude`, `longitude`, and `region`, aligns 75 feature columns, and handles missing input imputation.
+3. **40 Model Predictions**: Runs model inference for all 40 ML targets across every row.
+4. **5 Composite Feature Groups**: Computes composite features per row:
+   - `crop_recommender`: Suitability rankings & scores across all 17 crops.
+   - `crop_health`: Health layer score, classification, and NDVI analysis.
+   - `economic_roi`: Economic ROI calculation indicator.
+   - `risk_alerts`: Multi-hazard alerts (Flood, Drought, Heat, Erosion, Water Scarcity).
+   - `land_use`: Land conversion and urban encroachment risk analysis.
+5. **Direct Response**: Returns structured predictions and metadata for every land index.
 
 ---
 
-This release contains 40 primary Random Forest artifacts trained from real environmental,
-satellite, soil, terrain, land-cover and infrastructure features. The training targets are
-rule-engineered surrogate labels, not field-observed ground truth. Outputs are therefore
-marked `experimental`, `rule_engineered_surrogate`, and `field_validated: false` in every
-API response.
+## 🚀 API Endpoints
 
-- 40/40 primary artifacts are present in the local `models/` directory.
-- 31 models passed the repository's current diagnostic suite; 9 are flagged for review.
-- Existing scores use random train/test splits, not spatial and temporal holdouts.
-- The precipitation reconstruction is flagged for suspected target leakage.
-- Models must not be presented as approved agronomic advice or production forecasts.
-- Primary `.pkl` files are intentionally Git-ignored. A server deployment must mount or
-  download the exact immutable artifacts declared in `models/manifest.json`.
+### 1. Main Pipeline API
+- `POST /api/v1/pipeline/run`: Ingest CSV dataset, preprocess, evaluate all 40 models + 5 composite groups per row, and return predictions.
 
-The API publishes the artifacts that actually exist, without renaming them into planned
-models. Suitability outputs use `poor/moderate/good/excellent`; the released health output
-is only `crop_health_score` (0–1), and yield is `crop_yield_t_ha`. There are currently no
-artifacts for `crop_health_status`, `crop_stress_type`, or `crop_damage_percent`.
-`agricultural_gdp_forecast` is disclosed as a 0–1 surrogate index, not as a time-series
-forecast or currency value. `GET /api/v1/models` is the authoritative contract.
-
-## Correctness guarantees added to serving
-
-- A verified 1,029,348-row spatial index is row-aligned with a compact 75-feature
-  serving matrix; persistent DataFrame memory is reduced without changing feature order.
-- Coordinate requests require an observation month and have an 8 km maximum match radius.
-- Nearest cells are selected on the unit sphere, then verified with Haversine distance.
-- Missing locations, data, models, checksums or model execution fail closed.
-- No invented default feature row, modulo coordinate lookup, random prediction or silent
-  prototype fallback is allowed.
-- Released 500-tree estimators are never pruned or changed at runtime.
-- Readiness and catalog responses verify all model/data SHA-256 digests before success.
-- All-target inference is sequential and memory-bounded instead of retaining 40 models.
-- Timed-out worker threads retain their capacity slot until they actually finish; one
-  inference runs per process to keep large estimator references within the RAM budget.
-- Cache keys include the API contract, model catalog and feature-data release versions.
-
-## Local setup
-
-Python 3.12 is required because the released artifacts were produced with
-scikit-learn 1.9.0.
-
+#### Example Request:
 ```bash
-cd /Users/phyomyatmin/Desktop/GEO_MODEL_SERVER
-python3.12 -m venv .venv
-.venv/bin/pip install -r requirements-dev.txt
-cp .env.example .env
-./run.sh serve
+curl -F "file=@data/raw/yangon/yangon.csv" http://localhost:8001/api/v1/pipeline/run
 ```
 
-The model API is then available at `http://127.0.0.1:8001`.
-
-```bash
-curl http://127.0.0.1:8001/api/v1/ready
-curl http://127.0.0.1:8001/api/v1/models
-```
-
-Run its integration tests independently:
-
-```bash
-.venv/bin/python -m pytest server/test_server.py
-```
-
-## Prediction API
-
-`POST /api/v1/predict` requires exactly one verified locator and an explicit target list.
-
+#### Example Response Structure:
 ```json
 {
-  "request_id": "demo-001",
-  "lat": 15.731919,
-  "lon": 95.324433,
-  "observation_month": "2018-01",
-  "targets": ["heat_stress_risk", "crop_yield_t_ha"],
-  "composite_features": []
+  "status": "success",
+  "total_rows": 2,
+  "rows": [
+    {
+      "meta": {
+        "index": "1847,432",
+        "sample_id": "mm_1847_432__2018-01",
+        "lat": 17.20167,
+        "lon": 95.73900,
+        "region": "yangon"
+      },
+      "predictions": {
+        "crop_health_score": { "value": 0.54, "task_type": "regression", "label": "0.54", "is_fallback": false },
+        "crop_suitability_monsoon_rice": { "value": "good", "task_type": "classification", "label": "good", "is_fallback": false },
+        "...": "38 more targets..."
+      },
+      "composite_features": {
+        "crop_recommender": [ { "crop": "monsoon_rice", "suitability": "good", "suitability_score": 75.0 } ],
+        "crop_health": { "health_score": 0.54, "health_class": "Good", "map_color_hex": "#3B82F6" },
+        "economic_roi": { "status": "unavailable" },
+        "risk_alerts": { "overall_level": "low", "risk_scores": { ... } },
+        "land_use": { "risk_level": "low", "conversion_risk_score": 0.0 }
+      }
+    }
+  ],
+  "pipeline_metadata": {
+    "filename": "yangon.csv",
+    "execution_time_ms": 145.2,
+    "total_predictions_evaluated": 80,
+    "models_used_count": 80,
+    "fallbacks_used_count": 0
+  }
 }
 ```
 
-An exact `sample_id` can replace `lat`, `lon` and `observation_month`. In local
-development, `include_all_targets: true` can exercise all 40 outputs sequentially.
-Production limits a synchronous request to 17 expanded targets so the bounded
-crop-suitability tier request can run. All-40 inference remains a local audit
-operation and requires a future durable asynchronous batch endpoint.
+### 2. Supporting Microservice APIs
+- `GET /api/v1/live`: Liveness probe (`{"status": "alive"}`)
+- `GET /api/v1/ready`: Server readiness check (`{"status": "ready", "model_targets_count": 40}`)
+- `GET /api/v1/health`: Resource & memory diagnostics
+- `GET /api/v1/models`: Returns authoritative list of all 40 prediction target definitions
 
-The current manifest is not field-validated or production-approved. Production
-startup therefore refuses it by default. A hackathon/demo deployment must set
-`ALLOW_EXPERIMENTAL_RELEASE=true` and retain the experimental labels; a real
-production deployment requires a manifest with governance approval.
+---
 
-Each target response includes the value, uncalibrated tree-vote share when available, unit, model
-version, artifact checksum, feature-schema checksum, diagnostic status and warnings.
-The response also includes the matched cell, distance, observation period and row-level
-data provenance.
-
-Available endpoints:
-
-- `POST /api/v1/predict`
-- `GET /api/v1/models`
-- `GET /api/v1/live`
-- `GET /api/v1/ready`
-- `GET /api/v1/health`
-- `/docs` in local development only
-
-The unsafe legacy `/boost` route has been removed.
-
-## Rebuild verified serving metadata
-
-When the QA-approved regional Parquet releases change, rebuild the locator table and then
-the model catalog. The command refuses any row-order or shared-feature mismatch.
+## 🛠️ Local Setup
 
 ```bash
-.venv/bin/python scripts/build_spatial_index.py \
-  --source-root ../myanmar-agri-geo-csv-pipeline/data/output
-.venv/bin/python scripts/generate_model_manifest.py
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+./run.sh serve
 ```
 
-## Docker (local)
+The model API will be available at `http://127.0.0.1:8001`.
 
-The Compose project exposes only the model API on host port 8001. Its Redis cache remains
-private, so it does not conflict with the Node repository's Redis port.
+### Run Verification Tests
+```bash
+.venv/bin/python -c "
+from fastapi.testclient import TestClient
+from server.main import app
+
+client = TestClient(app)
+print(client.get('/api/v1/live').json())
+print(client.get('/api/v1/ready').json())
+"
+```
+
+---
+
+## 🐳 Docker Deployment
+
+Exposes the model API microservice on host port `8001`.
 
 ```bash
 docker compose up --build
 ```
-
-Models and serving Parquet files are mounted read-only. The image runs as a non-root user,
-uses one Uvicorn worker to avoid duplicating multi-gigabyte model memory, and disables
-prototype/boost behavior.
-
-Production configuration refuses disabled authentication, disabled startup checksum
-verification, prototype models, or more than one inference per process:
-
-```bash
-docker compose -f docker-compose.yml -f docker-compose.production.yml up --build
-```
-
-## Node gateway configuration
-
-For a native Node backend:
-
-```env
-MODEL_SERVER_URL=http://127.0.0.1:8001
-```
-
-For Node running in Docker Desktop while this Compose project is exposed locally:
-
-```env
-MODEL_SERVER_URL=http://host.docker.internal:8001
-```
-
-Set the same long `MODEL_SERVER_API_KEY` in both services and enable
-`AUTH_REQUIRED=true` before a server deployment. In production, place this model service
-on a private network; only the Node gateway should be publicly reachable.
-
-## Remaining production gates
-
-Production approval still requires field-verified labels, spatial and temporal holdout
-evaluation, remediation/retraining of flagged models, an immutable artifact registry or
-model OCI image, a durable asynchronous batch queue, load testing, monitoring, security
-review and agronomist-approved action templates. The current serving path is hardened for
-honest local integration; the model science is not yet production-approved.

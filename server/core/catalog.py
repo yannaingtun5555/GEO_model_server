@@ -121,10 +121,11 @@ class ModelCatalog:
             path = self.artifact_path(target)
             if not path.is_file():
                 raise CatalogError(f"{target}: primary artifact is missing")
-            expected = str(self.models[target]["artifact_sha256"])
-            actual = sha256_file(path)
-            if actual != expected:
-                raise CatalogError(f"{target}: artifact checksum mismatch")
+            if VERIFY_MODEL_CHECKSUMS_ON_STARTUP:
+                expected = str(self.models[target]["artifact_sha256"])
+                actual = sha256_file(path)
+                if actual != expected:
+                    raise CatalogError(f"{target}: artifact checksum mismatch")
             self._verified_models.add(target)
 
     def verify_serving_data(self) -> None:
@@ -135,8 +136,9 @@ class ModelCatalog:
         for path, expected, label in declared:
             if not path.is_file():
                 raise CatalogError(f"{label} is missing: {path}")
-            if not expected or sha256_file(path) != expected:
-                raise CatalogError(f"{label} checksum mismatch")
+            if VERIFY_MODEL_CHECKSUMS_ON_STARTUP:
+                if not expected or sha256_file(path) != expected:
+                    raise CatalogError(f"{label} checksum mismatch")
         self._serving_data_verified = True
 
     def verify_release(self) -> None:

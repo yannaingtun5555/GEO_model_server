@@ -107,8 +107,8 @@ CORS_ORIGINS = tuple(
 if ENVIRONMENT == "production" and "*" in CORS_ORIGINS:
     raise RuntimeError("Wildcard CORS is forbidden in production")
 
-MAX_LOADED_MODELS = _int_env("MAX_LOADED_MODELS", 2)
-MAX_RAM_MB = _int_env("MAX_RAM_MB", 2048)
+MAX_LOADED_MODELS = _int_env("MAX_LOADED_MODELS", 40)
+MAX_RAM_MB = _int_env("MAX_RAM_MB", 8192)
 MODEL_MEMORY_EXPANSION_FACTOR = _float_env(
     "MODEL_MEMORY_EXPANSION_FACTOR", 2.25, 1.0
 )
