@@ -14,155 +14,50 @@
     <header>
       <div class="brand-title">
         <h1>🌾 Agricultural Model Server Test Console</h1>
-        <span class="badge-microservice">FastAPI Standalone API</span>
+        <span class="badge-microservice">FastAPI Dataset Pipeline API</span>
       </div>
       <div class="status-bar">
         <div class="server-indicator" id="serverHealthBadge">
           <span class="dot-green"></span>
           <span id="serverStatusText">Model Server Live</span>
         </div>
-        <div class="metrics-mini" id="serverRamText">RAM: -- / 2048 MB</div>
+        <div class="metrics-mini" id="serverRamText">RAM: -- MB</div>
       </div>
     </header>
 
-    <!-- Map Container -->
-    <div class="card map-card" style="margin-bottom: 20px;">
-      <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-        <h2 class="card-title">🗺️ Myanmar Crop Suitability Grid Map</h2>
-        <div class="map-controls">
-          <span style="font-size: 0.85rem; color: var(--text-muted); margin-right: 8px;">Recommendation Rank:</span>
-          <div class="preset-buttons" id="cropRankSelector" style="display: inline-flex; gap: 4px; margin: 0;">
-            <button type="button" class="btn-preset active" style="padding: 6px 12px;" data-rank="0">1st Crop</button>
-            <button type="button" class="btn-preset" style="padding: 6px 12px;" data-rank="1">2nd Crop</button>
-            <button type="button" class="btn-preset" style="padding: 6px 12px;" data-rank="2">3rd Crop</button>
-          </div>
-        </div>
-      </div>
-      <div class="map-wrapper" style="position: relative;">
-        <div id="map" style="height: 480px; border-radius: 8px; border: 1px solid var(--border-color); background: #0f172a;"></div>
-        <div class="map-legend" id="mapLegend" style="margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; padding: 10px; background: rgba(30, 41, 59, 0.5); border-radius: 6px; border: 1px solid var(--border-color);">
-          <!-- Populated dynamically via JS -->
-        </div>
-      </div>
-      <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 8px; text-align: center;">
-        💡 Click on any land grid box to auto-fill latitude/longitude and run the live prediction model.
-      </div>
-    </div>
-
     <!-- Main Grid -->
     <div class="dashboard-grid">
-      <!-- Left Column: Request Control Panel -->
+      <!-- Left Column: CSV Batch Dataset Pipeline Request Panel -->
       <div class="card">
         <div class="card-header">
-          <h2 class="card-title">⚙️ Request Controls</h2>
-          <span style="font-size: 0.75rem; color: var(--text-muted);">v1 API</span>
+          <h2 class="card-title">🛰️ Dataset Pipeline Test (`POST /api/v1/pipeline/run`)</h2>
         </div>
 
-        <form id="predictForm">
-          <!-- Region Presets -->
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px; line-height: 1.5;">
+          Upload any daily dataset CSV (e.g. from <code>data/raw/yangon/yangon.csv</code> or <code>data/test/*.csv</code>). 
+          The pipeline will preprocess features, run <strong>all 40 ML models</strong>, calculate <strong>all 5 composite feature groups</strong>, and display per-row results.
+        </p>
+
+        <form id="pipelineForm">
           <div class="form-group">
-            <label class="form-label">Location Presets</label>
+            <label class="form-label">Select Dataset CSV File</label>
+            <input type="file" id="csvFileInput" accept=".csv,.txt" class="form-input" style="padding: 8px;">
+          </div>
+
+          <div class="form-group" style="margin-top: 10px;">
+            <label class="form-label">Quick Sample Dataset Preset</label>
             <div class="preset-buttons">
-              <button type="button" class="btn-preset active" data-index="992676" data-lat="16.8661" data-lon="96.1951" data-region="Yangon">Yangon</button>
-              <button type="button" class="btn-preset" data-index="0" data-lat="16.9211" data-lon="95.2341" data-region="Ayeyawaddy">Ayeyawaddy</button>
-              <button type="button" class="btn-preset" data-index="133056" data-lat="17.3321" data-lon="96.4811" data-region="Bago">Bago</button>
-              <button type="button" class="btn-preset" data-index="286407" data-lat="20.1541" data-lon="94.9211" data-region="Magway">Magway</button>
-              <button type="button" class="btn-preset" data-index="464507" data-lat="21.9741" data-lon="96.0831" data-region="Mandalay">Mandalay</button>
-              <button type="button" class="btn-preset" data-index="616076" data-lat="22.1151" data-lon="95.1321" data-region="Sagaing">Sagaing</button>
+              <button type="button" class="btn-preset active" id="loadSampleBtn">📁 Load Sample Yangon CSV (4 Rows)</button>
             </div>
-          </div>
-
-          <!-- Coordinate & Index Inputs -->
-          <div class="form-group">
-            <label class="form-label">System Index / Lat-Lon</label>
-            <div class="input-row" style="margin-bottom: 6px;">
-              <input type="text" id="sysIndexInput" class="form-input" placeholder="System Index (e.g. 0)" value="0">
-            </div>
-            <div class="input-row">
-              <input type="text" id="latInput" class="form-input" placeholder="Latitude" value="16.8661">
-              <input type="text" id="lonInput" class="form-input" placeholder="Longitude" value="96.1951">
-            </div>
-          </div>
-
-          <!-- Targets to Predict -->
-          <div class="form-group">
-            <label class="form-label">Requested Targets</label>
-            <div class="checkbox-group">
-              <label class="checkbox-label">
-                <input type="checkbox" id="allTargetsCheck" checked> Predict All 40 Models
-              </label>
-              <label class="checkbox-label">
-                <input type="checkbox" class="target-check" value="crop_yield_t_ha" checked> Crop Yield (t/ha)
-              </label>
-              <label class="checkbox-label">
-                <input type="checkbox" class="target-check" value="crop_health_score" checked> Crop Health Score
-              </label>
-              <label class="checkbox-label">
-                <input type="checkbox" class="target-check" value="drought_risk_score" checked> Drought Risk Score
-              </label>
-            </div>
-          </div>
-
-          <!-- Composite Features -->
-          <div class="form-group">
-            <label class="form-label">Composite Features</label>
-            <div class="checkbox-group">
-              <label class="checkbox-label">
-                <input type="checkbox" class="comp-check" value="crop_recommender" checked> Micro-Regional Crop Recommender
-              </label>
-              <label class="checkbox-label">
-                <input type="checkbox" class="comp-check" value="crop_health" checked> Geospatial Crop Health Layer
-              </label>
-              <label class="checkbox-label">
-                <input type="checkbox" class="comp-check" value="economic_roi" checked> Economic Yield & ROI Calculator
-              </label>
-              <label class="checkbox-label">
-                <input type="checkbox" class="comp-check" value="risk_alerts" checked> Multi-Hazard Risk Alert Engine
-              </label>
-              <label class="checkbox-label">
-                <input type="checkbox" class="comp-check" value="land_use" checked> Land Use Pattern & Conversion
-              </label>
-            </div>
-          </div>
-
-          <!-- Boost Mode & Fallback Controls -->
-          <div class="form-group">
-            <label class="checkbox-label" style="color: #10B981; font-weight: 700;">
-              <input type="checkbox" id="boostModeToggle"> 🚀 Enable Boost Mode (Preload All 40 Models in RAM)
-            </label>
-            <label class="checkbox-label" style="color: var(--amber-accent); margin-top: 4px;">
-              <input type="checkbox" id="fallbackToggle"> Force Prototype Models (Heavy Load Fallback)
-            </label>
           </div>
 
           <button type="submit" class="btn-submit" id="submitBtn">
-            <span>🚀 Run Model Prediction</span>
+            <span>🚀 Run Dataset Pipeline</span>
           </button>
         </form>
-
-        <!-- GEE Live Pipeline Update -->
-        <div class="card" style="margin-top: 16px; border: 1px solid rgba(139, 92, 246, 0.3); background: rgba(139, 92, 246, 0.05);">
-          <div class="card-header">
-            <h3 class="card-title" style="color: #a78bfa;">🛰️ GEE Live Data Pipeline</h3>
-          </div>
-          <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px; line-height: 1.5;">
-            Upload a monthly GEE dynamic CSV export to re-compute all 40 target predictions for all grid points.
-            The server will update the live prediction database and regenerate the map in the background.
-          </p>
-          <input type="file" id="geeCsvInput" accept=".csv" style="display:none;">
-          <div style="display:flex; gap:8px;">
-            <button type="button" id="geeSelectBtn" class="btn-submit" style="background: rgba(139,92,246,0.2); border: 1px solid rgba(139,92,246,0.4); color:#a78bfa; flex:1; padding: 8px 12px; font-size:0.8rem;">
-              📁 Select CSV
-            </button>
-            <button type="button" id="geeUploadBtn" class="btn-submit" style="background: rgba(139,92,246,0.6); border:none; flex:1; padding: 8px 12px; font-size:0.8rem;" disabled>
-              ⬆️ Upload & Run
-            </button>
-          </div>
-          <div id="geeUploadStatus" style="margin-top: 8px; font-size: 0.75rem; color: var(--text-muted);"></div>
-        </div>
       </div>
 
-      <!-- Right Column: Live Results Dashboard -->
+      <!-- Right Column: Results Dashboard -->
       <div class="results-area">
         <!-- Performance Banner -->
         <div class="performance-banner">
@@ -171,20 +66,12 @@
             <div class="metric-lbl">Latency</div>
           </div>
           <div class="metric-box">
-            <div class="metric-val" id="queueWaitVal">0.0 ms</div>
-            <div class="metric-lbl">Queue Wait</div>
+            <div class="metric-val" id="totalRowsVal">--</div>
+            <div class="metric-lbl">Total Rows</div>
           </div>
           <div class="metric-box">
-            <div class="metric-val" id="cacheStatusVal">--</div>
-            <div class="metric-lbl">Cache Status</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-val" id="modelSourceVal">--</div>
-            <div class="metric-lbl">Boost Mode</div>
-          </div>
-          <div class="metric-box" style="border-color: rgba(16, 185, 129, 0.25);">
-            <div class="metric-val" id="predSourceVal" style="color: var(--primary-accent); font-size: 0.85rem; padding: 4px 0;">--</div>
-            <div class="metric-lbl">Prediction Source</div>
+            <div class="metric-val" id="modelsUsedVal">--</div>
+            <div class="metric-lbl">Models Evaluated</div>
           </div>
           <div class="metric-box">
             <div class="metric-val" id="ramUsedVal">-- MB</div>
@@ -200,7 +87,7 @@
               <h3 class="card-title">🌱 Crop Recommendation Rankings</h3>
             </div>
             <div class="crop-rank-list" id="cropRankList">
-              <div style="color: var(--text-muted); font-size: 0.85rem;">Click 'Run Model Prediction' to see top recommended crops.</div>
+              <div style="color: var(--text-muted); font-size: 0.85rem;">Run pipeline to view top crop recommendations.</div>
             </div>
           </div>
 
@@ -210,41 +97,27 @@
               <h3 class="card-title">⚠️ Multi-Hazard Risk Alert Engine</h3>
             </div>
             <div id="riskAlertContent">
-              <div class="risk-banner" style="background: rgba(16, 185, 129, 0.2); color: var(--primary-accent);">
-                <span>STABLE (NO ACTIVE HAZARD)</span>
-                <span>Score: 0.12</span>
-              </div>
-              <div class="risk-bars">
-                <div class="risk-row"><span>Flood Risk</span><span>Low</span></div>
-                <div class="risk-row"><span>Drought Risk</span><span>0.12</span></div>
-                <div class="risk-row"><span>Heat Stress Risk</span><span>Low</span></div>
-                <div class="risk-row"><span>Water Scarcity Risk</span><span>0.15</span></div>
-              </div>
+              <div style="color: var(--text-muted); font-size: 0.85rem;">Run pipeline to view multi-hazard risk analysis.</div>
             </div>
           </div>
 
           <!-- Crop Health Layer Card -->
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">🛰️ Crop Health & NDVI Layer</h3>
+              <h3 class="card-title">🛰️ Crop Health Layer</h3>
             </div>
             <div id="healthLayerContent">
-              <div style="font-size: 1.8rem; font-weight: 800; color: var(--primary-accent);" id="healthScoreText">88.0%</div>
-              <div style="font-size: 0.85rem; color: var(--text-muted);">Status: <strong id="healthStatusText" style="color: #fff;">Optimal Health</strong> | NDVI: <strong id="ndviText" style="color: #fff;">0.7200</strong></div>
+              <div style="color: var(--text-muted); font-size: 0.85rem;">Run pipeline to view crop health score & class.</div>
             </div>
           </div>
 
-          <!-- Economic ROI Calculator Card -->
+          <!-- Land Use Risk Card -->
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">💰 Economic Yield & ROI Calculator</h3>
+              <h3 class="card-title">🏘️ Land Use Pattern & Conversion Risk</h3>
             </div>
-            <div id="roiContent">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <span style="font-size: 1.4rem; font-weight: 800; color: var(--blue-accent);" id="yieldText">3.65 t/ha</span>
-                <span class="crop-pill" style="background: var(--primary-accent);" id="roiRatingPill">HIGH ROI</span>
-              </div>
-              <div style="font-size: 0.8rem; color: var(--text-muted);" id="roiDetailsText">Market Integration: 0.92 | Agricultural GDP Index: 0.85</div>
+            <div id="landUseContent">
+              <div style="color: var(--text-muted); font-size: 0.85rem;">Run pipeline to view land use conversion & urban encroachment risk.</div>
             </div>
           </div>
         </div>
@@ -252,7 +125,7 @@
         <!-- Raw JSON Inspector Card -->
         <div class="card">
           <div class="card-header">
-            <h3 class="card-title">📄 Raw Model Server JSON Response</h3>
+            <h3 class="card-title">📄 Pipeline JSON Response Inspector</h3>
           </div>
           <pre class="json-container" id="jsonViewer">// API response JSON will appear here...</pre>
         </div>

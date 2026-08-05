@@ -38,3 +38,4 @@ models/*.pkl
 Thumbs.db
 .vscode/
 .idea/
+data/test/
