@@ -4,16 +4,17 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "127.0.0.1:8001:8000"
+      - "8001:8000"
     environment:
-      - REDIS_HOST=redis_cache
-      - REDIS_PORT=6379
+      - ENVIRONMENT=development
+      - AUTH_REQUIRED=false
       - MAX_LOADED_MODELS=40
-      - MAX_RAM_MB=6144
+      - MAX_RAM_MB=2400
       - BOOST_MODE=false
-    depends_on:
-      redis-cache:
-        condition: service_healthy
+    volumes:
+      - ./models:/models:ro
+      - ./data/processed:/data:ro
+      - ./jobs:/app/jobs
     healthcheck:
       test:
         - CMD
@@ -30,23 +31,4 @@ services:
     tmpfs:
       - /tmp:size=128m
     init: true
-    restart: unless-stopped
-
-  redis-cache:
-    image: redis:7-alpine
-    command:
-      - redis-server
-      - --save
-      - ""
-      - --appendonly
-      - "no"
-      - --maxmemory
-      - 256mb
-      - --maxmemory-policy
-      - allkeys-lru
-    healthcheck:
-      test: [ "CMD", "redis-cli", "ping" ]
-      interval: 5s
-      timeout: 3s
-      retries: 10
     restart: unless-stopped
