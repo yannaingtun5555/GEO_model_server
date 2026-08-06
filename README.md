@@ -1,107 +1,116 @@
-# Myanmar Agricultural Experimental Model Server
+# Myanmar Agricultural Model Serving Microservice
 
-Private FastAPI inference microservice for the Myanmar Agriculture Intelligence project.
-Serves a streamlined dataset processing pipeline (CSV → Preprocess → Predict 40 Models + Composites → Response) for web backend integration.
+FastAPI inference microservice for the Myanmar Agriculture Intelligence project.
+Serves a high-throughput, vectorized dataset processing pipeline (CSV Ingestion → Vectorized Preprocessing → 40 ML Models + 5 Composite Feature Groups → Ultra-Compact Matrix / Parquet Response).
 
 ```text
-Web App / Daily Task -> CSV Upload -> Preprocess -> Predict 40 ML Models + Composites -> Direct JSON Response
+CSV Upload  ──►  Vectorized Ingestion  ──►  40 ML Models + 5 Composites  ──►  Columnar Matrix / Parquet Download
 ```
-
-## 🛰️ Dataset Pipeline API (`POST /api/v1/pipeline/run`)
-
-The primary pipeline API accepts a daily uploaded CSV dataset (matching `data/test/*.csv` or `data/raw/yangon/yangon.csv`), processes it, evaluates **all 40 machine learning models**, computes **all 5 composite feature groups**, and directly returns per-index structured predictions.
-
-### Workflow:
-1. **CSV Upload**: Accepts daily region export CSV via multipart file upload.
-2. **Preprocessing**: Automatically extracts index IDs (`system:index`/`sample_id`), `latitude`, `longitude`, and `region`, aligns 75 feature columns, and handles missing input imputation.
-3. **40 Model Predictions**: Runs model inference for all 40 ML targets across every row.
-4. **5 Composite Feature Groups**: Computes composite features per row:
-   - `crop_recommender`: Suitability rankings & scores across all 17 crops.
-   - `crop_health`: Health layer score, classification, and NDVI analysis.
-   - `economic_roi`: Economic ROI calculation indicator.
-   - `risk_alerts`: Multi-hazard alerts (Flood, Drought, Heat, Erosion, Water Scarcity).
-   - `land_use`: Land conversion and urban encroachment risk analysis.
-5. **Direct Response**: Returns structured predictions and metadata for every land index.
 
 ---
 
-## 🚀 API Endpoints
+## ⚡ Performance & Size Optimizations
 
-### 1. Main Pipeline API
-- `POST /api/v1/pipeline/run`: Ingest CSV dataset, preprocess, evaluate all 40 models + 5 composite groups per row, and return predictions.
+1. **Async Background Processing (Default)**: Ingests datasets of any size (e.g. 36,000+ rows) asynchronously, returning a `job_id` immediately to eliminate HTTP gateway timeouts.
+2. **Columnar Matrix Output (`format=columnar`, Default)**: Eliminates dictionary key repetition per row. Reduces a 36,000-row prediction payload from **230 MB down to ~24 MB** (**90% size reduction**).
+3. **Transparent GZip HTTP Compression**: Compresses HTTP responses over 1 KB, reducing 24 MB JSON down to **~2 MB over the wire**.
+4. **Parquet Binary Downloads (`GET /pipeline/status/{job_id}/download`)**: Generates a **3 MB Parquet binary export file** upon job completion, allowing full-dataset downloads in **<0.2 seconds**.
 
-#### Example Request:
+---
+
+## 🚀 API Endpoint Reference
+
+### 1. Asynchronous Dataset Ingestion Pipeline (`POST /api/v1/pipeline/run-async`)
+Submits a regional CSV dataset for background vectorized inference.
+
+#### Request:
 ```bash
-curl -F "file=@data/raw/yangon/yangon.csv" http://localhost:8001/api/v1/pipeline/run
+curl -X POST "http://localhost:8001/api/v1/pipeline/run-async?format=columnar" \
+  -F "file=@data/raw/yangon/yangon.csv"
 ```
 
-#### Example Response Structure:
+#### Response:
 ```json
 {
-  "status": "success",
-  "total_rows": 2,
-  "rows": [
-    {
-      "meta": {
-        "index": "1847,432",
-        "sample_id": "mm_1847_432__2018-01",
-        "lat": 17.20167,
-        "lon": 95.73900,
-        "region": "yangon"
-      },
-      "predictions": {
-        "crop_health_score": { "value": 0.54, "task_type": "regression", "label": "0.54", "is_fallback": false },
-        "crop_suitability_monsoon_rice": { "value": "good", "task_type": "classification", "label": "good", "is_fallback": false },
-        "...": "38 more targets..."
-      },
-      "composite_features": {
-        "crop_recommender": [ { "crop": "monsoon_rice", "suitability": "good", "suitability_score": 75.0 } ],
-        "crop_health": { "health_score": 0.54, "health_class": "Good", "map_color_hex": "#3B82F6" },
-        "economic_roi": { "status": "unavailable" },
-        "risk_alerts": { "overall_level": "low", "risk_scores": { ... } },
-        "land_use": { "risk_level": "low", "conversion_risk_score": 0.0 }
-      }
+  "status": "processing",
+  "job_id": "job_92341b11e1d2"
+}
+```
+
+---
+
+### 2. Job Status & Columnar Prediction Fetch (`GET /api/v1/pipeline/status/{job_id}`)
+Checks job progress and retrieves completed predictions in ultra-compact matrix format.
+
+#### Request:
+```bash
+curl "http://localhost:8001/api/v1/pipeline/status/job_92341b11e1d2"
+```
+
+#### Response Structure:
+```json
+{
+  "status": "completed",
+  "job_id": "job_92341b11e1d2",
+  "progress_pct": 100.0,
+  "download_parquet_url": "/api/v1/pipeline/status/job_92341b11e1d2/download",
+  "result": {
+    "status": "success",
+    "total_rows": 36672,
+    "format": "columnar",
+    "meta": {
+      "indices": ["1847,432", "1847,433"],
+      "lats": [17.2016, 17.2426],
+      "lons": [95.7390, 95.7800],
+      "regions": ["yangon", "yangon"]
+    },
+    "predictions": {
+      "crop_suitability_monsoon_rice": ["good", "good"],
+      "crop_health_score": [0.65, 0.72]
+    },
+    "composite_features": {
+      "crop_recommender": [[ { "crop": "monsoon_rice", "suitability": "good" } ]],
+      "crop_health": [ { "health_score": 0.65, "health_class": "Good" } ]
+    },
+    "pipeline_metadata": {
+      "execution_time_ms": 122670.34,
+      "total_predictions_evaluated": 1466880,
+      "models_used_count": 1466880,
+      "fallbacks_used_count": 0
     }
-  ],
-  "pipeline_metadata": {
-    "filename": "yangon.csv",
-    "execution_time_ms": 145.2,
-    "total_predictions_evaluated": 80,
-    "models_used_count": 80,
-    "fallbacks_used_count": 0
   }
 }
 ```
 
-### 2. Supporting Microservice APIs
-- `GET /api/v1/live`: Liveness probe (`{"status": "alive"}`)
-- `GET /api/v1/ready`: Server readiness check (`{"status": "ready", "model_targets_count": 40}`)
-- `GET /api/v1/health`: Resource & memory diagnostics
-- `GET /api/v1/models`: Returns authoritative list of all 40 prediction target definitions
+---
+
+### 3. Streamed Parquet Binary File Download (`GET /api/v1/pipeline/status/{job_id}/download`)
+Downloads predictions as an ultra-compact **~3 MB Parquet binary file**.
+
+#### Request:
+```bash
+curl -O -J "http://localhost:8001/api/v1/pipeline/status/job_92341b11e1d2/download"
+```
 
 ---
 
-## 🛠️ Local Setup
+### 4. Supporting Health & Diagnostics Endpoints
+- `GET /api/v1/live`: Liveness probe (`{"status": "alive"}`)
+- `GET /api/v1/ready`: Readiness probe (`{"status": "ready", "model_targets_count": 40}`)
+- `GET /api/v1/health`: Resource & memory diagnostics (`{"ram_usage_mb": 2180.6, "loaded_models_in_ram": 40}`)
+- `GET /api/v1/models`: List of all 40 prediction target definitions
 
+---
+
+## 💻 CLI Client Helper Usage
+
+Test dataset uploads using the python CLI client:
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-./run.sh serve
-```
+# Default Async run with Columnar matrix output:
+python scripts/test_pipeline.py --csv data/raw/yangon/yangon.csv --output result.json
 
-The model API will be available at `http://127.0.0.1:8001`.
-
-### Run Verification Tests
-```bash
-.venv/bin/python -c "
-from fastapi.testclient import TestClient
-from server.main import app
-
-client = TestClient(app)
-print(client.get('/api/v1/live').json())
-print(client.get('/api/v1/ready').json())
-"
+# Process full regional dataset and download 3MB Parquet binary directly:
+python scripts/test_pipeline.py --csv data/raw/yangon/yangon.csv --output result.json --limit -1 --parquet
 ```
 
 ---
@@ -111,5 +120,9 @@ print(client.get('/api/v1/ready').json())
 Exposes the model API microservice on host port `8001`.
 
 ```bash
-docker compose up --build
+# Create writeable host jobs directory
+mkdir -p jobs && chmod 777 jobs
+
+# Start container
+docker compose up --build -d
 ```

@@ -1,94 +1,71 @@
-# Backend Engineer's Guide — Live GEE Data Pipeline & Prediction Serving
+# Backend Engineer's Guide — Model Serving Microservice & Ingestion Architecture
 
-This document provides technical instructions for the backend engineer responsible for maintaining the Google Earth Engine (GEE) update pipeline and managing predictions serving.
-
----
-
-## 1. GEE Data Export Schedule
-
-As a backend engineer, you will manage GEE data export pipelines. Satellite observation updates (such as Sentinel-1 backscatter, CHIRPS precipitation, MODIS NDVI, ERA5 soil moisture) should be exported on a regular schedule:
-- **Frequency**: Once every 1 to 2 weeks.
-- **Export Format**: A single combined CSV containing grid point features.
-- **Required Identifier Column**: Must contain a `system:index` or `index` column corresponding to the unique identifier of the land grids.
-- **Required Dynamic Columns**: Must contain the dynamic observation features (e.g., `chirps_precipitation_mm`, `mean_temperature_c`, `ndvi_median_mean`, `ndwi_mcf_median_mean`, `era5_soil_moisture_m3_m3_mean`, etc.).
+This document provides technical instructions for backend engineers managing the model serving microservice, dataset ingestion, and prediction pipeline exports.
 
 ---
 
-## 2. API Ingestion Endpoint
+## 1. Pipeline Ingestion & Processing Flow
 
-Whenever GEE finishes exporting a new dynamic observation dataset, you trigger the update pipeline on the model server by uploading the CSV file.
+Satellite observation CSV exports (containing grid coordinates and dynamic/static observations) are ingested via the model server endpoints:
 
-### Ingestion API Details
-- **Route**: `POST /api/v1/pipeline/update`
-- **Content-Type**: `multipart/form-data`
-- **Payload Parameter**: `file` (the exported CSV file)
+- **Asynchronous Endpoint (Primary/Default)**: `POST /api/v1/pipeline/run-async`
+- **Synchronous Endpoint**: `POST /api/v1/pipeline/run`
 
-### Example `curl` Request:
-```bash
-curl -X POST "http://localhost:8000/api/v1/pipeline/update" \
-  -H "accept: application/json" \
-  -H "Content-Type: multipart/form-data" \
-  -F "file=@/path/to/gee_dynamic_update_2026_08.csv"
-```
-
-### Ingestion Response:
-```json
-{
-  "status": "accepted",
-  "message": "GEE update ingestion started in background. Live predictions will be updated on completion.",
-  "filename": "gee_dynamic_update_2026_08.csv"
-}
-```
-
----
-
-## 3. Background Processing & Lifecycle
-
-Because batch predictions over 1,000,000+ points across all 40 ML models can take 30–60 seconds, the ingestion process is executed asynchronously in the background.
-
-```
+### Workflow:
+```text
 [ GEE CSV Uploaded ]
         │
-        ▼ (FastAPI Background Task triggers)
-[ Merge dynamic GEE columns with master static features (elevation, slope, soils, etc.) ]
+        ▼ (FastAPI Background Task)
+[ Vectorized Data Alignment & Type Casting ]
         │
         ▼
-[ Run Batch predictions on all 40 targets (17 crops + 23 regression/classification) ]
+[ Vectorized Batch Predictions (All 40 Models) ]
         │
         ▼
-[ Save live_predictions.parquet & live_predictions.csv ]
+[ Composite Feature Calculations (5 Groups) ]
         │
         ▼
-[ Regenerate server/static/map_recommendations.json (All 17 crops sorted descending) ]
-        │
-        ▼
-[ Hot-reload live_prediction_manager cache in running memory ]
+[ Save /app/jobs/{job_id}.json (Columnar) & /app/jobs/{job_id}.parquet ]
 ```
 
 ---
 
-## 4. Serving Architecture
+## 2. API Endpoints for Integration
 
-To handle high traffic with sub-millisecond response times, the `/predict` API switches dynamically between two modes:
+### A. Submitting Dataset for Background Execution
+`POST /api/v1/pipeline/run-async`
+- **Header**: `Content-Type: multipart/form-data`
+- **Query Parameter**: `format=columnar` (default matrix format for ~90% size reduction)
+- **Response**: `{"status": "processing", "job_id": "job_1a36d41b5849"}`
 
-### A. Live Database Mode (Default after Ingestion)
-If `live_predictions.parquet` is successfully loaded into memory:
-1. When `/predict` receives a request by `system_index` or `(lat, lon)`, it performs an $O(1)$ dictionary lookup or an $O(\log N)$ KD-Tree coordinate query.
-2. The server constructs the response directly from the database and returns it in **<5ms**.
-3. Response metadata includes `"live_db_served": true` and `"models_used": { "target_name": "live_prediction_db" }`.
+### B. Polling Job Progress & Fetching JSON Predictions
+`GET /api/v1/pipeline/status/{job_id}`
+- **Response status**: `processing` (progress_pct: 10.0) → `completed` (progress_pct: 100.0)
+- Contains the full Columnar matrix predictions envelope and a direct URL to the Parquet binary download.
 
-### B. Real-Time ML Fallback Mode
-If no live prediction database has been generated/loaded yet:
-1. The server loads the individual model pickle files and performs real-time model inference.
-2. Under heavy load, it routes predictions through a request queue with worker limits.
+### C. Direct Parquet Binary File Download
+`GET /api/v1/pipeline/status/{job_id}/download`
+- **Content-Type**: `application/x-parquet`
+- **Performance**: Streams a **~3 MB Parquet binary file** containing 33,000+ rows directly into memory in **<0.2 seconds**.
+
+```python
+import pandas as pd
+
+# Load 33,000 prediction rows directly into a Pandas DataFrame:
+df = pd.read_parquet("http://localhost:8001/api/v1/pipeline/status/job_1a36d41b5849/download")
+```
 
 ---
 
-## 5. CLI Management
+## 3. High-Throughput & Resource Controls
 
-You can also trigger dataset generation manually from the CLI inside the project directory:
+### RAM Management (`MAX_RAM_MB=2400`)
+- Model artifacts are loaded into an LRU cache.
+- Python memory usage is budgeted at `MAX_RAM_MB=2400` to prevent container OOM termination under Docker's `mem_limit: 3g`.
 
-- **Regenerate Map Recommendations**:
-  ```bash
-  ./run.sh map-data
-  ```
+### Output Storage (`/app/jobs`)
+- Background output payloads are saved to `/app/jobs` (mounted to host `./jobs`).
+- Prevents container memory bloat and protects container file system limits.
+
+### Automatic HTTP Gzip Compression
+- All JSON payloads over 1 KB are transparently Gzip compressed by FastAPI middleware.

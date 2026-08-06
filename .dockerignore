@@ -16,7 +16,6 @@ gp_models
 wheels
 web
 model_testing
-pipeline
 scripts
 utils
 *.log

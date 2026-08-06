@@ -57,13 +57,38 @@ function initFormSubmit() {
 // Run pipeline with selected file
 async function runPipelineWithFile(file) {
   const submitBtn = document.getElementById("submitBtn");
-  submitBtn.disabled = true;
-  submitBtn.innerHTML = `<span class="spinner"></span> <span>Running 40 Models & Composites...</span>`;
+  const jsonViewer = document.getElementById("jsonViewer");
 
-  const formData = new FormData();
-  formData.append("file", file);
+  if (!file || file.size <= 10) {
+    jsonViewer.textContent = `⚠️ Error: The selected file "${file ? file.name : ''}" is empty or too small (e.g., 1-byte placeholder file in data/test/).\n\nPlease select a populated CSV dataset (like one of the files in data/raw/ayeyawaddy, bago, magway, mandalay, sagaing, or yangon).`;
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = `<span class="spinner"></span> <span>Slicing & Running Models...</span>`;
 
   try {
+    // Read the file and slice first 5 lines (header + 4 rows) to prevent browser/network timeouts on 700MB files
+    const text = await file.text();
+    const lines = text.split(/\r?\n/);
+    const validLines = lines.filter(line => line.trim().length > 0);
+    
+    if (validLines.length <= 1) {
+      jsonViewer.textContent = `⚠️ Error: The file has no data rows to predict.`;
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = `<span>🚀 Run Dataset Pipeline</span>`;
+      return;
+    }
+
+    // Keep header + max 4 data rows
+    const sliceCount = Math.min(validLines.length, 5);
+    const slicedContent = validLines.slice(0, sliceCount).join("\n");
+    const slicedBlob = new Blob([slicedContent], { type: "text/csv" });
+    const slicedFile = new File([slicedBlob], file.name, { type: "text/csv" });
+
+    const formData = new FormData();
+    formData.append("file", slicedFile);
+
     const startT = performance.now();
     const res = await fetch(`${API_BASE_URL}/pipeline/run`, {
       method: "POST",
@@ -76,10 +101,10 @@ async function runPipelineWithFile(file) {
     if (res.ok && data.status === "success") {
       renderResults(data, elapsed);
     } else {
-      document.getElementById("jsonViewer").textContent = JSON.stringify(data, null, 2);
+      jsonViewer.textContent = JSON.stringify(data, null, 2);
     }
   } catch (err) {
-    document.getElementById("jsonViewer").textContent = `Error connecting to Model Server API:\n${err.message}\nMake sure uvicorn server is running on http://localhost:8001`;
+    jsonViewer.textContent = `Error connecting to Model Server API:\n${err.message}\nMake sure uvicorn server is running on http://localhost:8001`;
   } finally {
     submitBtn.disabled = false;
     submitBtn.innerHTML = `<span>🚀 Run Dataset Pipeline</span>`;

@@ -14,6 +14,7 @@ COPY requirements.txt ./
 RUN pip install --requirement requirements.txt
 
 COPY server/ ./server/
+COPY pipeline/ ./pipeline/
 COPY models/manifest.json ./catalog/manifest.json
 
 RUN mkdir -p /models /data && chown -R app:app /app /models /data

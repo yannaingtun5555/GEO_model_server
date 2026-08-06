@@ -23,7 +23,11 @@ class RowPredictionResult(BaseModel):
 class PipelineResponse(BaseModel):
     status: str = "success"
     total_rows: int
-    rows: List[RowPredictionResult]
+    format: str = "rows"
+    rows: Optional[List[RowPredictionResult]] = None
+    meta: Optional[Dict[str, Any]] = None
+    predictions: Optional[Dict[str, Any]] = None
+    composite_features: Optional[Dict[str, Any]] = None
     pipeline_metadata: Dict[str, Any]
 
 
